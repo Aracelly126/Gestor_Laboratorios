@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class FiltradorAulas {
+public class FiltradorAulas_Lab {
 
     public static List<String> obtenerTiposPorBloque(String nombreBloque) {
         List<String> tipos = new ArrayList<>();

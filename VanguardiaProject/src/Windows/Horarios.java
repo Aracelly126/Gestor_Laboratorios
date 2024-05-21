@@ -5,7 +5,7 @@
 package Windows;
 
 import Codes.Bloques;
-import Codes.FiltradorAulas;
+import Codes.FiltradorAulas_Lab;
 import Codes.Lab_Aulas;
 import Utils.Conex;
 import java.awt.BorderLayout;
@@ -209,27 +209,24 @@ public class Horarios extends javax.swing.JFrame {
     }
 
     public void filtradoUno() {
-       String nombreBloque = (String) jcmbBloques.getSelectedItem();
-    if (nombreBloque != null) {
-        jcmbLabAulas.removeAllItems();
-        List<String> tipos = FiltradorAulas.obtenerTiposPorBloque(nombreBloque);
-        for (String tipo : tipos) {
-            jcmbLabAulas.addItem(tipo);
+        String nombreBloque = (String) jcmbBloques.getSelectedItem();
+        if (nombreBloque != null) {
+            jcmbLabAulas.removeAllItems();
+            List<String> tipos = FiltradorAulas_Lab.obtenerTiposPorBloque(nombreBloque);
+            for (String tipo : tipos) {
+                jcmbLabAulas.addItem(tipo);
+            }
         }
-    } 
-    
+
     }
 
     private void filtroDos() {
-        Object selectedItem = jcmbBloques.getSelectedItem();
-        if (selectedItem != null) {
-            String nombreBloqueSeleccionado = selectedItem.toString();
-            Lab_Aulas aulasManager = new Lab_Aulas();
-            List<String> aulas = aulasManager.obtenerAulasPorBloque(nombreBloqueSeleccionado);
-            jcmbNumLabAulas.removeAllItems();
-            for (String aula : aulas) {
-                jcmbNumLabAulas.addItem(aula);
-            }
+         String nombreBloqueSeleccionado = (String) jcmbBloques.getSelectedItem();
+        Lab_Aulas labAulas = new Lab_Aulas(); 
+        List<String> aulas = labAulas.obtenerAulasPorBloque(nombreBloqueSeleccionado);
+        jcmbNumLabAulas.removeAllItems();
+        for (String aula : aulas) {
+            jcmbNumLabAulas.addItem(aula);
         }
     }
     private void jcmbBloquesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbBloquesActionPerformed
