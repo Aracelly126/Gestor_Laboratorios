@@ -5,10 +5,14 @@
 package Windows;
 
 import Codes.Bloques;
+import Codes.FiltradorAulas;
 import Codes.Lab_Aulas;
 import Utils.Conex;
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -29,6 +33,7 @@ public class Horarios extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         actualizarBloques();
         filtroDos();
+        filtradoUno();
     }
 
     /**
@@ -203,7 +208,19 @@ public class Horarios extends javax.swing.JFrame {
         }
     }
 
-      private void filtroDos() {
+    public void filtradoUno() {
+       String nombreBloque = (String) jcmbBloques.getSelectedItem();
+    if (nombreBloque != null) {
+        jcmbLabAulas.removeAllItems();
+        List<String> tipos = FiltradorAulas.obtenerTiposPorBloque(nombreBloque);
+        for (String tipo : tipos) {
+            jcmbLabAulas.addItem(tipo);
+        }
+    } 
+    
+    }
+
+    private void filtroDos() {
         Object selectedItem = jcmbBloques.getSelectedItem();
         if (selectedItem != null) {
             String nombreBloqueSeleccionado = selectedItem.toString();
@@ -250,11 +267,11 @@ public class Horarios extends javax.swing.JFrame {
     }//GEN-LAST:event_jcmbBloquesFocusLost
 
     private void jcmbLabAulasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbLabAulasActionPerformed
-        
+
     }//GEN-LAST:event_jcmbLabAulasActionPerformed
 
     private void jcmbLabAulasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbLabAulasMouseClicked
-        
+        filtradoUno();
     }//GEN-LAST:event_jcmbLabAulasMouseClicked
 
     private void jcmbNumLabAulasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbNumLabAulasMouseClicked
