@@ -4,8 +4,11 @@
  */
 package Windows;
 
+import Codes.Bloques;
+import Utils.Conex;
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -22,6 +25,7 @@ public class Horarios extends javax.swing.JFrame {
         initComponents();
         jPnlHorarios.setVisible(false);
         this.setLocationRelativeTo(null);
+        actualizarBloques();
     }
 
     /**
@@ -50,10 +54,27 @@ public class Horarios extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("BLOQUES");
 
-        jcmbBloques.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bloque 1", "Bloque 2", "Bloque 3", "Bloque 4" }));
+        jcmbBloques.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jcmbBloquesFocusLost(evt);
+            }
+        });
+        jcmbBloques.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jcmbBloquesMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jcmbBloquesMousePressed(evt);
+            }
+        });
         jcmbBloques.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcmbBloquesActionPerformed(evt);
+            }
+        });
+        jcmbBloques.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jcmbBloquesKeyPressed(evt);
             }
         });
 
@@ -89,20 +110,18 @@ public class Horarios extends javax.swing.JFrame {
         jPnlHorariosLayout.setHorizontalGroup(
             jPnlHorariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPnlHorariosLayout.createSequentialGroup()
+                .addGap(39, 39, 39)
                 .addGroup(jPnlHorariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 729, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPnlHorariosLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(jcmbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45)
                         .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45)
-                        .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPnlHorariosLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(100, Short.MAX_VALUE))
+                        .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         jPnlHorariosLayout.setVerticalGroup(
             jPnlHorariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,8 +134,8 @@ public class Horarios extends javax.swing.JFrame {
                         .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(43, 43, 43)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         jMenu2.setText("Ver Horarios");
@@ -158,9 +177,17 @@ public class Horarios extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void actualizarBloques() {
+        Bloques bloquesDAO = new Bloques();
+        List<String> bloques = bloquesDAO.BloquesUni();
 
+        jcmbBloques.removeAllItems();
+        for (String bloque : bloques) {
+            jcmbBloques.addItem(bloque);
+        }
+    }
     private void jcmbBloquesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbBloquesActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jcmbBloquesActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
@@ -173,7 +200,25 @@ public class Horarios extends javax.swing.JFrame {
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         jPnlHorarios.setVisible(true);
+
+
     }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jcmbBloquesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbBloquesMouseClicked
+        
+    }//GEN-LAST:event_jcmbBloquesMouseClicked
+
+    private void jcmbBloquesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbBloquesMousePressed
+        
+    }//GEN-LAST:event_jcmbBloquesMousePressed
+
+    private void jcmbBloquesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jcmbBloquesKeyPressed
+        
+    }//GEN-LAST:event_jcmbBloquesKeyPressed
+
+    private void jcmbBloquesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jcmbBloquesFocusLost
+
+    }//GEN-LAST:event_jcmbBloquesFocusLost
 
     /**
      * @param args the command line arguments
