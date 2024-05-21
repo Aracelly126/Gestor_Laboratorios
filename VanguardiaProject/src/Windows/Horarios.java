@@ -5,11 +5,13 @@
 package Windows;
 
 import Codes.Bloques;
+import Codes.Lab_Aulas;
 import Utils.Conex;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -26,6 +28,7 @@ public class Horarios extends javax.swing.JFrame {
         jPnlHorarios.setVisible(false);
         this.setLocationRelativeTo(null);
         actualizarBloques();
+        filtroDos();
     }
 
     /**
@@ -78,9 +81,22 @@ public class Horarios extends javax.swing.JFrame {
             }
         });
 
-        jcmbLabAulas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Laboratorio", "Aula" }));
+        jcmbLabAulas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jcmbLabAulasMouseClicked(evt);
+            }
+        });
+        jcmbLabAulas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcmbLabAulasActionPerformed(evt);
+            }
+        });
 
-        jcmbNumLabAulas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LAB 0001", "LAB 0002", "LAB 0003", "LAB 0004", "LAB 0005" }));
+        jcmbNumLabAulas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jcmbNumLabAulasMouseClicked(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -111,7 +127,7 @@ public class Horarios extends javax.swing.JFrame {
             jPnlHorariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPnlHorariosLayout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addGroup(jPnlHorariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPnlHorariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 729, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPnlHorariosLayout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -120,7 +136,7 @@ public class Horarios extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45)
-                        .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jcmbNumLabAulas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         jPnlHorariosLayout.setVerticalGroup(
@@ -186,8 +202,21 @@ public class Horarios extends javax.swing.JFrame {
             jcmbBloques.addItem(bloque);
         }
     }
+
+      private void filtroDos() {
+        Object selectedItem = jcmbBloques.getSelectedItem();
+        if (selectedItem != null) {
+            String nombreBloqueSeleccionado = selectedItem.toString();
+            Lab_Aulas aulasManager = new Lab_Aulas();
+            List<String> aulas = aulasManager.obtenerAulasPorBloque(nombreBloqueSeleccionado);
+            jcmbNumLabAulas.removeAllItems();
+            for (String aula : aulas) {
+                jcmbNumLabAulas.addItem(aula);
+            }
+        }
+    }
     private void jcmbBloquesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbBloquesActionPerformed
-        
+
     }//GEN-LAST:event_jcmbBloquesActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
@@ -205,20 +234,32 @@ public class Horarios extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jcmbBloquesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbBloquesMouseClicked
-        
+
     }//GEN-LAST:event_jcmbBloquesMouseClicked
 
     private void jcmbBloquesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbBloquesMousePressed
-        
+
     }//GEN-LAST:event_jcmbBloquesMousePressed
 
     private void jcmbBloquesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jcmbBloquesKeyPressed
-        
+
     }//GEN-LAST:event_jcmbBloquesKeyPressed
 
     private void jcmbBloquesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jcmbBloquesFocusLost
 
     }//GEN-LAST:event_jcmbBloquesFocusLost
+
+    private void jcmbLabAulasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbLabAulasActionPerformed
+        
+    }//GEN-LAST:event_jcmbLabAulasActionPerformed
+
+    private void jcmbLabAulasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbLabAulasMouseClicked
+        
+    }//GEN-LAST:event_jcmbLabAulasMouseClicked
+
+    private void jcmbNumLabAulasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbNumLabAulasMouseClicked
+        filtroDos();
+    }//GEN-LAST:event_jcmbNumLabAulasMouseClicked
 
     /**
      * @param args the command line arguments
