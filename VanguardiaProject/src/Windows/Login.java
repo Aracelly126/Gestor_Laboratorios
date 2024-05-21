@@ -30,7 +30,7 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
         initComponents();
         
-        ManejoComp.crearlabel(this.lbl_header, "src\\IMG\\banner-fisei.png");
+        ManejoComp.crearlabel(this.lbl_header, "src\\IMG\\banner-fisei-uta.png");
         Image img = Toolkit.getDefaultToolkit().getImage("src\\IMG\\favicon.png");
         this.setIconImage(img);
         
@@ -55,7 +55,7 @@ public class Login extends javax.swing.JFrame {
         setResizable(false);
         setSize(new java.awt.Dimension(720, 650));
 
-        pnl_base.setBackground(new java.awt.Color(246, 250, 253));
+        pnl_base.setBackground(new java.awt.Color(255, 255, 255));
         pnl_base.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnl_header.setBackground(new java.awt.Color(255, 255, 255));
@@ -64,27 +64,26 @@ public class Login extends javax.swing.JFrame {
         pnl_header.setLayout(pnl_headerLayout);
         pnl_headerLayout.setHorizontalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_headerLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(lbl_header, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+            .addComponent(lbl_header, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
         );
         pnl_headerLayout.setVerticalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lbl_header, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
         );
 
-        pnl_base.add(pnl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 140));
+        pnl_base.add(pnl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1002, 140));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnl_base, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnl_base, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnl_base, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnl_base, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
