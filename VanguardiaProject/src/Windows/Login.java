@@ -1,6 +1,6 @@
 package Windows;
 
-import Codes.ManejoComp;
+import Utils.ManejoComp;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.SwingUtilities;
@@ -34,6 +34,8 @@ public class Login extends javax.swing.JFrame {
         ManejoComp.crearlabel(this.lbl_header, "src\\IMG\\banner-fisei-uta.png");
         Image img = Toolkit.getDefaultToolkit().getImage("src\\IMG\\favicon.png");
         this.setIconImage(img);
+        ManejoComp.crearVerPassword(this.txt_clave, this.btn_verClave);
+        ManejoComp.crearlabel(this.lbl_usuarioIcono, "src\\IMG\\usuario_icono.png");
     }
     
     public void iniciar(){
@@ -46,9 +48,20 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         pnl_base = new javax.swing.JPanel();
-        pnl_header = new javax.swing.JPanel();
         lbl_header = new javax.swing.JLabel();
-        panelShadow1 = new Utils.PanelShadow();
+        jLabel1 = new javax.swing.JLabel();
+        pnl_containerCredentials = new Utils.PanelShadow();
+        lbl_usuario = new javax.swing.JLabel();
+        txt_correo = new javax.swing.JTextField();
+        lbl_clave = new javax.swing.JLabel();
+        btn_verClave = new javax.swing.JToggleButton();
+        txt_clave = new javax.swing.JPasswordField();
+        lbl_olvideClave = new javax.swing.JLabel();
+        pnl_IniciarSesion = new Utils.PanelShadow();
+        lbl_usuarioIcono = new javax.swing.JLabel();
+        lbl_txtIniciarSesion = new javax.swing.JLabel();
+        pnl_footer = new javax.swing.JPanel();
+        lbl_footer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fisei Prestamos | Login");
@@ -57,37 +70,67 @@ public class Login extends javax.swing.JFrame {
 
         pnl_base.setBackground(new java.awt.Color(254, 254, 254));
         pnl_base.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnl_base.add(lbl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 140));
 
-        pnl_header.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(173, 39, 46));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("INICIAR SESION");
+        pnl_base.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 500, 60));
 
-        javax.swing.GroupLayout pnl_headerLayout = new javax.swing.GroupLayout(pnl_header);
-        pnl_header.setLayout(pnl_headerLayout);
-        pnl_headerLayout.setHorizontalGroup(
-            pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_header, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
-        );
-        pnl_headerLayout.setVerticalGroup(
-            pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_header, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-        );
+        pnl_containerCredentials.setBackground(new java.awt.Color(254, 254, 254));
+        pnl_containerCredentials.setShadowSize(10);
+        pnl_containerCredentials.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        pnl_base.add(pnl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1002, 140));
+        lbl_usuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lbl_usuario.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_usuario.setText("Usuario");
+        pnl_containerCredentials.add(lbl_usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
-        panelShadow1.setBackground(new java.awt.Color(254, 254, 254));
-        panelShadow1.setShadowSize(10);
+        txt_correo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        pnl_containerCredentials.add(txt_correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 540, 40));
 
-        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
-        panelShadow1.setLayout(panelShadow1Layout);
-        panelShadow1Layout.setHorizontalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-        );
-        panelShadow1Layout.setVerticalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
-        );
+        lbl_clave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lbl_clave.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_clave.setText("Contraseña");
+        pnl_containerCredentials.add(lbl_clave, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, -1, -1));
 
-        pnl_base.add(panelShadow1, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, 220, 600, 388));
+        btn_verClave.setText("ver");
+        btn_verClave.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pnl_containerCredentials.add(btn_verClave, new org.netbeans.lib.awtextra.AbsoluteConstraints(515, 205, 50, 30));
+
+        txt_clave.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        pnl_containerCredentials.add(txt_clave, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 540, 40));
+
+        lbl_olvideClave.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbl_olvideClave.setForeground(new java.awt.Color(153, 0, 0));
+        lbl_olvideClave.setText("Olvidé mi contraseña");
+        pnl_containerCredentials.add(lbl_olvideClave, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+
+        pnl_IniciarSesion.setBackground(new java.awt.Color(173, 39, 46));
+        pnl_IniciarSesion.setShadowOpacity(0.0F);
+        pnl_IniciarSesion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnl_IniciarSesion.add(lbl_usuarioIcono, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 20, 20));
+
+        lbl_txtIniciarSesion.setBackground(new java.awt.Color(255, 255, 255));
+        lbl_txtIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lbl_txtIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_txtIniciarSesion.setText("Iniciar Sesión");
+        pnl_IniciarSesion.add(lbl_txtIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 5, -1, 40));
+
+        pnl_containerCredentials.add(pnl_IniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 320, 150, 50));
+
+        pnl_base.add(pnl_containerCredentials, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, 220, 600, 388));
+
+        pnl_footer.setBackground(new java.awt.Color(64, 64, 65));
+        pnl_footer.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_footer.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_footer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_footer.setText("© 2024 | Equi-pro | Prestamo de espacios");
+        pnl_footer.add(lbl_footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 20));
+
+        pnl_base.add(pnl_footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 640, 590, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,9 +149,20 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton btn_verClave;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lbl_clave;
+    private javax.swing.JLabel lbl_footer;
     private javax.swing.JLabel lbl_header;
-    private Utils.PanelShadow panelShadow1;
+    private javax.swing.JLabel lbl_olvideClave;
+    private javax.swing.JLabel lbl_txtIniciarSesion;
+    private javax.swing.JLabel lbl_usuario;
+    private javax.swing.JLabel lbl_usuarioIcono;
+    private Utils.PanelShadow pnl_IniciarSesion;
     private javax.swing.JPanel pnl_base;
-    private javax.swing.JPanel pnl_header;
+    private Utils.PanelShadow pnl_containerCredentials;
+    private javax.swing.JPanel pnl_footer;
+    private javax.swing.JPasswordField txt_clave;
+    private javax.swing.JTextField txt_correo;
     // End of variables declaration//GEN-END:variables
 }

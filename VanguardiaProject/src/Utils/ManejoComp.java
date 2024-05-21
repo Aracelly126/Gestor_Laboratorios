@@ -1,4 +1,4 @@
-package Codes;
+package Utils;
 
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
@@ -116,6 +116,7 @@ public class ManejoComp {
     }
 
     public static void crearVerPassword(JPasswordField pas, JToggleButton btn) {
+        pas.setEchoChar('\u2022');
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
