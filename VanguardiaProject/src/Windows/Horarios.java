@@ -221,9 +221,12 @@ public class Horarios extends javax.swing.JFrame {
     }
 
     private void filtroDos() {
-         String nombreBloqueSeleccionado = (String) jcmbBloques.getSelectedItem();
-        Lab_Aulas labAulas = new Lab_Aulas(); 
-        List<String> aulas = labAulas.obtenerAulasPorBloque(nombreBloqueSeleccionado);
+        String nombreBloqueSeleccionado = (String) jcmbBloques.getSelectedItem();
+        String tipoEspacioSeleccionado = (String) jcmbLabAulas.getSelectedItem();
+
+        Lab_Aulas labAulas = new Lab_Aulas();
+        List<String> aulas = labAulas.obtenerAulasPorBloque(nombreBloqueSeleccionado, tipoEspacioSeleccionado);
+
         jcmbNumLabAulas.removeAllItems();
         for (String aula : aulas) {
             jcmbNumLabAulas.addItem(aula);
