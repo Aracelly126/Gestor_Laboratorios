@@ -185,6 +185,7 @@ public class Login extends javax.swing.JFrame {
         }
         this.txt_correo.setText("");
         this.txt_clave.setText("");
+        // C/vQhACyrp6Sr4PI8gHZrg==
         // COLOAR LANZAMIENTO DE NUEVA VENTANA AQUI ============================
     }//GEN-LAST:event_pnl_IniciarSesionMouseClicked
 
