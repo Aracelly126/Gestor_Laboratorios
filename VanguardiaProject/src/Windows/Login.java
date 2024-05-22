@@ -1,6 +1,7 @@
 package Windows;
 
 import Codes.bd_login;
+import Utils.Encript;
 import Utils.ManejoComp;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -9,6 +10,9 @@ import javax.swing.SwingUtilities;
 
 public class Login extends javax.swing.JFrame {
 
+    private String correo = "";
+    private String clave = "";
+    
     public Login() {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -164,22 +168,24 @@ public class Login extends javax.swing.JFrame {
 
     private void pnl_IniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnl_IniciarSesionMouseClicked
         
-        String correo = this.txt_correo.getText().trim();
-        String clave = ManejoComp.claveToString(this.txt_clave);
+        this.correo = this.txt_correo.getText().trim();
+        this.clave = ManejoComp.claveToString(this.txt_clave);
         
-        if(correo.equals("") || clave.equals("")){
+        if(this.correo.equals("") || this.clave.equals("")){
             JOptionPane.showMessageDialog(this, "Correo o clave vacia, intente otra vez. . .");
             return;
         }
         
         bd_login login = new bd_login();
-        
-        if(login.login(correo, clave) == false){
+        Encript encript = new Encript();
+        this.clave = encript.Encriptar(this.clave);
+        if(login.login(this.correo, this.clave) == false){
             JOptionPane.showMessageDialog(this, "Correo o clave incorrecta, intenta de nuevo. . .");
             return;
         }
-        System.out.println("ingreso correcto");
-        
+        this.txt_correo.setText("");
+        this.txt_clave.setText("");
+        // COLOAR LANZAMIENTO DE NUEVA VENTANA AQUI ============================
     }//GEN-LAST:event_pnl_IniciarSesionMouseClicked
 
     private void txt_correoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_correoKeyTyped
