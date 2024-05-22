@@ -5,6 +5,7 @@
 package Windows;
 
 import CodesBD.CrudReservas;
+import Validaciones.Validaciones;
 import javax.swing.JOptionPane;
 
 /**
@@ -211,13 +212,28 @@ public class Reservar extends javax.swing.JFrame {
         String correo = jtxtCorreo.getText();
         String descripcion = jtxtDescripcion.getText();
 
+       if (!Validaciones.validarCedula(cedula)) {
+            JOptionPane.showMessageDialog(this, "Cédula inválida. Debe contener solo números y ser ecuatoriana.");
+            return;
+        }
+
+        if (!Validaciones.validarNombre(nombre)) {
+            JOptionPane.showMessageDialog(this, "Nombre inválido. Debe contener solo letras.");
+            return;
+        }
+
+        if (!Validaciones.validarCorreo(correo)) {
+            JOptionPane.showMessageDialog(this, "Correo inválido. Debe contener un '@'.");
+            return;
+        }
+
         if (CrudReservas.guardarReserva(cedula, nombre, correo, descripcion)) {
             JOptionPane.showMessageDialog(this, "Reserva guardada exitosamente!");
         } else {
             JOptionPane.showMessageDialog(this, "Error al guardar la reserva.");
         }
     
-    
+
         
     }//GEN-LAST:event_jbtnGuardarActionPerformed
 
