@@ -1,8 +1,10 @@
 package Windows;
 
+import Codes.bd_login;
 import Utils.ManejoComp;
 import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class Login extends javax.swing.JFrame {
@@ -49,14 +51,13 @@ public class Login extends javax.swing.JFrame {
 
         pnl_base = new javax.swing.JPanel();
         lbl_header = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        lbl_tituloIniciarSesion = new javax.swing.JLabel();
         pnl_containerCredentials = new Utils.PanelShadow();
         lbl_usuario = new javax.swing.JLabel();
         txt_correo = new javax.swing.JTextField();
         lbl_clave = new javax.swing.JLabel();
         btn_verClave = new javax.swing.JToggleButton();
         txt_clave = new javax.swing.JPasswordField();
-        lbl_olvideClave = new javax.swing.JLabel();
         pnl_IniciarSesion = new Utils.PanelShadow();
         lbl_usuarioIcono = new javax.swing.JLabel();
         lbl_txtIniciarSesion = new javax.swing.JLabel();
@@ -72,11 +73,11 @@ public class Login extends javax.swing.JFrame {
         pnl_base.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         pnl_base.add(lbl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 140));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(173, 39, 46));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("INICIAR SESION");
-        pnl_base.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 500, 60));
+        lbl_tituloIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        lbl_tituloIniciarSesion.setForeground(new java.awt.Color(173, 39, 46));
+        lbl_tituloIniciarSesion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_tituloIniciarSesion.setText("INICIAR SESION");
+        pnl_base.add(lbl_tituloIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 500, 60));
 
         pnl_containerCredentials.setBackground(new java.awt.Color(254, 254, 254));
         pnl_containerCredentials.setShadowSize(10);
@@ -88,6 +89,11 @@ public class Login extends javax.swing.JFrame {
         pnl_containerCredentials.add(lbl_usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
         txt_correo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txt_correo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_correoKeyTyped(evt);
+            }
+        });
         pnl_containerCredentials.add(txt_correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 540, 40));
 
         lbl_clave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -100,22 +106,30 @@ public class Login extends javax.swing.JFrame {
         pnl_containerCredentials.add(btn_verClave, new org.netbeans.lib.awtextra.AbsoluteConstraints(515, 205, 50, 30));
 
         txt_clave.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txt_clave.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_claveKeyTyped(evt);
+            }
+        });
         pnl_containerCredentials.add(txt_clave, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 540, 40));
-
-        lbl_olvideClave.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbl_olvideClave.setForeground(new java.awt.Color(153, 0, 0));
-        lbl_olvideClave.setText("Olvidé mi contraseña");
-        pnl_containerCredentials.add(lbl_olvideClave, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
 
         pnl_IniciarSesion.setBackground(new java.awt.Color(173, 39, 46));
         pnl_IniciarSesion.setShadowOpacity(0.0F);
+        pnl_IniciarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnl_IniciarSesionMouseClicked(evt);
+            }
+        });
         pnl_IniciarSesion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_usuarioIcono.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         pnl_IniciarSesion.add(lbl_usuarioIcono, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 20, 20));
 
         lbl_txtIniciarSesion.setBackground(new java.awt.Color(255, 255, 255));
         lbl_txtIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl_txtIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
         lbl_txtIniciarSesion.setText("Iniciar Sesión");
+        lbl_txtIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         pnl_IniciarSesion.add(lbl_txtIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 5, -1, 40));
 
         pnl_containerCredentials.add(pnl_IniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 320, 150, 50));
@@ -148,13 +162,46 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void pnl_IniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnl_IniciarSesionMouseClicked
+        
+        String correo = this.txt_correo.getText().trim();
+        String clave = ManejoComp.claveToString(this.txt_clave);
+        
+        if(correo.equals("") || clave.equals("")){
+            JOptionPane.showMessageDialog(this, "Correo o clave vacia, intente otra vez. . .");
+            return;
+        }
+        
+        bd_login login = new bd_login();
+        
+        if(login.login(correo, clave) == false){
+            JOptionPane.showMessageDialog(this, "Correo o clave incorrecta, intenta de nuevo. . .");
+            return;
+        }
+        System.out.println("ingreso correcto");
+        
+    }//GEN-LAST:event_pnl_IniciarSesionMouseClicked
+
+    private void txt_correoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_correoKeyTyped
+        if(evt.getKeyChar() == ' '){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_correoKeyTyped
+
+    private void txt_claveKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_claveKeyTyped
+        if(evt.getKeyChar() == ' '){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_claveKeyTyped
+
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btn_verClave;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbl_clave;
     private javax.swing.JLabel lbl_footer;
     private javax.swing.JLabel lbl_header;
-    private javax.swing.JLabel lbl_olvideClave;
+    private javax.swing.JLabel lbl_tituloIniciarSesion;
     private javax.swing.JLabel lbl_txtIniciarSesion;
     private javax.swing.JLabel lbl_usuario;
     private javax.swing.JLabel lbl_usuarioIcono;
