@@ -7,12 +7,12 @@ package Validaciones;
 
 public class Validaciones {
 
-    // Validar que la cédula sea solo números y ecuatoriana
+    // Validar que la cédula sea solo números y que pertenezca de Ecuador Papá
     public static boolean validarCedula(String cedula) {
         if (cedula == null || !cedula.matches("\\d{10}")) {
             return false;
         }
-        // Algoritmo para validar cédula ecuatoriana
+        // Algoritmo para validar cédula de EC
         int total = 0;
         int longitud = cedula.length();
         int[] coeficientes = {2, 1, 2, 1, 2, 1, 2, 1, 2};
@@ -26,7 +26,7 @@ public class Validaciones {
         return (total % 10 == 0 ? 0 : 10 - total % 10) == ultimoDigito;
     }
 
-    // Validar que el nombre contenga solo letras
+    // validacion del name
     public static boolean validarNombre(String nombre) {
         return nombre != null && nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+");
     }

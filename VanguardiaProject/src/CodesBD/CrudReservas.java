@@ -34,5 +34,5 @@ public class CrudReservas {
         }
     }
 
-    // Aquí puedes agregar más métodos CRUD (Actualizar, Eliminar, Recuperar)
+    // Agregar nuevas consultas panas
 }
