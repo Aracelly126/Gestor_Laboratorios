@@ -6,6 +6,7 @@ package Windows;
 
 import Codes.Bloques;
 import Codes.FiltradorAulas_Lab;
+import Codes.HorariosManager.Horario;
 import Codes.Lab_Aulas;
 import Utils.Conex;
 import java.awt.BorderLayout;
@@ -13,10 +14,13 @@ import java.awt.Container;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -52,6 +56,7 @@ public class Horarios extends javax.swing.JFrame {
         jcmbNumLabAulas = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jbtnHorario = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -126,6 +131,13 @@ public class Horarios extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jbtnHorario.setText("Ver Horario");
+        jbtnHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnHorarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPnlHorariosLayout = new javax.swing.GroupLayout(jPnlHorarios);
         jPnlHorarios.setLayout(jPnlHorariosLayout);
         jPnlHorariosLayout.setHorizontalGroup(
@@ -143,6 +155,10 @@ public class Horarios extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addComponent(jcmbNumLabAulas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(58, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPnlHorariosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(88, 88, 88))
         );
         jPnlHorariosLayout.setVerticalGroup(
             jPnlHorariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,9 +170,11 @@ public class Horarios extends javax.swing.JFrame {
                         .addComponent(jcmbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(43, 43, 43)
+                .addGap(18, 18, 18)
+                .addComponent(jbtnHorario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
 
         jMenu2.setText("Ver Horarios");
@@ -217,10 +235,9 @@ public class Horarios extends javax.swing.JFrame {
                 jcmbLabAulas.addItem(tipo);
             }
         }
-
     }
 
-    private void filtroDos() {
+    public void filtroDos() {
         String nombreBloqueSeleccionado = (String) jcmbBloques.getSelectedItem();
         String tipoEspacioSeleccionado = (String) jcmbLabAulas.getSelectedItem();
 
@@ -232,6 +249,7 @@ public class Horarios extends javax.swing.JFrame {
             jcmbNumLabAulas.addItem(aula);
         }
     }
+       
     private void jcmbBloquesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbBloquesActionPerformed
 
     }//GEN-LAST:event_jcmbBloquesActionPerformed
@@ -278,6 +296,26 @@ public class Horarios extends javax.swing.JFrame {
         filtroDos();
     }//GEN-LAST:event_jcmbNumLabAulasMouseClicked
 
+    private void jbtnHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHorarioActionPerformed
+           // Obtener el horario por aula
+    List<Horario> horarios = obtenerHorariosPorAula();
+
+    // Mostrar la información en la tabla
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0); // Limpiar la tabla antes de agregar nueva información
+    
+    for (Horario horario : horarios) {
+        model.addRow(new Object[]{horario.getDia(), horario.getHoraInicio(), horario.getHoraFin(), horario.getMateria()});
+    }
+}
+
+// Método que obtiene los horarios por aula (debes reemplazar este código con la lógica real)
+private List<Horario> obtenerHorariosPorAula() {
+    // Aquí deberías implementar la lógica para obtener los horarios por aula
+    // Por ahora, simplemente retornaré una lista vacía como ejemplo
+    return new ArrayList<>();
+    }//GEN-LAST:event_jbtnHorarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -321,6 +359,7 @@ public class Horarios extends javax.swing.JFrame {
     private javax.swing.JPanel jPnlHorarios;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbtnHorario;
     private javax.swing.JComboBox<String> jcmbBloques;
     private javax.swing.JComboBox<String> jcmbLabAulas;
     private javax.swing.JComboBox<String> jcmbNumLabAulas;
