@@ -90,6 +90,11 @@ public class Bloques extends javax.swing.JPanel {
         });
 
         pnlEliminarBloque.setBackground(new java.awt.Color(173, 39, 46));
+        pnlEliminarBloque.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlEliminarBloqueMouseClicked(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -114,6 +119,11 @@ public class Bloques extends javax.swing.JPanel {
 
         pnlEditarBloque.setBackground(new java.awt.Color(173, 39, 46));
         pnlEditarBloque.setPreferredSize(new java.awt.Dimension(170, 50));
+        pnlEditarBloque.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlEditarBloqueMouseClicked(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -221,6 +231,9 @@ public class Bloques extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void pnlCrearBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearBloqueMouseClicked
+        accionCrear();
+    }//GEN-LAST:event_pnlCrearBloqueMouseClicked
+    public void accionCrear(){
         String nombreBloque = txtBloques.getText();
         if (!nombreBloque.isEmpty()) {
             boolean creado = bloqueBD.crearBloque(nombreBloque);
@@ -231,7 +244,14 @@ public class Bloques extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(null, "Por favor ingrese un nombre para el bloque.");
         }
-    }//GEN-LAST:event_pnlCrearBloqueMouseClicked
+    }
+    private void pnlEditarBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlEditarBloqueMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pnlEditarBloqueMouseClicked
+
+    private void pnlEliminarBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlEliminarBloqueMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pnlEliminarBloqueMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

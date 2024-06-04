@@ -127,6 +127,9 @@
           <Color blue="2e" green="27" red="ad" type="rgb"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pnlEliminarBloqueMouseClicked"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -171,6 +174,9 @@
           <Dimension value="[170, 50]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pnlEditarBloqueMouseClicked"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
