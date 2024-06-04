@@ -3,22 +3,41 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Windows;
-import Codes.bd_login;
+
+import Codes.bd_bloques;
+import Codes.Bloque;
 import Utils.Encript;
 import Utils.ManejoComp;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import Utils.Conex;
 
-public class Bloques extends javax.swing.JPanel  {
+public class Bloques extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Bloques
-     */
+    private bd_bloques bloqueBD;
+    private ArrayList<String> bloquesList;
+
     public Bloques() {
         initComponents();
-        
+        bloqueBD = new bd_bloques();
+        bloquesList = new ArrayList<>();
+        cargarBloques();
+
+    }
+
+    private void cargarBloques() {
+        List<Bloque> bloques = bloqueBD.obtenerBloques();
+        DefaultTableModel model = (DefaultTableModel) tblBloques.getModel();
+        model.setRowCount(0);
+        for (Bloque bloque : bloques) {
+            model.addRow(new Object[]{bloque.getId(), bloque.getNombre()});
+
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -26,20 +45,20 @@ public class Bloques extends javax.swing.JPanel  {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblBloques = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         txtBloques = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        panelShadow1 = new Utils.PanelShadow();
+        pnlEliminarBloque = new Utils.PanelShadow();
         jLabel2 = new javax.swing.JLabel();
-        panelShadow2 = new Utils.PanelShadow();
+        pnlEditarBloque = new Utils.PanelShadow();
         jLabel3 = new javax.swing.JLabel();
-        panelShadow3 = new Utils.PanelShadow();
+        pnlCrearBloque = new Utils.PanelShadow();
         jLabel4 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblBloques.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -50,7 +69,7 @@ public class Bloques extends javax.swing.JPanel  {
                 "Numero de Bloque", "Nombre de bloque"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblBloques);
 
         jLabel1.setText("Nombre del Bloque:");
 
@@ -70,57 +89,57 @@ public class Bloques extends javax.swing.JPanel  {
             }
         });
 
-        panelShadow1.setBackground(new java.awt.Color(173, 39, 46));
+        pnlEliminarBloque.setBackground(new java.awt.Color(173, 39, 46));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ELIMINAR");
 
-        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
-        panelShadow1.setLayout(panelShadow1Layout);
-        panelShadow1Layout.setHorizontalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlEliminarBloqueLayout = new javax.swing.GroupLayout(pnlEliminarBloque);
+        pnlEliminarBloque.setLayout(pnlEliminarBloqueLayout);
+        pnlEliminarBloqueLayout.setHorizontalGroup(
+            pnlEliminarBloqueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlEliminarBloqueLayout.createSequentialGroup()
                 .addContainerGap(56, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(44, 44, 44))
         );
-        panelShadow1Layout.setVerticalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
+        pnlEliminarBloqueLayout.setVerticalGroup(
+            pnlEliminarBloqueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlEliminarBloqueLayout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(14, 14, 14))
         );
 
-        panelShadow2.setBackground(new java.awt.Color(173, 39, 46));
-        panelShadow2.setPreferredSize(new java.awt.Dimension(170, 50));
+        pnlEditarBloque.setBackground(new java.awt.Color(173, 39, 46));
+        pnlEditarBloque.setPreferredSize(new java.awt.Dimension(170, 50));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("EDITAR");
 
-        javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
-        panelShadow2.setLayout(panelShadow2Layout);
-        panelShadow2Layout.setHorizontalGroup(
-            panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelShadow2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlEditarBloqueLayout = new javax.swing.GroupLayout(pnlEditarBloque);
+        pnlEditarBloque.setLayout(pnlEditarBloqueLayout);
+        pnlEditarBloqueLayout.setHorizontalGroup(
+            pnlEditarBloqueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEditarBloqueLayout.createSequentialGroup()
                 .addGap(62, 62, 62)
                 .addComponent(jLabel3)
                 .addContainerGap(56, Short.MAX_VALUE))
         );
-        panelShadow2Layout.setVerticalGroup(
-            panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelShadow2Layout.createSequentialGroup()
+        pnlEditarBloqueLayout.setVerticalGroup(
+            pnlEditarBloqueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEditarBloqueLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel3)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        panelShadow3.setBackground(new java.awt.Color(173, 39, 46));
-        panelShadow3.addMouseListener(new java.awt.event.MouseAdapter() {
+        pnlCrearBloque.setBackground(new java.awt.Color(173, 39, 46));
+        pnlCrearBloque.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelShadow3MouseClicked(evt);
+                pnlCrearBloqueMouseClicked(evt);
             }
         });
 
@@ -128,18 +147,18 @@ public class Bloques extends javax.swing.JPanel  {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("CREAR");
 
-        javax.swing.GroupLayout panelShadow3Layout = new javax.swing.GroupLayout(panelShadow3);
-        panelShadow3.setLayout(panelShadow3Layout);
-        panelShadow3Layout.setHorizontalGroup(
-            panelShadow3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow3Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlCrearBloqueLayout = new javax.swing.GroupLayout(pnlCrearBloque);
+        pnlCrearBloque.setLayout(pnlCrearBloqueLayout);
+        pnlCrearBloqueLayout.setHorizontalGroup(
+            pnlCrearBloqueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCrearBloqueLayout.createSequentialGroup()
                 .addContainerGap(59, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(65, 65, 65))
         );
-        panelShadow3Layout.setVerticalGroup(
-            panelShadow3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow3Layout.createSequentialGroup()
+        pnlCrearBloqueLayout.setVerticalGroup(
+            pnlCrearBloqueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCrearBloqueLayout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(16, 16, 16))
@@ -162,11 +181,11 @@ public class Bloques extends javax.swing.JPanel  {
                         .addComponent(txtBloques, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(302, 302, 302))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pnlEliminarBloque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(100, 100, 100)
-                        .addComponent(panelShadow2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pnlEditarBloque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(90, 90, 90)
-                        .addComponent(panelShadow3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pnlCrearBloque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(136, 136, 136))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(72, 72, 72)
@@ -184,9 +203,9 @@ public class Bloques extends javax.swing.JPanel  {
                     .addComponent(txtBloques))
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelShadow2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelShadow3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pnlEliminarBloque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlEditarBloque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlCrearBloque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
@@ -201,31 +220,31 @@ public class Bloques extends javax.swing.JPanel  {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void panelShadow3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelShadow3MouseClicked
-        
-        
-        
-        
-        
-        
-        
-    }//GEN-LAST:event_panelShadow3MouseClicked
-    
-    public void crearBloque(){
-        
-    }
- 
+    private void pnlCrearBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearBloqueMouseClicked
+        String nombreBloque = txtBloques.getText();
+        if (!nombreBloque.isEmpty()) {
+            boolean creado = bloqueBD.crearBloque(nombreBloque);
+            if (creado) {
+                cargarBloques(); 
+                txtBloques.setText("");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor ingrese un nombre para el bloque.");
+        }
+    }//GEN-LAST:event_pnlCrearBloqueMouseClicked
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;
-    private Utils.PanelShadow panelShadow1;
-    private Utils.PanelShadow panelShadow2;
-    private Utils.PanelShadow panelShadow3;
+    private Utils.PanelShadow pnlCrearBloque;
+    private Utils.PanelShadow pnlEditarBloque;
+    private Utils.PanelShadow pnlEliminarBloque;
+    private javax.swing.JTable tblBloques;
     private javax.swing.JTextField txtBloques;
     // End of variables declaration//GEN-END:variables
 }

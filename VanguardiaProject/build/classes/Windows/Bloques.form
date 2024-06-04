@@ -37,11 +37,11 @@
                       <EmptySpace min="-2" pref="302" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="panelShadow1" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlEliminarBloque" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="100" pref="100" max="-2" attributes="0"/>
-                      <Component id="panelShadow2" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlEditarBloque" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="90" pref="90" max="-2" attributes="0"/>
-                      <Component id="panelShadow3" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlCrearBloque" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -65,9 +65,9 @@
               </Group>
               <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelShadow1" min="-2" max="-2" attributes="0"/>
-                  <Component id="panelShadow2" min="-2" max="-2" attributes="0"/>
-                  <Component id="panelShadow3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pnlEliminarBloque" min="-2" max="-2" attributes="0"/>
+                  <Component id="pnlEditarBloque" min="-2" max="-2" attributes="0"/>
+                  <Component id="pnlCrearBloque" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="303" max="-2" attributes="0"/>
@@ -84,7 +84,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="javax.swing.JTable" name="tblBloques">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="2" rowCount="4">
@@ -121,7 +121,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField2ActionPerformed"/>
       </Events>
     </Component>
-    <Container class="Utils.PanelShadow" name="panelShadow1">
+    <Container class="Utils.PanelShadow" name="pnlEliminarBloque">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="2e" green="27" red="ad" type="rgb"/>
@@ -162,7 +162,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="Utils.PanelShadow" name="panelShadow2">
+    <Container class="Utils.PanelShadow" name="pnlEditarBloque">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="2e" green="27" red="ad" type="rgb"/>
@@ -206,14 +206,14 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="Utils.PanelShadow" name="panelShadow3">
+    <Container class="Utils.PanelShadow" name="pnlCrearBloque">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="2e" green="27" red="ad" type="rgb"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="panelShadow3MouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pnlCrearBloqueMouseClicked"/>
       </Events>
 
       <Layout>
