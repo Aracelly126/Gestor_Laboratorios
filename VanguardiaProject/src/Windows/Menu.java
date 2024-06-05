@@ -44,8 +44,15 @@ public class Menu extends javax.swing.JFrame {
         jPanelReservas = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        jPanelCarrera = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jPanelProfesor = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jPanelMateria = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
@@ -55,6 +62,12 @@ public class Menu extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -174,12 +187,81 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel2.add(jPanelReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 240, 60));
 
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanelCarrera.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelCarrera.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanelCarreraMouseMoved(evt);
+            }
+        });
+        jPanelCarrera.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelCarreraMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanelCarreraMouseExited(evt);
+            }
+        });
+        jPanelCarrera.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel13.setText("jLabel13");
-        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 40, 40));
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/cambiar.png"))); // NOI18N
+        jPanelCarrera.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 40, 40));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 260, 60));
+        jLabel14.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel14.setText("CARRERA");
+        jPanelCarrera.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 120, 40));
+
+        jPanel2.add(jPanelCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 250, 60));
+
+        jPanelProfesor.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelProfesor.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanelProfesorMouseMoved(evt);
+            }
+        });
+        jPanelProfesor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelProfesorMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanelProfesorMouseExited(evt);
+            }
+        });
+        jPanelProfesor.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/profesor.png"))); // NOI18N
+        jLabel15.setText("jLabel15");
+        jPanelProfesor.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 40, 40));
+
+        jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel16.setText("PROFESOR");
+        jPanelProfesor.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 120, 40));
+
+        jPanel2.add(jPanelProfesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 250, 60));
+
+        jPanelMateria.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelMateria.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanelMateriaMouseMoved(evt);
+            }
+        });
+        jPanelMateria.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelMateriaMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanelMateriaMouseExited(evt);
+            }
+        });
+        jPanelMateria.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/libro.png"))); // NOI18N
+        jPanelMateria.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 40, 40));
+
+        jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel18.setText("MATERIA");
+        jPanelMateria.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 120, 40));
+
+        jPanel2.add(jPanelMateria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 250, 60));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 260, 630));
 
@@ -281,6 +363,78 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("tab4", jPanel7);
 
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel19.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel19.setText("CARRERA");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(284, 284, 284)
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(293, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(522, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("tab5", jPanel8);
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel20.setText("PROFESOR");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap(276, Short.MAX_VALUE)
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(273, 273, 273))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(503, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("tab6", jPanel9);
+
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel21.setText("MATERIA");
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(271, 271, 271)
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(296, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(545, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("tab7", jPanel10);
+
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 130, 710, 630));
         jTabbedPane1.getAccessibleContext().setAccessibleDescription("");
 
@@ -345,6 +499,42 @@ public class Menu extends javax.swing.JFrame {
         jPanelReservas.setBackground(new Color(255, 255, 255));
     }//GEN-LAST:event_jPanelReservasMouseExited
 
+    private void jPanelCarreraMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelCarreraMouseMoved
+        jPanelCarrera.setBackground(new Color(173, 39, 46));
+    }//GEN-LAST:event_jPanelCarreraMouseMoved
+
+    private void jPanelCarreraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelCarreraMouseClicked
+        jTabbedPane1.setSelectedIndex(4);
+    }//GEN-LAST:event_jPanelCarreraMouseClicked
+
+    private void jPanelCarreraMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelCarreraMouseExited
+        jPanelCarrera.setBackground(new Color(255, 255, 255));
+    }//GEN-LAST:event_jPanelCarreraMouseExited
+
+    private void jPanelProfesorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelProfesorMouseClicked
+        jTabbedPane1.setSelectedIndex(5);
+    }//GEN-LAST:event_jPanelProfesorMouseClicked
+
+    private void jPanelProfesorMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelProfesorMouseMoved
+        jPanelProfesor.setBackground(new Color(173, 39, 46));
+    }//GEN-LAST:event_jPanelProfesorMouseMoved
+
+    private void jPanelProfesorMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelProfesorMouseExited
+        jPanelProfesor.setBackground(new Color(255, 255, 255));
+    }//GEN-LAST:event_jPanelProfesorMouseExited
+
+    private void jPanelMateriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelMateriaMouseClicked
+        jTabbedPane1.setSelectedIndex(6);
+    }//GEN-LAST:event_jPanelMateriaMouseClicked
+
+    private void jPanelMateriaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelMateriaMouseMoved
+        jPanelMateria.setBackground(new Color(173, 39, 46));
+    }//GEN-LAST:event_jPanelMateriaMouseMoved
+
+    private void jPanelMateriaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelMateriaMouseExited
+        jPanelMateria.setBackground(new Color(255, 255, 255));
+    }//GEN-LAST:event_jPanelMateriaMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -386,7 +576,15 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -395,15 +593,20 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelBloques;
+    private javax.swing.JPanel jPanelCarrera;
     private javax.swing.JPanel jPanelEspacios;
     private javax.swing.JPanel jPanelHorarios;
+    private javax.swing.JPanel jPanelMateria;
+    private javax.swing.JPanel jPanelProfesor;
     private javax.swing.JPanel jPanelReservas;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel jlblBaner;
