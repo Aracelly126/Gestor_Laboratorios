@@ -22,6 +22,41 @@ public class crud_bloques {
             e.printStackTrace();
         }
     }
+    
+   public void cargarHoras(JComboBox comboBloque, JComboBox comboDia, JComboBox comboHora){
+       if (comboBloque.getSelectedItem() == null || comboDia.getSelectedItem() == null) {
+            return;
+        }
+
+        String bloqueSeleccionado = (String) comboBloque.getSelectedItem();
+        String diaSeleccionado = (String) comboDia.getSelectedItem();
+
+        ArrayList<String> horasOcupadas = new ArrayList<>();
+        try {
+            String query = "SELECT hora FROM horarios h " +
+                           "JOIN bloques b ON h.fk_espacio = b.ID_BLOQUE " +
+                           "WHERE b.NOMBRE = ? AND h." + diaSeleccionado.toLowerCase() + " = 1";
+            PreparedStatement preparedStatement = Conex.getConex().prepareStatement(query);
+            preparedStatement.setString(1, bloqueSeleccionado);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                horasOcupadas.add(resultSet.getString("hora"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Horas disponibles (puedes ajustar esto según las horas que manejes)
+        String[] todasLasHoras = {"7:00 - 8:00", "8:00 - 9:00", "9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00"
+                                  , "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00", "18:00 - 19:00", "19:00 - 20:00"};
+
+        comboHora.removeAllItems();
+        for (String hora : todasLasHoras) {
+            if (!horasOcupadas.contains(hora)) {
+                comboHora.addItem(hora);
+            }
+        }
+   }
 
 
 
