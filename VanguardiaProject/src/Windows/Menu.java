@@ -302,6 +302,14 @@ public class Menu extends javax.swing.JFrame {
 
     private void jPanelEspaciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelEspaciosMouseClicked
         jTabbedPane1.setSelectedIndex(1);
+        Espacios esp = new Espacios();
+        esp.setSize(710, 596);
+        jPanel6.removeAll();
+        jPanel6.add(esp);
+        esp.setVisible(true);
+        jPanel6.repaint();
+        jPanel6.revalidate();
+        
     }//GEN-LAST:event_jPanelEspaciosMouseClicked
 
     private void jPanelEspaciosMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelEspaciosMouseMoved
