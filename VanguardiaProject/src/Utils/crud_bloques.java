@@ -7,6 +7,8 @@ package Utils;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 public class crud_bloques {
 
@@ -58,10 +60,45 @@ public class crud_bloques {
         }
    }
 
+    public void crearEspacio(JComboBox comboTipo, JTextField txtNombre,JComboBox comboBloque,JComboBox comboDia,JComboBox comboHora) {
+        String tipo = (String) comboTipo.getSelectedItem();
+        String nombre = txtNombre.getText();
+        String bloque = (String) comboBloque.getSelectedItem();
+        String dia = (String) comboDia.getSelectedItem();
+        String hora = (String) comboHora.getSelectedItem();
 
+        if (tipo.isEmpty() || nombre.isEmpty() || bloque == null || dia == null || hora == null) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
+            return;
+        }
 
-    public void crearEspacio(String tipo, String nombre, int idBloque, String dia, String hora) {
-        
+        try {
+            String bloqueQuery = "SELECT ID_BLOQUE FROM bloques WHERE NOMBRE = ?";
+            PreparedStatement bloqueStatement = Conex.getConex().prepareStatement(bloqueQuery);
+            bloqueStatement.setString(1, bloque);
+            ResultSet bloqueResultSet = bloqueStatement.executeQuery();
+            int bloqueId = -1;
+            if (bloqueResultSet.next()) {
+                bloqueId = bloqueResultSet.getInt("ID_BLOQUE");
+            }
+
+            if (bloqueId == -1) {
+                JOptionPane.showMessageDialog(null, "Bloque no encontrado.");
+                return;
+            }
+
+            String insertQuery = "INSERT INTO espacios (TIPO, NOMBRE, ID_BLOQUE_PERTENECE) VALUES (?, ?, ?)";
+            PreparedStatement insertStatement = Conex.getConex().prepareStatement(insertQuery);
+            insertStatement.setString(1, tipo);
+            insertStatement.setString(2, nombre);
+            insertStatement.setInt(3, bloqueId);
+            insertStatement.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Espacio creado con éxito.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al crear el espacio.");
+        }
     }
 }
 
