@@ -5,14 +5,15 @@
 package Utils;
 
 import java.sql.*;
-import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class crud_bloques {
 
-    public void cargarBloque(JComboBox comboBloque){
+    public void cargarBloque(JComboBox<String> comboBloque){
         try {
             Statement statement = Conex.getConex().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT NOMBRE FROM bloques");
@@ -24,50 +25,13 @@ public class crud_bloques {
             e.printStackTrace();
         }
     }
-    
-   public void cargarHoras(JComboBox comboBloque, JComboBox comboDia, JComboBox comboHora){
-       if (comboBloque.getSelectedItem() == null || comboDia.getSelectedItem() == null) {
-            return;
-        }
 
-        String bloqueSeleccionado = (String) comboBloque.getSelectedItem();
-        String diaSeleccionado = (String) comboDia.getSelectedItem();
-
-        ArrayList<String> horasOcupadas = new ArrayList<>();
-        try {
-            String query = "SELECT hora FROM horarios h " +
-                           "JOIN bloques b ON h.fk_espacio = b.ID_BLOQUE " +
-                           "WHERE b.NOMBRE = ? AND h." + diaSeleccionado.toLowerCase() + " = 1";
-            PreparedStatement preparedStatement = Conex.getConex().prepareStatement(query);
-            preparedStatement.setString(1, bloqueSeleccionado);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                horasOcupadas.add(resultSet.getString("hora"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        // Horas disponibles (puedes ajustar esto según las horas que manejes)
-        String[] todasLasHoras = {"7:00 - 8:00", "8:00 - 9:00", "9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00"
-                                  , "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00", "18:00 - 19:00", "19:00 - 20:00"};
-
-        comboHora.removeAllItems();
-        for (String hora : todasLasHoras) {
-            if (!horasOcupadas.contains(hora)) {
-                comboHora.addItem(hora);
-            }
-        }
-   }
-
-    public void crearEspacio(JComboBox comboTipo, JTextField txtNombre,JComboBox comboBloque,JComboBox comboDia,JComboBox comboHora) {
+    public void crearEspacio(JComboBox<String> comboTipo, JTextField txtNombre, JComboBox<String> comboBloque) {
         String tipo = (String) comboTipo.getSelectedItem();
         String nombre = txtNombre.getText();
         String bloque = (String) comboBloque.getSelectedItem();
-        String dia = (String) comboDia.getSelectedItem();
-        String hora = (String) comboHora.getSelectedItem();
 
-        if (tipo.isEmpty() || nombre.isEmpty() || bloque == null || dia == null || hora == null) {
+        if (tipo == null || nombre.isEmpty() || bloque == null) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
             return;
         }
@@ -100,6 +64,29 @@ public class crud_bloques {
             JOptionPane.showMessageDialog(null, "Error al crear el espacio.");
         }
     }
+
+    public void cargarTabla(JTable table) {
+        try {
+            String query = "SELECT e.TIPO, e.NOMBRE, b.NOMBRE AS BLOQUE FROM espacios e " +
+                           "JOIN bloques b ON e.ID_BLOQUE_PERTENECE = b.ID_BLOQUE";
+            PreparedStatement preparedStatement = Conex.getConex().prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Obtiene el modelo de la tabla
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+            // Limpia la tabla existente
+            model.setRowCount(0);
+
+            // Añade filas a la tabla
+            while (resultSet.next()) {
+                String tipo = resultSet.getString("TIPO");
+                String nombre = resultSet.getString("NOMBRE");
+                String bloque = resultSet.getString("BLOQUE");
+                model.addRow(new Object[]{tipo, nombre, bloque});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
-
-
