@@ -7,7 +7,10 @@ package Windows;
 import Utils.crud_bloques;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,33 +19,33 @@ import java.util.ArrayList;
 public class Espacios extends javax.swing.JPanel {
 
     crud_bloques cb = new crud_bloques();
-
+    DefaultTableModel tablamodelo = new DefaultTableModel(new Object[]{"Tipo", "Nombre", "Bloque"}, 0);
+    int espacioID;
     /**
      * Creates new form Espacios
      */
     public Espacios() {
         initComponents();
+        jTable1.setModel(tablamodelo);
         cb.cargarBloque(jcbxBloque);
-        cargarDia();
-
-        jcbxDia.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cb.cargarHoras(jcbxBloque, jcbxDia, jcbxHorario);
-            }
-        });
-
-        jcbxBloque.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cb.cargarHoras(jcbxBloque, jcbxDia, jcbxHorario);
-            }
-        });
+        cb.cargarTabla(jTable1);
+        jTable1.addMouseListener(new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+            int filaSeleccionada = jTable1.getSelectedRow();
+            cargarDatosDesdeTabla(filaSeleccionada);
+        }
+    });
     }
 
-    public void cargarDia() {
-        String[] dias = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
-        jcbxDia.removeAllItems();
-        for (String dia : dias) {
-            jcbxDia.addItem(dia);
+    private void cargarDatosDesdeTabla(int filaSeleccionada) {
+        if (filaSeleccionada >= 0) {
+            String tipo = (String) jTable1.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) jTable1.getValueAt(filaSeleccionada, 1);
+            String bloque = (String) jTable1.getValueAt(filaSeleccionada, 2);
+            espacioID = cb.obtenerIdEspacio(nombre, bloque);
+            jcbxTipo.setSelectedItem(tipo);
+            jtxtNombre.setText(nombre);
+            jcbxBloque.setSelectedItem(bloque);
         }
     }
 
@@ -76,7 +79,7 @@ public class Espacios extends javax.swing.JPanel {
 
         jLabel2.setText("Tipo:");
 
-        jcbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Laboratorio", "Aula", "Especial" }));
+        jcbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LABORATORIO", "AULA", "ESPECIALl" }));
 
         jLabel3.setText("Nombre:");
 
@@ -107,6 +110,11 @@ public class Espacios extends javax.swing.JPanel {
         jButton2.setText("Eliminar");
 
         jButton3.setText("Editar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -178,8 +186,14 @@ public class Espacios extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        cb.crearEspacio(jcbxTipo, jtxtNombre, jcbxBloque, jcbxDia, jcbxHorario);
+        cb.crearEspacio(jcbxTipo, jtxtNombre, jcbxBloque, jTable1);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        
+        cb.actualizarEspacio(espacioID,jcbxTipo, jtxtNombre, jcbxBloque, jTable1);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

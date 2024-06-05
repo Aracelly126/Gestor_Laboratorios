@@ -127,9 +127,9 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="3">
-                <StringItem index="0" value="Laboratorio"/>
-                <StringItem index="1" value="Aula"/>
-                <StringItem index="2" value="Especial"/>
+                <StringItem index="0" value="LABORATORIO"/>
+                <StringItem index="1" value="AULA"/>
+                <StringItem index="2" value="ESPECIALl"/>
               </StringArray>
             </Property>
           </Properties>
@@ -204,6 +204,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Editar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
