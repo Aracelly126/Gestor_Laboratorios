@@ -21,6 +21,7 @@ public class Bloques extends javax.swing.JPanel {
 
     private bd_bloques bloqueBD;
     private ArrayList<String> bloquesList;
+    private int selectedBloqueId = -1;
 
     public Bloques() {
         initComponents();
@@ -69,6 +70,11 @@ public class Bloques extends javax.swing.JPanel {
                 "Numero de Bloque", "Nombre de bloque"
             }
         ));
+        tblBloques.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBloquesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblBloques);
 
         jLabel1.setText("Nombre del Bloque:");
@@ -233,26 +239,77 @@ public class Bloques extends javax.swing.JPanel {
     private void pnlCrearBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearBloqueMouseClicked
         accionCrear();
     }//GEN-LAST:event_pnlCrearBloqueMouseClicked
-    public void accionCrear(){
+    public void accionCrear() {
         String nombreBloque = txtBloques.getText();
         if (!nombreBloque.isEmpty()) {
             boolean creado = bloqueBD.crearBloque(nombreBloque);
             if (creado) {
-                cargarBloques(); 
+                cargarBloques();
                 txtBloques.setText("");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Por favor ingrese un nombre para el bloque.");
+            
         }
     }
     private void pnlEditarBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlEditarBloqueMouseClicked
-        // TODO add your handling code here:
+        editarBloque();
     }//GEN-LAST:event_pnlEditarBloqueMouseClicked
+    public void editarBloque() {
+        if (selectedBloqueId != -1) {
+            String nombreNuevo = txtBloques.getText();
+            if (nombreNuevo != null && !nombreNuevo.isEmpty()) {
+                boolean editado = bloqueBD.editarBloque(selectedBloqueId, nombreNuevo);
+                if (editado) {
+                    JOptionPane.showMessageDialog(this, "Bloque editado correctamente.");
+                    cargarBloques();
+                    selectedBloqueId = -1; 
+                    txtBloques.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al editar el bloque.");
+                    txtBloques.setText("");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor ingrese un nombre válido.");
+                txtBloques.setText("");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione un bloque para editar.");
+            txtBloques.setText("");
+        }
+
+    }
 
     private void pnlEliminarBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlEliminarBloqueMouseClicked
-        // TODO add your handling code here:
+        eliminarBloque();
     }//GEN-LAST:event_pnlEliminarBloqueMouseClicked
-
+    public void eliminarBloque() {
+        int filaSelecionada = tblBloques.getSelectedRow();
+        if (filaSelecionada != 1) {
+            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que  quieres eliminar este bloque?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int idBloque = Integer.parseInt(tblBloques.getValueAt(filaSelecionada, 0).toString());
+                if (bloqueBD.eliminarBloque(idBloque)) {
+                    cargarBloques();
+                    txtBloques.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar el bloque");
+                    txtBloques.setText("");
+                }
+            }
+        }
+    }
+    private void tblBloquesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBloquesMouseClicked
+        selecionarTabla();
+    }//GEN-LAST:event_tblBloquesMouseClicked
+    public void selecionarTabla() {
+        int selectedRow = tblBloques.getSelectedRow();
+        if (selectedRow != -1) {
+            selectedBloqueId = (int) tblBloques.getValueAt(selectedRow, 0);
+            String nombreBloque = (String) tblBloques.getValueAt(selectedRow, 1);
+            txtBloques.setText(nombreBloque);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

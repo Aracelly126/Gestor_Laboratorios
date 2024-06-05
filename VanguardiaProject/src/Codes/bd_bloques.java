@@ -23,19 +23,20 @@ public class bd_bloques {
             if (conn == null) {
                 throw new SQLException("Conexión a la base de datos fallida");
             }
-            
+
             pstmtCheck = (PreparedStatement) conn.prepareStatement(sqlCheck);
             pstmtCheck.setString(1, nombre);
             rs = pstmtCheck.executeQuery();
-            
+
             if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "El bloque ya existe en la base de datos.");
+                
                 return false;
             } else {
                 pstmtInsert = (PreparedStatement) conn.prepareStatement(sqlInsert);
                 pstmtInsert.setString(1, nombre);
                 int rowsInserted = pstmtInsert.executeUpdate();
-                
+
                 if (rowsInserted > 0) {
                     JOptionPane.showMessageDialog(null, "Bloque agregado con éxito.");
                     return true;
@@ -96,4 +97,66 @@ public class bd_bloques {
         }
         return bloques;
     }
+
+    public boolean editarBloque(int idBloque, String nuevoNombre) {
+        String sql = "UPDATE bloques SET NOMBRE = ? WHERE ID_BLOQUE = ?";
+        PreparedStatement pstmt = null;
+
+        try {
+            Connection conn = Conex.getConex();
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setString(1, nuevoNombre);
+            pstmt.setInt(2, idBloque);
+            int rowsUpdated = pstmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+               // JOptionPane.showMessageDialog(null, "Bloque editado con éxito.");
+                return true;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al editar el bloque: " + e.getMessage());
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al cerrar recursos: " + e.getMessage());
+            }
+        }
+        return false;
+    }
+    
+  public boolean eliminarBloque(int idBloque) {
+    String sql = "DELETE FROM bloques WHERE ID_BLOQUE = ?";
+    PreparedStatement pstmt = null;
+
+    try {
+        Connection conn = Conex.getConex();
+        pstmt = (PreparedStatement) conn.prepareStatement(sql);
+        pstmt.setInt(1, idBloque);
+        int rowsDeleted = pstmt.executeUpdate();
+
+        if (rowsDeleted > 0) {
+            JOptionPane.showMessageDialog(null, "Bloque eliminado con éxito.");
+            return true;
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al eliminar el bloque: " + e.getMessage());
+    } finally {
+        try {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cerrar recursos: " + e.getMessage());
+        }
+    }
+    return false;
+}
+    
+    
+    
+    
+
 }
