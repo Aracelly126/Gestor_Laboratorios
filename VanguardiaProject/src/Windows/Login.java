@@ -88,7 +88,6 @@ public class Login extends javax.swing.JFrame {
         pnl_containerCredentials.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbl_usuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lbl_usuario.setForeground(new java.awt.Color(0, 0, 0));
         lbl_usuario.setText("Usuario");
         pnl_containerCredentials.add(lbl_usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
@@ -101,7 +100,6 @@ public class Login extends javax.swing.JFrame {
         pnl_containerCredentials.add(txt_correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 540, 40));
 
         lbl_clave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lbl_clave.setForeground(new java.awt.Color(0, 0, 0));
         lbl_clave.setText("Contraseña");
         pnl_containerCredentials.add(lbl_clave, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, -1, -1));
 

@@ -195,7 +195,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(539, Short.MAX_VALUE))
+                .addContainerGap(538, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab2", jPanel5);
@@ -280,10 +280,20 @@ public class Menu extends javax.swing.JFrame {
 
     private void jPanelBloquesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelBloquesMouseClicked
         jTabbedPane1.setSelectedIndex(0);
+        Bloques bloque = new Bloques();
+        bloque.setSize(710,596);
+        jPanel5.removeAll();
+        jPanel5.add(bloque);
+        bloque.setVisible(true);
+        jPanel5.repaint();
+        jPanel5.revalidate();
+        
+        
     }//GEN-LAST:event_jPanelBloquesMouseClicked
 
     private void jPanelBloquesMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelBloquesMouseMoved
         jPanelBloques.setBackground(new Color(173, 39, 46));
+        
     }//GEN-LAST:event_jPanelBloquesMouseMoved
 
     private void jPanelBloquesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelBloquesMouseExited

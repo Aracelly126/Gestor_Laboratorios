@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 public class bd_login {
 
     public bd_login() {
-        
+
     }
 
     public boolean login(String correo, String clave) {
@@ -21,7 +21,7 @@ public class bd_login {
             pstmt.setString(2, clave);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                // Usuario encontrado, credenciales correctas
+
                 return true;
             }
         } catch (Exception e) {
@@ -34,12 +34,10 @@ public class bd_login {
                 if (pstmt != null) {
                     pstmt.close();
                 }
-                // No cerramos la conexión `conn` porque es administrada por `Conex` y debería cerrarse cuando `Conex` lo decida
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Resource close fail: " + e.getMessage());
             }
         }
-        // Usuario no encontrado o credenciales incorrectas
         return false;
     }
 }
