@@ -78,18 +78,18 @@ public class Bloques extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblBloques);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 290, 630, 303));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 630, 230));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Nombre del Bloque:");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 140, 22));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 140, 22));
 
         txtBloques.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtBloquesActionPerformed(evt);
             }
         });
-        add(txtBloques, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 130, 197, 30));
+        add(txtBloques, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, 197, 30));
 
         jTextField2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -100,7 +100,7 @@ public class Bloques extends javax.swing.JPanel {
                 jTextField2ActionPerformed(evt);
             }
         });
-        add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 50, 372, 46));
+        add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, 372, 46));
 
         pnlEliminarBloque.setBackground(new java.awt.Color(173, 39, 46));
         pnlEliminarBloque.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -130,7 +130,7 @@ public class Bloques extends javax.swing.JPanel {
                 .addGap(14, 14, 14))
         );
 
-        add(pnlEliminarBloque, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
+        add(pnlEliminarBloque, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, -1, -1));
 
         pnlEditarBloque.setBackground(new java.awt.Color(173, 39, 46));
         pnlEditarBloque.setPreferredSize(new java.awt.Dimension(170, 50));
@@ -161,7 +161,7 @@ public class Bloques extends javax.swing.JPanel {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        add(pnlEditarBloque, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, -1, -1));
+        add(pnlEditarBloque, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 170, -1, -1));
 
         pnlCrearBloque.setBackground(new java.awt.Color(173, 39, 46));
         pnlCrearBloque.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -191,7 +191,7 @@ public class Bloques extends javax.swing.JPanel {
                 .addGap(16, 16, 16))
         );
 
-        add(pnlCrearBloque, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, -1, -1));
+        add(pnlCrearBloque, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 170, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtBloquesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBloquesActionPerformed
