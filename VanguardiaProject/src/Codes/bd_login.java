@@ -1,7 +1,7 @@
 package Codes;
 
 import Utils.Conex;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
