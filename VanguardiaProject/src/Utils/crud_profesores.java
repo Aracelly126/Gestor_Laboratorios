@@ -30,4 +30,16 @@ public class crud_profesores {
         }
     }
     
+    public static void loadBloques(JComboBox<String> comboBox) {
+        try (Connection connection = Conex.getConex();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT DISTINCT bloque FROM espacios")) {
+
+            while (resultSet.next()) {
+                comboBox.addItem(resultSet.getString("bloque"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
