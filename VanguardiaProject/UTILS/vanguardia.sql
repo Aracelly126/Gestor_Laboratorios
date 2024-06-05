@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 15-05-2024 a las 23:56:44
+-- Tiempo de generación: 17-05-2024 a las 01:42:04
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -37,9 +37,9 @@ CREATE TABLE `bloques` (
 --
 
 INSERT INTO `bloques` (`ID_BLOQUE`, `NOMBRE`) VALUES
-(1, 'BLOQUE 1'),
-(2, 'BLOQUE 2'),
-(3, 'BLOQUE 3'),
+(1, 'Edificio 1'),
+(2, 'Edificio 2'),
+(3, 'Ciencias Aplicadas'),
 (4, 'BLOQUE 4');
 
 -- --------------------------------------------------------
@@ -54,6 +54,62 @@ CREATE TABLE `espacios` (
   `NOMBRE` varchar(255) DEFAULT NULL,
   `ID_BLOQUE_PERTENECE` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `espacios`
+--
+
+INSERT INTO `espacios` (`ID_ESPACIO`, `TIPO`, `NOMBRE`, `ID_BLOQUE_PERTENECE`) VALUES
+(1, 'LABORATORIO', 'AUDIOVISUALES (48)', 1),
+(2, 'AULA', 'AULA 1 (36)', 3),
+(3, 'AULA', 'AULA 2 (36)', 3),
+(4, 'AULA', 'AULA 3 (36)', 3),
+(5, 'AULA', 'AULA 4 (36)', 3),
+(6, 'AULA', 'AULA 5 (36)', 3),
+(7, 'AULA', 'AULA 6 (40)', 3),
+(8, 'AULA', 'AULA 7 (40)', 3),
+(9, 'AULA', 'AULA 8 (40)', 3),
+(10, 'AULA', 'AULA 9 (40)', 3),
+(11, 'AULA', 'AULA 10 (40)', 3),
+(12, 'AULA', 'AULA F01 (39)', 2),
+(13, 'AULA', 'AULA F02 (39)', 2),
+(14, 'AULA', 'AULA F03 (39)', 2),
+(15, 'LABORATORIO', 'LABORATORIO F04 (40)', 2),
+(16, 'AULA', 'AULA F08 (40)', 2),
+(17, 'AULA', 'AULA G02 (30)', 2),
+(18, 'AULA', 'AULA G03 (30)', 2),
+(19, 'AULA', 'AULA G04 (40)', 2),
+(20, 'AULA', 'AULA H02 (32)', 2),
+(21, 'AULA', 'AULA H03 (40)', 2),
+(22, 'AULA', 'AULA H04 (40)', 2),
+(23, 'AULA', 'AULA H05 (30)', 2),
+(24, 'AULA', 'AULA I01 (50)', 2),
+(25, 'AULA', 'AULA I02 (40)', 2),
+(26, 'AULA', 'AULA I03 (40)', 2),
+(27, 'AULA', 'AULA J01 (40)', 2),
+(28, 'AULA', 'AULA J05 (30)', 2),
+(29, 'LABORATORIO', 'LABORATORIO 1 (40)', 1),
+(30, 'LABORATORIO', 'LABORATORIO 2 (40)', 1),
+(31, 'LABORATORIO', 'LABORATORIO 3 (24)', 1),
+(32, 'LABORATORIO', 'LABORATORIO 4 (24)', 1),
+(33, 'LABORATORIO', 'LABORATORIO 5 (24)', 1),
+(34, 'LABORATORIO', 'LABORATORIO 6 (32)', 1),
+(35, 'LABORATORIO', 'LABORATORIO 7 (40)', 1),
+(36, 'LABORATORIO', 'LABORATORIO 8 (40)', 1),
+(37, 'LABORATORIO', 'LAB. CTT (56)', 1),
+(38, 'LABORATORIO', 'LAB. REDES 1 (38)', 1),
+(39, 'LABORATORIO', 'LAB. REDES 2 (40)', 1),
+(40, 'LABORATORIO', 'LAB. INDUSTRIAL 1 (32)', 2),
+(41, 'LABORATORIO', 'LAB. INDUSTRIAL 2 (32)', 2),
+(42, 'LABORATORIO', 'LAB. ROBÓTICA Y REDES INDUSTRIALES (25)', 2),
+(43, 'LABORATORIO', 'LAB. AUTOMATIZACIÓN INDUSTRIAL (32)', 2),
+(44, 'LABORATORIO', 'LAB. CNC (25)', 4),
+(45, 'LABORATORIO', 'LAB. COMUNICACIONES (25)', 2),
+(46, 'LABORATORIO', 'LAB. ELECTRÓNICA AVANZADA (32)', 1),
+(47, 'LABORATORIO', 'LAB. ELECTRÓNICA BÁSICA (22)', 2),
+(48, 'LABORATORIO', 'LAB. INSTRUMENTACIÓN VIRTUAL (24)', 2),
+(49, 'LABORATORIO', 'LAB. MÁQUINAS ELÉCTRICAS (25)', 1),
+(50, 'LABORATORIO', 'LAB. PLC\'S (25)', 2);
 
 -- --------------------------------------------------------
 
@@ -135,7 +191,7 @@ ALTER TABLE `bloques`
 -- AUTO_INCREMENT de la tabla `espacios`
 --
 ALTER TABLE `espacios`
-  MODIFY `ID_ESPACIO` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_ESPACIO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamos`
