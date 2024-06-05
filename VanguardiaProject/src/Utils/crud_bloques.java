@@ -145,4 +145,23 @@ public class crud_bloques {
         }
         return idEspacio;
     }
+
+    public void eliminarEspacio(int idEspacio, JTable table) {
+        try {
+            String deleteQuery = "DELETE FROM espacios WHERE ID_ESPACIO = ?";
+            PreparedStatement deleteStatement = Conex.getConex().prepareStatement(deleteQuery);
+            deleteStatement.setInt(1, idEspacio);
+            int rowsAffected = deleteStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Espacio eliminado con éxito.");
+                cargarTabla(table);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró el espacio para eliminar.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al eliminar el espacio.");
+        }
+    }
+
 }
