@@ -31,7 +31,9 @@ public class Horarios {
 "JOIN \n" +
 "    materias m ON h.fk_materia = m.materia_id \n" +
 "WHERE \n" +
-"    b.NOMBRE = ? AND e.TIPO = ? AND e.NOMBRE = ?;";
+"    b.NOMBRE = ? AND e.TIPO = ? AND e.NOMBRE = ?\n" +
+"ORDER BY \n" +
+"    h.HORA;";
         try (PreparedStatement pstmt = con.prepareStatement(query)) {
             pstmt.setString(1, nombreBloque);
             pstmt.setString(2, tipoEspacio);

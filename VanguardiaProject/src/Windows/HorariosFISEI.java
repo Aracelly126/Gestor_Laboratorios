@@ -9,6 +9,12 @@ import Codes.FiltradorAulas_Lab;
 import Codes.Horario;
 import Codes.Horarios;
 import Codes.Lab_Aulas;
+import com.toedter.calendar.IDateEvaluator;
+import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -29,6 +35,7 @@ public class HorariosFISEI extends javax.swing.JPanel {
         actualizarBloques();
         filtroDos();
         filtradoUno();
+        configureJDateChooser();
     }
 private void actualizarBloques() {
         Bloques bloquesDAO = new Bloques();
@@ -68,7 +75,7 @@ private void actualizarBloques() {
     Object tipoEspacioSeleccionado = jcmbLabAulas.getSelectedItem();
     Object laboAulSeleccionado = jcmbNumLabAulas.getSelectedItem();
     if (bloqueSeleccionado == null || tipoEspacioSeleccionado == null || laboAulSeleccionado == null) {
-        JOptionPane.showMessageDialog(null, "Seleccione un item en todos los ComboBox antes de continuar.");
+        JOptionPane.showMessageDialog(null, "Seleccione un Aula o Laboratorio antes de continuar.");
         return;
     }
     String nombreBloque = bloqueSeleccionado.toString();
@@ -90,10 +97,26 @@ private void actualizarBloques() {
     }
 }
     
+      private void configureJDateChooser() {
+    jDateChooser1.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if ("date".equals(evt.getPropertyName())) {
+                Date selectedDate = jDateChooser1.getDate();
+                if (selectedDate != null) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(selectedDate);
+                    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
-
-
-    
+                    if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+                        JOptionPane.showMessageDialog(null, "No se puede seleccionar sábados o domingos.", "Fecha no válida", JOptionPane.WARNING_MESSAGE);
+                        jDateChooser1.setDate(null);
+                    }
+                }
+            }
+        }
+    });
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -193,6 +216,12 @@ private void actualizarBloques() {
             }
         });
 
+        jDateChooser1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jDateChooser1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -279,6 +308,10 @@ private void actualizarBloques() {
     insertar();
     
     }//GEN-LAST:event_jbtnHorarioActionPerformed
+
+    private void jDateChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser1MouseClicked
+        
+    }//GEN-LAST:event_jDateChooser1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
