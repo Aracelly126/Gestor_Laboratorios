@@ -1,15 +1,22 @@
-package Utils;
+ package Utils;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
 
 public class Conex {
     
+<<<<<<< HEAD
     private static int puerto = 3415;
     private static String url = "jdbc:mysql://localhost:" + 3306 + "/";
     private static String nombre_db = "Vanguardia";
+=======
+
+    private static int puerto = 3310;
+    private static String url = "jdbc:mysql://localhost:" + puerto + "/";
+    private static String nombre_db = "vanguardia";
+>>>>>>> 323716acd3edb42bab66afc0b48f758becbde68d
     private static String user = "root";
-    private static String pass = "";
+    private static String pass = "1804893517";
 
     private static Connection con;
 
