@@ -40,24 +40,26 @@ public class Materia extends javax.swing.JPanel {
     }
 
     public void accionCrear() {
-        String nombreMateria = jTextFieldMateria.getText();
-        String semestreText = jTextFieldSemestre.getText();
-        if (!nombreMateria.isEmpty() && !semestreText.isEmpty()) {
-            try {
-                int semestreId = Integer.parseInt(semestreText);
-                boolean creado = materiaBD.crearMateria(nombreMateria, semestreId);
-                if (creado) {
-                    cargarMaterias();
-                    jTextFieldMateria.setText("");
-                    jTextFieldSemestre.setText("");
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Por favor ingrese un semestre válido.");
+    String nombreMateria = jTextFieldMateria.getText();
+    String semestreText = jTextFieldSemestre.getText();
+    if (!nombreMateria.isEmpty() && !semestreText.isEmpty()) {
+        try {
+            int semestreId = Integer.parseInt(semestreText);
+            boolean creado = materiaBD.crearMateria(nombreMateria, semestreId);
+            if (creado) {
+                // Llama al método cargarMaterias para actualizar la tabla
+                cargarMaterias();
+                // Limpia los campos de entrada después de crear la materia
+                jTextFieldMateria.setText("");
+                jTextFieldSemestre.setText("");
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor ingrese un nombre para la materia y un semestre.");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Por favor ingrese un semestre válido.");
         }
+    } else {
+        JOptionPane.showMessageDialog(null, "Por favor ingrese un nombre para la materia y un semestre.");
     }
+}
 
     public void accionEditar() {
         String nuevoNombre = jTextFieldMateria.getText();
@@ -113,11 +115,12 @@ public class Materia extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTableMateria = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldSemestre = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableMateria = new javax.swing.JTable();
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -177,31 +180,29 @@ public class Materia extends javax.swing.JPanel {
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, -1, -1));
 
+        jLabel5.setText("Semestre:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 60, -1));
+        jPanel1.add(jTextFieldSemestre, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, 250, -1));
+
         jTableMateria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { null, null, null},
-                { null, null, null},
-                { null, null, null},
-                { null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Id Materia", "Nombre de la Materia", "Semestre"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTableMateria.setMinimumSize(new java.awt.Dimension(30, 80));
-        jTableMateria.setPreferredSize(new java.awt.Dimension(150, 80));
         jTableMateria.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTableMateriaMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTableMateria);
+        jScrollPane2.setViewportView(jTableMateria);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, 570, 260));
-
-        jLabel5.setText("Semestre:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 60, -1));
-        jPanel1.add(jTextFieldSemestre, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, 250, -1));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 590, 320));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -220,7 +221,7 @@ public class Materia extends javax.swing.JPanel {
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
-        accionEliminar();
+        accionEditar();
     }//GEN-LAST:event_jPanel3MouseClicked
 
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
@@ -229,7 +230,9 @@ public class Materia extends javax.swing.JPanel {
     }//GEN-LAST:event_jPanel4MouseClicked
 
     private void jTableMateriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMateriaMouseClicked
-        seleccionarTabla();    }//GEN-LAST:event_jTableMateriaMouseClicked
+        seleccionarTabla();
+        
+    }//GEN-LAST:event_jTableMateriaMouseClicked
     private void seleccionarTabla() {
         int selectedRow = jTableMateria.getSelectedRow();
         if (selectedRow != -1) {
@@ -252,7 +255,7 @@ public class Materia extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableMateria;
     private javax.swing.JTextField jTextFieldMateria;
     private javax.swing.JTextField jTextFieldSemestre;
