@@ -525,6 +525,13 @@ public class Menu extends javax.swing.JFrame {
 
     private void jPanelMateriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelMateriaMouseClicked
         jTabbedPane1.setSelectedIndex(6);
+         Materia materias = new Materia();
+        materias.setSize(710,596);
+        jPanel10.removeAll();
+        jPanel10.add(materias);
+        materias.setVisible(true);
+        jPanel10.repaint();
+        jPanel10.revalidate(); 
     }//GEN-LAST:event_jPanelMateriaMouseClicked
 
     private void jPanelMateriaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelMateriaMouseMoved
