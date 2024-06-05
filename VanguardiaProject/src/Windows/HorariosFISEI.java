@@ -64,23 +64,16 @@ private void actualizarBloques() {
         }
     }
     public void insertar() {
-    // Obtener los elementos seleccionados de los JComboBox
     Object bloqueSeleccionado = jcmbBloques.getSelectedItem();
     Object tipoEspacioSeleccionado = jcmbLabAulas.getSelectedItem();
     Object laboAulSeleccionado = jcmbNumLabAulas.getSelectedItem();
-
-    // Verificar si alguno de los elementos seleccionados es null
     if (bloqueSeleccionado == null || tipoEspacioSeleccionado == null || laboAulSeleccionado == null) {
         JOptionPane.showMessageDialog(null, "Seleccione un item en todos los ComboBox antes de continuar.");
-        return; // Salir del método si algún ComboBox tiene un elemento null
+        return;
     }
-
-    // Convertir los elementos seleccionados a String
     String nombreBloque = bloqueSeleccionado.toString();
     String tipoEspacio = tipoEspacioSeleccionado.toString();
     String laboAul = laboAulSeleccionado.toString();
-
-    // Si todos los ComboBox tienen selecciones válidas, continuar con el código
     Horarios horarios = new Horarios();
     List<Horario> horariosList = horarios.obtenerAulasPorBloqueYSala(nombreBloque, tipoEspacio, laboAul);
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -96,6 +89,7 @@ private void actualizarBloques() {
         model.addRow(new Object[]{hora, lunes, martes, miercoles, jueves, viernes});
     }
 }
+    
 
 
 
@@ -118,6 +112,7 @@ private void actualizarBloques() {
         jcmbLabAulas = new javax.swing.JComboBox<>();
         jcmbNumLabAulas = new javax.swing.JComboBox<>();
         jbtnHorario = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -205,7 +200,9 @@ private void actualizarBloques() {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(252, 252, 252)
+                        .addGap(62, 62, 62)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
                         .addComponent(jLabel2))
                     .addComponent(jLabel1))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -228,9 +225,14 @@ private void actualizarBloques() {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jbtnHorario, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jbtnHorario, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -280,6 +282,7 @@ private void actualizarBloques() {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
