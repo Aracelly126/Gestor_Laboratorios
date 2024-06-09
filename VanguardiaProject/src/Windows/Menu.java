@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -14,10 +14,11 @@ public class Menu extends javax.swing.JFrame {
 
     /**
      * Creates new form Menu
-     */
+ */
     public Menu() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -151,7 +152,7 @@ public class Menu extends javax.swing.JFrame {
         jPanelHorarios.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 40, 40));
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel6.setText("HORARIOS");
+        jLabel6.setText("RESERVAS");
         jPanelHorarios.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 140, 40));
 
         jPanel2.add(jPanelHorarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 240, 60));
