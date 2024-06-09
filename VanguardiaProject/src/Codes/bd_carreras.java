@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Codes;
+
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import javax.swing.JOptionPane;
 import Utils.Conex;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
  * @author Arita
@@ -36,7 +38,7 @@ public class bd_carreras {
 
             if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "La carrera ya existe en la base de datos.");
-                
+
                 return false;
             } else {
                 pstmtInsert = (PreparedStatement) conn.prepareStatement(sqlInsert);
@@ -103,6 +105,7 @@ public class bd_carreras {
         }
         return bloques;
     }
+
     public boolean editarCarrera(int idCarrera, String nuevoNombre) {
         String sql = "UPDATE carreras SET NOMBRE_CARRERA = ? WHERE CARRERA_ID = ?";
         PreparedStatement pstmt = null;
@@ -131,10 +134,33 @@ public class bd_carreras {
         return false;
     }
 
-    
-    
-    
+    public boolean eliminarCarrera(int idCarrera) {
+        String sql = "DELETE FROM carreras WHERE CARRERA_ID = ?";
+        PreparedStatement pstmt = null;
 
+        try {
+            Connection conn = Conex.getConex();
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, idCarrera);
+            int rowsDeleted = pstmt.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                JOptionPane.showMessageDialog(null, "Carrera eliminada con éxito.");
+                return true;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar la carrera: " + e.getMessage());
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al cerrar recursos: " + e.getMessage());
+            }
+
+        }
+        return false;
+
+    }
 }
-    
-

@@ -5,6 +5,9 @@
 package Windows;
 
 import Codes.bd_carreras;
+import Utils.Conex;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -67,6 +70,11 @@ public class Carreras extends javax.swing.JPanel {
 
         pnlEliminar.setBackground(new java.awt.Color(173, 39, 46));
         pnlEliminar.setForeground(new java.awt.Color(173, 39, 46));
+        pnlEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlEliminarMouseClicked(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -89,7 +97,7 @@ public class Carreras extends javax.swing.JPanel {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        add(pnlEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 190, 50));
+        add(pnlEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 190, 50));
 
         pblEditar.setBackground(new java.awt.Color(173, 39, 46));
         pblEditar.setForeground(new java.awt.Color(173, 39, 46));
@@ -120,7 +128,7 @@ public class Carreras extends javax.swing.JPanel {
                 .addGap(16, 16, 16))
         );
 
-        add(pblEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 190, 52));
+        add(pblEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 170, 190, 52));
 
         pnlCrear.setBackground(new java.awt.Color(173, 39, 46));
         pnlCrear.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -150,7 +158,7 @@ public class Carreras extends javax.swing.JPanel {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        add(pnlCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(469, 141, 190, 50));
+        add(pnlCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 170, 190, 50));
 
         tblCarreras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -170,7 +178,7 @@ public class Carreras extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblCarreras);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 620, 341));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 271, 620, 300));
 
         lblCarreras.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         lblCarreras.setText("Registro de carreras");
@@ -178,8 +186,8 @@ public class Carreras extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Nombre de la carrera:");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, -1, -1));
-        add(txtCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 90, 210, 30));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 140, -1));
+        add(txtCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, 210, 30));
     }// </editor-fold>//GEN-END:initComponents
 
     private void pnlCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearMouseClicked
@@ -193,6 +201,10 @@ public class Carreras extends javax.swing.JPanel {
     private void tblCarrerasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCarrerasMouseClicked
         seleccionarTabla();
     }//GEN-LAST:event_tblCarrerasMouseClicked
+
+    private void pnlEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlEliminarMouseClicked
+        eliminarCarrera();
+    }//GEN-LAST:event_pnlEliminarMouseClicked
     public void seleccionarTabla() {
         int selectedRow = tblCarreras.getSelectedRow();
         if (selectedRow != -1) {
@@ -239,6 +251,24 @@ public class Carreras extends javax.swing.JPanel {
             txtCarrera.setText("");
         }
 
+    }
+
+    public void eliminarCarrera() {
+        int filaSelecionada = tblCarreras.getSelectedRow();
+        if (filaSelecionada != 1) {
+            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que  quieres eliminar esta carrera?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int idBloque = Integer.parseInt(tblCarreras.getValueAt(filaSelecionada, 0).toString());
+                if (carreraBD.eliminarCarrera(idBloque)) {
+                    cargarCarreras();
+                    txtCarrera.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar la carrera");
+                    txtCarrera.setText("");
+                }
+            }
+             txtCarrera.setText("");
+        }
     }
 
 
