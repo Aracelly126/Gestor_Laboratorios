@@ -16,11 +16,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Carreras extends javax.swing.JPanel {
 
-  private bd_carreras carreraBD;
+    private bd_carreras carreraBD;
     private ArrayList<String> carrerasList;
     private int selectedCarreraId = -1;
-    
-  /**
+
+    /**
      * Creates new form Carreras
      */
     public Carreras() {
@@ -30,18 +30,16 @@ public class Carreras extends javax.swing.JPanel {
         cargarCarreras();
 
     }
-  
+
     private void cargarCarreras() {
         List<Codes.Carreras> carreras = carreraBD.obtenerCarreras();
         DefaultTableModel model = (DefaultTableModel) tblCarreras.getModel();
         model.setRowCount(0);
         for (Codes.Carreras carrera : carreras) {
             model.addRow(new Object[]{carrera.getId(), carrera.getNombre()});
-       }
+        }
 
-    
-
-}
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -165,6 +163,11 @@ public class Carreras extends javax.swing.JPanel {
                 "Numero de Carrera", "Nombre de la Carrera"
             }
         ));
+        tblCarreras.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCarrerasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblCarreras);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 620, 341));
@@ -180,12 +183,24 @@ public class Carreras extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pnlCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearMouseClicked
-       accionCrear();
+        accionCrear();
     }//GEN-LAST:event_pnlCrearMouseClicked
 
     private void pblEditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pblEditarMouseClicked
         editarBloque();
     }//GEN-LAST:event_pblEditarMouseClicked
+
+    private void tblCarrerasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCarrerasMouseClicked
+        seleccionarTabla();
+    }//GEN-LAST:event_tblCarrerasMouseClicked
+    public void seleccionarTabla() {
+        int selectedRow = tblCarreras.getSelectedRow();
+        if (selectedRow != -1) {
+            selectedCarreraId = (int) tblCarreras.getValueAt(selectedRow, 0);
+            String nombreCarrera = (String) tblCarreras.getValueAt(selectedRow, 1);
+            txtCarrera.setText(nombreCarrera);
+        }
+    }
 
     public void accionCrear() {
         String nombreCarrera = txtCarrera.getText();
@@ -200,6 +215,7 @@ public class Carreras extends javax.swing.JPanel {
 
         }
     }
+
     public void editarBloque() {
         if (selectedCarreraId != -1) {
             String nombreNuevo = txtCarrera.getText();
@@ -208,7 +224,7 @@ public class Carreras extends javax.swing.JPanel {
                 if (editado) {
                     JOptionPane.showMessageDialog(this, "Carrera editada correctamente.");
                     cargarCarreras();
-                    selectedCarreraId = -1; 
+                    selectedCarreraId = -1;
                     txtCarrera.setText("");
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al editar la carrera.");
