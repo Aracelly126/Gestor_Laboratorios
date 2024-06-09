@@ -12,6 +12,10 @@ import Codes.Lab_Aulas;
 import com.toedter.calendar.IDateEvaluator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Calendar;
@@ -30,6 +34,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class HorariosFISEI extends javax.swing.JPanel {
 
+    private JPopupMenu popupMenu;
+
     /**
      * Creates new form HorariosFISEI
      */
@@ -39,7 +45,8 @@ public class HorariosFISEI extends javax.swing.JPanel {
         filtradoUno();
         configureJDateChooser();
         toggleComboBoxes(false);
-        Menu();
+        configurePopupMenu();
+
     }
 
     private void actualizarBloques() {
@@ -126,6 +133,7 @@ public class HorariosFISEI extends javax.swing.JPanel {
         return -1;
     }
 //falta arreglar esta conf
+
     private void configureJDateChooser() {
         jDateChooser2.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
@@ -153,12 +161,68 @@ public class HorariosFISEI extends javax.swing.JPanel {
         jcmbLabAulas.setEnabled(enable);
         jcmbNumLabAulas.setEnabled(enable);
     }
-    public void Menu(){
-        JPopupMenu pop = new JPopupMenu();
-        JMenuItem menu = new JMenuItem("Reservar");
-        pop.add(menu);
-        utcJTable1.setComponentPopupMenu(pop);
+
+    private void configurePopupMenu() {
+        popupMenu = new JPopupMenu();
+        JMenuItem reservarItem = new JMenuItem("Reservar");
+        JMenuItem modificarReservaItem = new JMenuItem("Modificar Reserva");
+
+        reservarItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Aquí va la lógica para la acción de "Reservar"
+                int row = utcJTable1.getSelectedRow();
+                int col = utcJTable1.getSelectedColumn();
+                if (row >= 0 && col >= 0) {
+                    String valorCelda = (String) utcJTable1.getValueAt(row, col);
+                    JOptionPane.showMessageDialog(null, "Reservando celda en fila " + row + ", columna " + col + " con valor: " + valorCelda);
+                }
+            }
+        });
+
+        modificarReservaItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Aquí va la lógica para la acción de "Modificar Reserva"
+                int row = utcJTable1.getSelectedRow();
+                int col = utcJTable1.getSelectedColumn();
+                if (row >= 0 && col >= 0) {
+                    String valorCelda = (String) utcJTable1.getValueAt(row, col);
+                    JOptionPane.showMessageDialog(null, "Modificando reserva en celda en fila " + row + ", columna " + col + " con valor: " + valorCelda);
+                }
+            }
+        });
+
+        popupMenu.add(reservarItem);
+        popupMenu.add(modificarReservaItem);
+
+        utcJTable1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    showPopup(e);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    showPopup(e);
+                }
+            }
+
+            private void showPopup(MouseEvent e) {
+                int row = utcJTable1.rowAtPoint(e.getPoint());
+                int col = utcJTable1.columnAtPoint(e.getPoint());
+                if (row >= 0 && col >= 0) {
+                    utcJTable1.setRowSelectionInterval(row, row);
+                    utcJTable1.setColumnSelectionInterval(col, col);
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
