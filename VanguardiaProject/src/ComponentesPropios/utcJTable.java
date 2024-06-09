@@ -58,18 +58,28 @@ public class utcJTable extends JTable {
 
     @Override
     public Component prepareRenderer(TableCellRenderer renderer, int fila, int columna) {
-        Component componente = super.prepareRenderer(renderer, fila, columna);
-        Object valorCelda = getValueAt(fila, columna);
-        String valor = String.valueOf(valorCelda);
+    Component componente = super.prepareRenderer(renderer, fila, columna);
+    Object valorCelda = getValueAt(fila, columna);
+    String valor = String.valueOf(valorCelda);
+    
+    // Verificar si la columna es la columna de la hora
+    if (columna == 0) {
+        // Cambiar el color de fondo y el texto para la columna de la hora
+        componente.setBackground(Color.WHITE);
+        componente.setForeground(Color.BLACK);
+    } else {
+        // Verificar si el valor contiene "Reservado" para aplicar el color de fondo apropiado
         if (valor != null && valor.contains("Reservado")) {
-            componente.setBackground(new Color(243, 185, 181));
-            componente.setForeground(Color.black);
+            componente.setBackground(new Color(243, 185, 181)); // Color rosa claro
+            componente.setForeground(Color.BLACK);
         } else {
-            componente.setBackground(Color.white);
-            componente.setForeground(Color.black);
+            // Cambiar el color de fondo de las otras columnas a un verde más opaco
+            componente.setBackground(new Color(152, 251, 152)); // Verde claro, más opaco
+            componente.setForeground(Color.BLACK);
         }
-        return componente;
     }
+    return componente;
+}
 
     public void horasDia() {  // Asegúrate de que este método sea público
         this.setBorder(BorderFactory.createLineBorder(Color.black));

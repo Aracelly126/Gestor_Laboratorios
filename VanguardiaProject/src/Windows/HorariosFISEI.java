@@ -35,6 +35,7 @@ import javax.swing.table.DefaultTableModel;
 public class HorariosFISEI extends javax.swing.JPanel {
 
     private JPopupMenu popupMenu;
+    private int selectedDayOfWeek = -1;
 
     /**
      * Creates new form HorariosFISEI
@@ -217,12 +218,31 @@ public class HorariosFISEI extends javax.swing.JPanel {
                 if (row >= 0 && col >= 0) {
                     utcJTable1.setRowSelectionInterval(row, row);
                     utcJTable1.setColumnSelectionInterval(col, col);
-                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+
+                    // Obtener la fecha seleccionada en el JDateChooser
+                    Date selectedDate = jDateChooser2.getDate();
+                    if (selectedDate != null) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(selectedDate);
+                        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+                        // Mapear el día de la semana a las columnas de la tabla (lunes -> 1, martes -> 2, ...)
+                        int selectedColumn = dayOfWeek -2;
+
+                        // Verificar si la columna seleccionada no coincide con el día de la semana
+                        if (col != selectedColumn) {
+                            // Si la columna seleccionada es posterior al día seleccionado, mostrar el menú emergente
+                            if (col >= selectedColumn) {
+                                popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                            }
+                            // Si la columna seleccionada es anterior al día seleccionado, no hacer nada
+                        }
+                    }
                 }
             }
+
         });
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
