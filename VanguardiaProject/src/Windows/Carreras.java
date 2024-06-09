@@ -19,6 +19,7 @@ public class Carreras extends javax.swing.JPanel {
   private bd_carreras carreraBD;
     private ArrayList<String> carrerasList;
     private int selectedCarreraId = -1;
+    
   /**
      * Creates new form Carreras
      */
@@ -29,6 +30,7 @@ public class Carreras extends javax.swing.JPanel {
         cargarCarreras();
 
     }
+  
     private void cargarCarreras() {
         List<Codes.Carreras> carreras = carreraBD.obtenerCarreras();
         DefaultTableModel model = (DefaultTableModel) tblCarreras.getModel();
@@ -93,6 +95,11 @@ public class Carreras extends javax.swing.JPanel {
 
         pblEditar.setBackground(new java.awt.Color(173, 39, 46));
         pblEditar.setForeground(new java.awt.Color(173, 39, 46));
+        pblEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pblEditarMouseClicked(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -176,6 +183,10 @@ public class Carreras extends javax.swing.JPanel {
        accionCrear();
     }//GEN-LAST:event_pnlCrearMouseClicked
 
+    private void pblEditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pblEditarMouseClicked
+        editarBloque();
+    }//GEN-LAST:event_pblEditarMouseClicked
+
     public void accionCrear() {
         String nombreCarrera = txtCarrera.getText();
         if (!nombreCarrera.isEmpty()) {
@@ -188,6 +199,30 @@ public class Carreras extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Por favor ingrese un nombre para la carrera.");
 
         }
+    }
+    public void editarBloque() {
+        if (selectedCarreraId != -1) {
+            String nombreNuevo = txtCarrera.getText();
+            if (nombreNuevo != null && !nombreNuevo.isEmpty()) {
+                boolean editado = carreraBD.editarCarrera(selectedCarreraId, nombreNuevo);
+                if (editado) {
+                    JOptionPane.showMessageDialog(this, "Carrera editada correctamente.");
+                    cargarCarreras();
+                    selectedCarreraId = -1; 
+                    txtCarrera.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al editar la carrera.");
+                    txtCarrera.setText("");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor ingrese un nombre válido.");
+                txtCarrera.setText("");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una carrera para editar.");
+            txtCarrera.setText("");
+        }
+
     }
 
 

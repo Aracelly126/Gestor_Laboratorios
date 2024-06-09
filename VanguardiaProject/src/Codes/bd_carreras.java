@@ -103,6 +103,33 @@ public class bd_carreras {
         }
         return bloques;
     }
+    public boolean editarCarrera(int idCarrera, String nuevoNombre) {
+        String sql = "UPDATE carreras SET NOMBRE_CARRERA = ? WHERE CARRERA_ID = ?";
+        PreparedStatement pstmt = null;
+
+        try {
+            Connection conn = Conex.getConex();
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setString(1, nuevoNombre);
+            pstmt.setInt(2, idCarrera);
+            int rowsUpdated = pstmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al editar la carrera: " + e.getMessage());
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al cerrar recursos: " + e.getMessage());
+            }
+        }
+        return false;
+    }
 
     
     
