@@ -4,18 +4,42 @@
  */
 package Windows;
 
+import Codes.bd_carreras;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Arita
  */
 public class Carreras extends javax.swing.JPanel {
 
-    /**
+  private bd_carreras carreraBD;
+    private ArrayList<String> carrerasList;
+    private int selectedCarreraId = -1;
+  /**
      * Creates new form Carreras
      */
     public Carreras() {
         initComponents();
+        carreraBD = new bd_carreras();
+        carrerasList = new ArrayList<>();
+        cargarCarreras();
+
     }
+    private void cargarCarreras() {
+        List<Codes.Carreras> carreras = carreraBD.obtenerCarreras();
+        DefaultTableModel model = (DefaultTableModel) tblCarreras.getModel();
+        model.setRowCount(0);
+        for (Codes.Carreras carrera : carreras) {
+            model.addRow(new Object[]{carrera.getId(), carrera.getNombre()});
+       }
+
+    
+
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,122 +50,145 @@ public class Carreras extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelShadow1 = new Utils.PanelShadow();
+        pnlEliminar = new Utils.PanelShadow();
         jLabel3 = new javax.swing.JLabel();
-        panelShadow2 = new Utils.PanelShadow();
+        pblEditar = new Utils.PanelShadow();
         jLabel2 = new javax.swing.JLabel();
-        panelShadow3 = new Utils.PanelShadow();
+        pnlCrear = new Utils.PanelShadow();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblCarreras = new javax.swing.JTable();
         lblCarreras = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtCarrera = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelShadow1.setBackground(new java.awt.Color(173, 39, 46));
-        panelShadow1.setForeground(new java.awt.Color(173, 39, 46));
+        pnlEliminar.setBackground(new java.awt.Color(173, 39, 46));
+        pnlEliminar.setForeground(new java.awt.Color(173, 39, 46));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Eliminar");
+        jLabel3.setText("ELIMINAR");
 
-        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
-        panelShadow1.setLayout(panelShadow1Layout);
-        panelShadow1Layout.setHorizontalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
-        );
-        panelShadow1Layout.setVerticalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelShadow1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+        javax.swing.GroupLayout pnlEliminarLayout = new javax.swing.GroupLayout(pnlEliminar);
+        pnlEliminar.setLayout(pnlEliminarLayout);
+        pnlEliminarLayout.setHorizontalGroup(
+            pnlEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEliminarLayout.createSequentialGroup()
+                .addGap(59, 59, 59)
                 .addComponent(jLabel3)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
+        );
+        pnlEliminarLayout.setVerticalGroup(
+            pnlEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEliminarLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel3)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        add(panelShadow1, new org.netbeans.lib.awtextra.AbsoluteConstraints(46, 135, -1, 52));
+        add(pnlEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 190, 50));
 
-        panelShadow2.setBackground(new java.awt.Color(173, 39, 46));
-        panelShadow2.setForeground(new java.awt.Color(173, 39, 46));
+        pblEditar.setBackground(new java.awt.Color(173, 39, 46));
+        pblEditar.setForeground(new java.awt.Color(173, 39, 46));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Editar");
+        jLabel2.setText("EDITAR");
 
-        javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
-        panelShadow2.setLayout(panelShadow2Layout);
-        panelShadow2Layout.setHorizontalGroup(
-            panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
-                .addContainerGap(61, Short.MAX_VALUE)
+        javax.swing.GroupLayout pblEditarLayout = new javax.swing.GroupLayout(pblEditar);
+        pblEditar.setLayout(pblEditarLayout);
+        pblEditarLayout.setHorizontalGroup(
+            pblEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pblEditarLayout.createSequentialGroup()
+                .addGap(67, 67, 67)
                 .addComponent(jLabel2)
-                .addGap(58, 58, 58))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
-        panelShadow2Layout.setVerticalGroup(
-            panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
+        pblEditarLayout.setVerticalGroup(
+            pblEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pblEditarLayout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(16, 16, 16))
         );
 
-        add(panelShadow2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, -1, 52));
+        add(pblEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 190, 52));
 
-        panelShadow3.setBackground(new java.awt.Color(173, 39, 46));
+        pnlCrear.setBackground(new java.awt.Color(173, 39, 46));
+        pnlCrear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlCrearMouseClicked(evt);
+            }
+        });
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Crear");
+        jLabel4.setText("CREAR");
 
-        javax.swing.GroupLayout panelShadow3Layout = new javax.swing.GroupLayout(panelShadow3);
-        panelShadow3.setLayout(panelShadow3Layout);
-        panelShadow3Layout.setHorizontalGroup(
-            panelShadow3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow3Layout.createSequentialGroup()
-                .addContainerGap(66, Short.MAX_VALUE)
+        javax.swing.GroupLayout pnlCrearLayout = new javax.swing.GroupLayout(pnlCrear);
+        pnlCrear.setLayout(pnlCrearLayout);
+        pnlCrearLayout.setHorizontalGroup(
+            pnlCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCrearLayout.createSequentialGroup()
+                .addContainerGap(78, Short.MAX_VALUE)
                 .addComponent(jLabel4)
-                .addGap(56, 56, 56))
+                .addGap(66, 66, 66))
         );
-        panelShadow3Layout.setVerticalGroup(
-            panelShadow3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelShadow3Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+        pnlCrearLayout.setVerticalGroup(
+            pnlCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCrearLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addComponent(jLabel4)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        add(panelShadow3, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 135, -1, -1));
+        add(pnlCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(469, 141, 190, 50));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblCarreras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Numero de Carrera", "Nombre de la Carrera"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblCarreras);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(46, 205, 604, 341));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 620, 341));
 
         lblCarreras.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         lblCarreras.setText("Registro de carreras");
         add(lblCarreras, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, -1, 60));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Nombre:");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, -1, -1));
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 90, 210, -1));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setText("Nombre de la carrera:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, -1, -1));
+        add(txtCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 90, 210, 30));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pnlCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearMouseClicked
+       accionCrear();
+    }//GEN-LAST:event_pnlCrearMouseClicked
+
+    public void accionCrear() {
+        String nombreCarrera = txtCarrera.getText();
+        if (!nombreCarrera.isEmpty()) {
+            boolean creado = carreraBD.crearCarrera(nombreCarrera);
+            if (creado) {
+                cargarCarreras();
+                txtCarrera.setText("");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor ingrese un nombre para la carrera.");
+
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -150,11 +197,11 @@ public class Carreras extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblCarreras;
-    private Utils.PanelShadow panelShadow1;
-    private Utils.PanelShadow panelShadow2;
-    private Utils.PanelShadow panelShadow3;
+    private Utils.PanelShadow pblEditar;
+    private Utils.PanelShadow pnlCrear;
+    private Utils.PanelShadow pnlEliminar;
+    private javax.swing.JTable tblCarreras;
+    private javax.swing.JTextField txtCarrera;
     // End of variables declaration//GEN-END:variables
 }
