@@ -10,6 +10,7 @@ import Codes.Horario;
 import Codes.Horarios;
 import Codes.Lab_Aulas;
 import com.toedter.calendar.IDateEvaluator;
+import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -17,7 +18,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,19 +29,20 @@ import javax.swing.table.DefaultTableModel;
  * @author USER
  */
 public class HorariosFISEI extends javax.swing.JPanel {
-    
+
     /**
      * Creates new form HorariosFISEI
      */
     public HorariosFISEI() {
         initComponents();
         actualizarBloques();
-        filtroDos();
         filtradoUno();
         configureJDateChooser();
-        
+        toggleComboBoxes(false);
+        Menu();
     }
-private void actualizarBloques() {
+
+    private void actualizarBloques() {
         Bloques bloquesDAO = new Bloques();
         List<String> bloques = bloquesDAO.BloquesUni();
 
@@ -62,62 +66,99 @@ private void actualizarBloques() {
     public void filtroDos() {
         String nombreBloqueSeleccionado = (String) jcmbBloques.getSelectedItem();
         String tipoEspacioSeleccionado = (String) jcmbLabAulas.getSelectedItem();
-
         Lab_Aulas labAulas = new Lab_Aulas();
         List<String> aulas = labAulas.obtenerAulasPorBloque(nombreBloqueSeleccionado, tipoEspacioSeleccionado);
-
         jcmbNumLabAulas.removeAllItems();
         for (String aula : aulas) {
             jcmbNumLabAulas.addItem(aula);
         }
     }
-    public void insertar() {
-    Object bloqueSeleccionado = jcmbBloques.getSelectedItem();
-    Object tipoEspacioSeleccionado = jcmbLabAulas.getSelectedItem();
-    Object laboAulSeleccionado = jcmbNumLabAulas.getSelectedItem();
-    if (bloqueSeleccionado == null || tipoEspacioSeleccionado == null || laboAulSeleccionado == null) {
-        JOptionPane.showMessageDialog(null, "Seleccione un Aula o Laboratorio antes de continuar.");
-        return;
-    }
-    String nombreBloque = bloqueSeleccionado.toString();
-    String tipoEspacio = tipoEspacioSeleccionado.toString();
-    String laboAul = laboAulSeleccionado.toString();
-    Horarios horarios = new Horarios();
-    List<Horario> horariosList = horarios.obtenerAulasPorBloqueYSala(nombreBloque, tipoEspacio, laboAul);
-    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-    model.setRowCount(0);
-    model.setColumnIdentifiers(new Object[]{"Hora", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"});
-    for (Horario horario : horariosList) {
-        String hora = horario.getHora();
-        String lunes = horario.getLunes() != null ? horario.getLunes() : "";
-        String martes = horario.getMartes() != null ? horario.getMartes() : "";
-        String miercoles = horario.getMiercoles() != null ? horario.getMiercoles() : "";
-        String jueves = horario.getJueves() != null ? horario.getJueves() : "";
-        String viernes = horario.getViernes() != null ? horario.getViernes() : "";
-        model.addRow(new Object[]{hora, lunes, martes, miercoles, jueves, viernes});
-    }
-}
-    
-      private void configureJDateChooser() {
-    jDateChooser2.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            if ("date".equals(evt.getPropertyName())) {
-                Date selectedDate = jDateChooser2.getDate();
-                if (selectedDate != null) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(selectedDate);
-                    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
-                    if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
-                        JOptionPane.showMessageDialog(null, "No se puede seleccionar sábados o domingos.", "Fecha no válida", JOptionPane.WARNING_MESSAGE);
-                        jDateChooser2.setDate(null);
-                    }
-                }
+    public void insertar() {
+        Object bloqueSeleccionado = jcmbBloques.getSelectedItem();
+        Object tipoEspacioSeleccionado = jcmbLabAulas.getSelectedItem();
+        Object laboAulSeleccionado = jcmbNumLabAulas.getSelectedItem();
+
+        String nombreBloque = bloqueSeleccionado.toString();
+        String tipoEspacio = tipoEspacioSeleccionado.toString();
+        String laboAul = (laboAulSeleccionado != null) ? laboAulSeleccionado.toString() : "";
+
+        Horarios horarios = new Horarios();
+        List<Horario> horariosList = horarios.obtenerAulasPorBloqueYSala(nombreBloque, tipoEspacio, laboAul);
+        DefaultTableModel model = (DefaultTableModel) utcJTable1.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            for (int j = 1; j < model.getColumnCount(); j++) {
+                model.setValueAt("", i, j);
             }
         }
-    });
-}
+        for (Horario horario : horariosList) {
+            System.out.println("Insertando horario: " + horario.getHora());
+            String hora = horario.getHora();
+            int fila = obtenerFilaPorHora(hora);
+            if (fila >= 0) {
+                if (horario.getLunes() != null && !horario.getLunes().isEmpty()) {
+                    model.setValueAt("Reservado: " + "\n" + horario.getLunes(), fila, 1);
+                }
+                if (horario.getMartes() != null && !horario.getMartes().isEmpty()) {
+                    model.setValueAt("Reservado: " + "\n" + horario.getMartes(), fila, 2);
+                }
+                if (horario.getMiercoles() != null && !horario.getMiercoles().isEmpty()) {
+                    model.setValueAt("Reservado: " + "\n" + horario.getMiercoles(), fila, 3);
+                }
+                if (horario.getJueves() != null && !horario.getJueves().isEmpty()) {
+                    model.setValueAt("Reservado: " + "\n" + horario.getJueves(), fila, 4);
+                }
+                if (horario.getViernes() != null && !horario.getViernes().isEmpty()) {
+                    model.setValueAt("Reservado: " + horario.getViernes(), fila, 5);
+                }
+            } else {
+                System.out.println("Hora no encontrada: " + hora);
+            }
+        }
+    }
+
+    private int obtenerFilaPorHora(String hora) {
+        for (int i = 0; i < utcJTable1.getRowCount(); i++) {
+            if (utcJTable1.getValueAt(i, 0).equals(hora)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+//falta arreglar esta conf
+    private void configureJDateChooser() {
+        jDateChooser2.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("date".equals(evt.getPropertyName())) {
+                    Date selectedDate = jDateChooser2.getDate();
+                    if (selectedDate != null) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(selectedDate);
+                        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+                        if (dayOfWeek == Calendar.SUNDAY) {
+                            JOptionPane.showMessageDialog(null, "No se puede seleccionar domingos.", "Fecha no válida", JOptionPane.WARNING_MESSAGE);
+                            jDateChooser2.setDate(null);
+                        }
+                    }
+                    toggleComboBoxes(selectedDate != null);
+                }
+            }
+        });
+    }
+
+    private void toggleComboBoxes(boolean enable) {
+        jcmbBloques.setEnabled(enable);
+        jcmbLabAulas.setEnabled(enable);
+        jcmbNumLabAulas.setEnabled(enable);
+    }
+    public void Menu(){
+        JPopupMenu pop = new JPopupMenu();
+        JMenuItem menu = new JMenuItem("Reservar");
+        pop.add(menu);
+        utcJTable1.setComponentPopupMenu(pop);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -129,43 +170,18 @@ private void actualizarBloques() {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jcmbBloques = new javax.swing.JComboBox<>();
         jcmbLabAulas = new javax.swing.JComboBox<>();
         jcmbNumLabAulas = new javax.swing.JComboBox<>();
-        jbtnHorario = new javax.swing.JButton();
-        jbtnReserva = new javax.swing.JButton();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        utcJTable1 = new ComponentesPropios.utcJTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 0, 0));
         jLabel2.setText("BLOQUES");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
 
         jcmbBloques.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -207,15 +223,11 @@ private void actualizarBloques() {
                 jcmbNumLabAulasMouseClicked(evt);
             }
         });
-
-        jbtnHorario.setText("Ver Horario");
-        jbtnHorario.addActionListener(new java.awt.event.ActionListener() {
+        jcmbNumLabAulas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnHorarioActionPerformed(evt);
+                jcmbNumLabAulasActionPerformed(evt);
             }
         });
-
-        jbtnReserva.setText("Realizar Reserva");
 
         jDateChooser2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -223,56 +235,46 @@ private void actualizarBloques() {
             }
         });
 
+        jScrollPane2.setViewportView(utcJTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jbtnReserva)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jcmbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jbtnHorario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(52, 52, 52)
-                                        .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(19, 19, 19))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(266, 266, 266))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jcmbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jbtnHorario)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcmbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jbtnReserva)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcmbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(127, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -306,31 +308,30 @@ private void actualizarBloques() {
 
     private void jcmbNumLabAulasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbNumLabAulasMouseClicked
         filtroDos();
+
     }//GEN-LAST:event_jcmbNumLabAulasMouseClicked
 
-    private void jbtnHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHorarioActionPerformed
-    insertar();
-    
-    }//GEN-LAST:event_jbtnHorarioActionPerformed
-
     private void jDateChooser2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser1MouseClicked
-        
+
     }//GEN-LAST:event_jDateChooser1MouseClicked
 
     private void jDateChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser2MouseClicked
-       
+
     }//GEN-LAST:event_jDateChooser2MouseClicked
+
+    private void jcmbNumLabAulasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbNumLabAulasActionPerformed
+        insertar();
+
+    }//GEN-LAST:event_jcmbNumLabAulasActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JButton jbtnHorario;
-    private javax.swing.JButton jbtnReserva;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> jcmbBloques;
     private javax.swing.JComboBox<String> jcmbLabAulas;
     private javax.swing.JComboBox<String> jcmbNumLabAulas;
+    private ComponentesPropios.utcJTable utcJTable1;
     // End of variables declaration//GEN-END:variables
 }
