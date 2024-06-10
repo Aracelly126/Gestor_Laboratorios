@@ -52,3 +52,36 @@ Importa el proyecto en tu IDE favorito (Eclipse, NetBeans).
    - Compila el proyecto en tu IDE.
    - Ejecuta el archivo principal `Main.java` desde tu IDE.
 
+Ejecutando las pruebas ⚙️
+
+🔑 **Inicio de Sesión:**
+   - Asegúrate de que la base de datos de pruebas esté configurada y que las credenciales sean correctas.
+
+   - Utiliza las credenciales proporcionadas para iniciar sesión como administrador,credenciales como el correo electronico y la contraseña.
+
+📅 **Realizar Reservas:**
+
+   - Selecciona el aula o laboratorio deseado y el horario correspondiente para realizar la reserva.
+   - Verifica la disponibilidad en tiempo real antes de confirmar la reserva.
+   - Selecciona un espacio, da click derecho y en el menu selecciona "reservar".
+   - Realiza la reservacion llenando un formulario de tus datos. 
+
+📝 **Gestión de Reservas:**
+
+   - Accede al módulo de administración para gestionar las reservas existentes, modificarlas según sea necesario.
+    **Ejecuta las pruebas unitarias:**
+   
+   - En tu IDE, ejecuta las pruebas unitarias configuradas en el proyecto. Esto generalmente se puede hacer haciendo clic derecho en el paquete de pruebas y seleccionando "Run as JUnit Test".
+
+📄 **Licencia:**
+
+Este proyecto es un trabajo académico desarrollado por estudiantes de la Universidad Técnica de Ambato y no tiene una licencia formal.
+## 👩‍💻 Autores
+
+- Aracelly de los Angeles Guangasi Guananga - araguangasig95@gmail.com
+- Christian Alexis Hurtado Torres - tcriss002@gmail.com
+- Jins Steeven Loor Sandoya - steevenloor2412@gmail.com 
+- Eugenio Anthony Paul Velastegui - paulvelastegui2016@gmail.com 
+
+Cada autor contribuyó al proyecto en diferentes áreas, incluyendo desarrollo de software, diseño de interfaz de usuario, pruebas y documentación.
+
