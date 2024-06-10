@@ -17,8 +17,8 @@ public class Profesores extends javax.swing.JPanel {
 
     crud_profesores profesores = new crud_profesores();
 
-    DefaultTableModel tablaModelo = new DefaultTableModel(new Object[]{"Nombre", "Materia", "Bloque"}, 0);
-
+    DefaultTableModel tablaModelo = new DefaultTableModel(new Object[]{"Profesor", "Materia", "Tipo", "Nombre", "Bloque"}, 0);
+    String nombre="";
     /**
      * Creates new form Profesores
      */
@@ -28,6 +28,12 @@ public class Profesores extends javax.swing.JPanel {
         profesores.cargarBloque(jcbxBloques);
         profesores.cargarTabla(jTable1);
         setEventHandlers();
+
+        jtxtNombre.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtxtNombreFocusLost(evt);
+            }
+        });
 
     }
 
@@ -57,11 +63,22 @@ public class Profesores extends javax.swing.JPanel {
     }
 
     private void cargarAulasOLaboratorios() {
-        String selectedBloque = (String) jcbxBloques.getSelectedItem();
-        String selectedTipo = (String) jcbxTipo.getSelectedItem();
-        if (selectedBloque != null && selectedTipo != null) {
+        Object selectedBloqueObj = jcbxBloques.getSelectedItem();
+        Object selectedTipoObj = jcbxTipo.getSelectedItem();
+        if (selectedBloqueObj != null && selectedTipoObj != null) {
+            String selectedBloque = selectedBloqueObj.toString();
+            String selectedTipo = selectedTipoObj.toString();
             profesores.llenarComboBoxAulas(jComboBox1, jcbxTipo, jcbxBloques);
+        } else {
+            System.out.println("No hay bloque o tipo seleccionado.");
         }
+    }
+
+    private void jtxtNombreFocusLost(java.awt.event.FocusEvent evt) {
+        // Recuperar el texto del JTextField cuando pierde el foco
+         nombre = jtxtNombre.getText();
+        System.out.println(nombre);
+
     }
 
     /**
@@ -74,7 +91,7 @@ public class Profesores extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jtxtNombre = new javax.swing.JTextField();
         jcbxMateria = new javax.swing.JComboBox<>();
         jcbxBloques = new javax.swing.JComboBox<>();
         jcbxTipo = new javax.swing.JComboBox<>();
@@ -95,7 +112,7 @@ public class Profesores extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("PROFESORES");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 130, 150, -1));
+        add(jtxtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 130, 150, -1));
 
         jcbxMateria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
         add(jcbxMateria, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 150, -1));
@@ -156,7 +173,8 @@ public class Profesores extends javax.swing.JPanel {
 
     private void jcbxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbxTipoActionPerformed
         // TODO add your handling code here:
-        profesores.addProfesor(jTextField1.getText(), jcbxMateria.getSelectedItem().toString(), jcbxBloques.getSelectedItem().toString());
+        System.out.println(jtxtNombre.getText());
+        profesores.addProfesor(nombre, jcbxMateria.getSelectedItem().toString(), jcbxBloques.getSelectedItem().toString(), jcbxTipo.getSelectedItem().toString(), jComboBox1.getSelectedItem().toString());
     }//GEN-LAST:event_jcbxTipoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -176,9 +194,9 @@ public class Profesores extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JComboBox<String> jcbxBloques;
     private javax.swing.JComboBox<String> jcbxMateria;
     private javax.swing.JComboBox<String> jcbxTipo;
+    private javax.swing.JTextField jtxtNombre;
     // End of variables declaration//GEN-END:variables
 }
