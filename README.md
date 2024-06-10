@@ -85,3 +85,16 @@ Este proyecto es un trabajo académico desarrollado por estudiantes de la Univer
 
 Cada autor contribuyó al proyecto en diferentes áreas, incluyendo desarrollo de software, diseño de interfaz de usuario, pruebas y documentación.
 
+Agradecimientos especiales al [Ing. Santiago Jara Moya] por su orientación y apoyo durante el desarrollo del proyecto.
+
+
+Expresiones de Gratitud 🎁
+
+Comenta a otros sobre este proyecto 📢
+
+Invita un café ☕ a alguien del equipo.
+
+Da las gracias públicamente 🤓.
+
+¡Gracias por tu apoyo y colaboración!
+
