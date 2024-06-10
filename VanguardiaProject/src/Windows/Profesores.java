@@ -4,9 +4,15 @@
  */
 package Windows;
 
+import Utils.Conex;
 import Utils.crud_profesores;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -60,7 +66,7 @@ public class Profesores extends javax.swing.JPanel {
                 // No es necesario cargar las materias aquí, ya se cargan cuando se selecciona un nuevo bloque o tipo
             }
         });
-    }
+    }   
 
     private void cargarAulasOLaboratorios() {
         Object selectedBloqueObj = jcbxBloques.getSelectedItem();
@@ -81,6 +87,7 @@ public class Profesores extends javax.swing.JPanel {
 
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -163,6 +170,11 @@ public class Profesores extends javax.swing.JPanel {
         add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, -1, -1));
 
         jButton2.setText("Eliminar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
 
         jButton3.setText("Editar");
@@ -174,12 +186,40 @@ public class Profesores extends javax.swing.JPanel {
     private void jcbxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbxTipoActionPerformed
         // TODO add your handling code here:
         System.out.println(jtxtNombre.getText());
-        profesores.addProfesor(nombre, jcbxMateria.getSelectedItem().toString(), jcbxBloques.getSelectedItem().toString(), jcbxTipo.getSelectedItem().toString(), jComboBox1.getSelectedItem().toString());
+        
     }//GEN-LAST:event_jcbxTipoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+        String nombre = jtxtNombre.getText();
+        String materiaSeleccionada = (String) jcbxMateria.getSelectedItem();
+        String bloqueSeleccionado = (String) jcbxBloques.getSelectedItem();
+        String tipoSeleccionado = (String) jcbxTipo.getSelectedItem();
+        String aulaSeleccionada = (String) jComboBox1.getSelectedItem();
+        profesores.addProfesor(nombre, materiaSeleccionada, bloqueSeleccionado, tipoSeleccionado, aulaSeleccionada, jTable1);
+        
+        // Limpiar los campos después de crear el profesor
+        jtxtNombre.setText("");
+        jcbxMateria.setSelectedIndex(0); // Establece el primer elemento como seleccionado
+        jcbxBloques.setSelectedIndex(0); // Establece el primer elemento como seleccionado
+        jcbxTipo.setSelectedIndex(0); // Establece el primer elemento como seleccionado
+        jComboBox1.setSelectedIndex(0); // Establece el primer elemento como seleccionado
+        
+    } catch (Exception ex) {
+        Logger.getLogger(Profesores.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       int filaSeleccionada = jTable1.getSelectedRow();
+       if (filaSeleccionada != -1) { // Verificar si se ha seleccionado alguna fila
+        String nombreProfesor = jTable1.getValueAt(filaSeleccionada, 0).toString();
+        // Llamar al método eliminarProfesor con el nombre del profesor seleccionado
+        profesores.eliminarProfesor(nombreProfesor, jTable1);
+    } else {
+        System.out.println("Por favor, seleccione un profesor para eliminar.");
+    }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

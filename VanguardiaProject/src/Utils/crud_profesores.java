@@ -16,40 +16,40 @@ import javax.swing.table.DefaultTableModel;
 
 public class crud_profesores {
 
-    public void cargarMaterias(JComboBox<String> comboMaterias, JComboBox<String> comboBloque, JComboBox<String> comboTipo) {
-        try {
-            String selectedBloque = (String) comboBloque.getSelectedItem();
-            String selectedTipo = (String) comboTipo.getSelectedItem();
+        public void cargarMaterias(JComboBox<String> comboMaterias, JComboBox<String> comboBloque, JComboBox<String> comboTipo) {
+          try {
+              String selectedBloque = (String) comboBloque.getSelectedItem();
+              String selectedTipo = (String) comboTipo.getSelectedItem();
 
-            if (selectedBloque == null || selectedTipo == null) {
-                return; // No hacer nada si no hay bloque o tipo seleccionado
-            }
+              if (selectedBloque == null || selectedTipo == null) {
+                  return; // No hacer nada si no hay bloque o tipo seleccionado
+              }
 
-            Connection cc = Conex.getConex();
-            String idBloqueSql = "SELECT ID_BLOQUE FROM bloques WHERE NOMBRE = ?";
-            PreparedStatement idBloqueStmt = cc.prepareStatement(idBloqueSql);
-            idBloqueStmt.setString(1, selectedBloque);
-            ResultSet idBloqueRs = idBloqueStmt.executeQuery();
+              Connection cc = Conex.getConex();
+              String idBloqueSql = "SELECT ID_BLOQUE FROM bloques WHERE NOMBRE = ?";
+              PreparedStatement idBloqueStmt = cc.prepareStatement(idBloqueSql);
+              idBloqueStmt.setString(1, selectedBloque);
+              ResultSet idBloqueRs = idBloqueStmt.executeQuery();
 
-            if (idBloqueRs.next()) {
-                int idBloque = idBloqueRs.getInt("ID_BLOQUE");
+              if (idBloqueRs.next()) {
+                  int idBloque = idBloqueRs.getInt("ID_BLOQUE");
 
-                String sql = "SELECT nombre_materia FROM materias WHERE materia_id IN (SELECT fk_materia FROM horarios h INNER JOIN espacios e ON h.fk_espacio = e.ID_ESPACIO WHERE e.ID_BLOQUE_PERTENECE = ? AND e.TIPO = ?)";
-                PreparedStatement psd = cc.prepareStatement(sql);
-                psd.setInt(1, idBloque);
-                psd.setString(2, selectedTipo);
-                ResultSet rs = psd.executeQuery();
+                  String sql = "SELECT nombre_materia FROM materias WHERE materia_id IN (SELECT fk_materia FROM horarios h INNER JOIN espacios e ON h.fk_espacio = e.ID_ESPACIO WHERE e.ID_BLOQUE_PERTENECE = ? AND e.TIPO = ?)";
+                  PreparedStatement psd = cc.prepareStatement(sql);
+                  psd.setInt(1, idBloque);
+                  psd.setString(2, selectedTipo);
+                  ResultSet rs = psd.executeQuery();
 
-                comboMaterias.removeAllItems();
-                while (rs.next()) {
-                    comboMaterias.addItem(rs.getString("nombre_materia"));
-                }
-            }
+                  comboMaterias.removeAllItems();
+                  while (rs.next()) {
+                      comboMaterias.addItem(rs.getString("nombre_materia"));
+                  }
+              }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+          } catch (SQLException e) {
+              e.printStackTrace();
+          }
+      }
 
     public void cargarBloque(JComboBox<String> comboBloque) {
         try {
@@ -97,66 +97,63 @@ public class crud_profesores {
         }
     }
 
-    public void addProfesor(String nombre, String materiaSeleccionada, String bloqueSeleccionado, String tipoSeleccionado, String aulaSeleccionada) {
-        String idblock = "SELECT ID_BLOQUE FROM BLOQUES WHERE NOMBRE = ?";
-        String espacioQuery = "SELECT ID_ESPACIO FROM espacios WHERE NOMBRE = ? AND ID_BLOQUE_PERTENECE = ?";
-        String materiaQuery = "SELECT materia_id FROM materias WHERE nombre_materia = ?";
-        String insertQuery = "INSERT INTO profesores (nombre, fk_espacio, fk_materia) VALUES (?, ?, ?)";
+    public void addProfesor(String nombre, String materiaSeleccionada, String bloqueSeleccionado, String tipoSeleccionado, String aulaSeleccionada, JTable table) throws SQLException {
+    String idblock = "SELECT ID_BLOQUE FROM BLOQUES WHERE NOMBRE = ?";
+    String espacioQuery = "SELECT ID_ESPACIO FROM espacios WHERE NOMBRE = ? AND ID_BLOQUE_PERTENECE = ?";
+    String materiaQuery = "SELECT materia_id FROM materias WHERE nombre_materia = ?";
+    String insertQuery = "INSERT INTO profesores (nombre, fk_espacio, fk_materia) VALUES (?, ?, ?)";
 
-        try ( Connection connection = Conex.getConex()) {
-            //obtener id del bloque
-            int idblo = 0;
-            try ( PreparedStatement bloqueStmt = connection.prepareStatement(idblock)) {
-                bloqueStmt.setString(1, bloqueSeleccionado);
-                ResultSet bloqueRs = bloqueStmt.executeQuery();
-                if (bloqueRs.next()) {
-                    idblo = bloqueRs.getInt("ID_BLOQUE");
-                } else {
-                    System.out.println("No se encontro ninguna ID");
-                }
-            } catch (Exception e) {
+    try (Connection connection = Conex.getConex()) {
+        // obtener id del bloque
+        int idblo = 0;
+        try (PreparedStatement bloqueStmt = connection.prepareStatement(idblock)) {
+            bloqueStmt.setString(1, bloqueSeleccionado);
+            ResultSet bloqueRs = bloqueStmt.executeQuery();
+            if (bloqueRs.next()) {
+                idblo = bloqueRs.getInt("ID_BLOQUE");
+            } else {
+                throw new SQLException("No se encontró ninguna ID para el bloque seleccionado.");
             }
-            System.out.println(idblo);
-            System.out.println(aulaSeleccionada);
-            // Obtener el ID del espacio
-            int espacioId = 0;
-            try ( PreparedStatement espacioStmt = connection.prepareStatement(espacioQuery)) {
-                espacioStmt.setString(1, aulaSeleccionada);
-                espacioStmt.setInt(2, idblo);
-                ResultSet espacioRs = espacioStmt.executeQuery();
-                if (espacioRs.next()) {
-                    espacioId = espacioRs.getInt("ID_ESPACIO");
-                } else {
-                    System.err.println("No se encontró el espacio para el tipo y bloque proporcionados.");
-                    return;
-                }
-            }
-
-            // Obtener el ID de la materia
-            int materiaId = 0;
-            try ( PreparedStatement materiaStmt = connection.prepareStatement(materiaQuery)) {
-                materiaStmt.setString(1, materiaSeleccionada);
-                ResultSet materiaRs = materiaStmt.executeQuery();
-                if (materiaRs.next()) {
-                    materiaId = materiaRs.getInt("materia_id");
-                } else {
-                    System.err.println("No se encontró la materia para el nombre proporcionado.");
-                    return;
-                }
-            }
-            System.out.println(nombre);
-            // Insertar el profesor
-            try ( PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
-                insertStmt.setString(1, nombre);
-                insertStmt.setInt(2, espacioId);
-                insertStmt.setInt(3, materiaId);
-                insertStmt.executeUpdate();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+
+        // Obtener el ID del espacio
+        int espacioId = 0;
+        try (PreparedStatement espacioStmt = connection.prepareStatement(espacioQuery)) {
+            espacioStmt.setString(1, aulaSeleccionada);
+            espacioStmt.setInt(2, idblo);
+            ResultSet espacioRs = espacioStmt.executeQuery();
+            if (espacioRs.next()) {
+                espacioId = espacioRs.getInt("ID_ESPACIO");
+            } else {
+                throw new SQLException("No se encontró el espacio para el tipo y bloque proporcionados.");
+            }
+        }
+
+        // Obtener el ID de la materia
+        int materiaId = 0;
+        try (PreparedStatement materiaStmt = connection.prepareStatement(materiaQuery)) {
+            materiaStmt.setString(1, materiaSeleccionada);
+            ResultSet materiaRs = materiaStmt.executeQuery();
+            if (materiaRs.next()) {
+                materiaId = materiaRs.getInt("materia_id");
+            } else {
+                throw new SQLException("No se encontró la materia para el nombre proporcionado.");
+            }
+        }
+
+        // Insertar el profesor
+        try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+            insertStmt.setString(1, nombre);
+            insertStmt.setInt(2, espacioId);
+            insertStmt.setInt(3, materiaId);
+            insertStmt.executeUpdate();
+            // Después de insertar el profesor, actualizar la tabla
+            cargarTabla(table);
+        }
+
     }
+}
+
 
     public void cargarTabla(JTable table) {
         try {
@@ -181,5 +178,25 @@ public class crud_profesores {
             e.printStackTrace();
         }
     }
+    public void eliminarProfesor(String nombreProfesor, JTable table) {
+        try {
+            String sql = "DELETE FROM profesores WHERE nombre = ?";
+            PreparedStatement statement = Conex.getConex().prepareStatement(sql);
+            statement.setString(1, nombreProfesor);
+            int filasAfectadas = statement.executeUpdate();
+            if (filasAfectadas > 0) {
+                System.out.println("El profesor " + nombreProfesor + " ha sido eliminado correctamente.");
+                // Recargar los datos de la tabla después de eliminar al profesor
+                cargarTabla(table);
+            } else {
+                System.out.println("No se encontró ningún profesor con el nombre " + nombreProfesor);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar al profesor: " + e.getMessage());
+        }
+    }
 
 }
+
+
+
