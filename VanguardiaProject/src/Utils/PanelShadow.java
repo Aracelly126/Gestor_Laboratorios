@@ -1,3 +1,4 @@
+
 package Utils;
 
 import java.awt.Color;
@@ -258,4 +259,3 @@ class GraphicsUtilities {
         img.setRGB(x, y, w, h, pixels, 0, w);
     }
 }
-

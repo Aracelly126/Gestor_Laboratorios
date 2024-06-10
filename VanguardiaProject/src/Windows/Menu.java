@@ -454,6 +454,13 @@ public class Menu extends javax.swing.JFrame {
 
     private void jPanelCarreraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelCarreraMouseClicked
         jTabbedPane1.setSelectedIndex(3);
+        Carreras carrera = new Carreras();
+        carrera.setSize(710, 596);
+        jPanel8.removeAll();
+        jPanel8.add(carrera);
+        carrera.setVisible(true);
+        jPanel8.repaint();
+        jPanel8.revalidate();
     }//GEN-LAST:event_jPanelCarreraMouseClicked
 
     private void jPanelCarreraMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelCarreraMouseExited
