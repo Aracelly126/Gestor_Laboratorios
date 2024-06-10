@@ -1,4 +1,2 @@
-PanelShadow
 Utils.GraphicsUtilities
-GraphicsUtilities
 Utils.PanelShadow
