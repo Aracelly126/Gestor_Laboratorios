@@ -28,3 +28,27 @@ Este proyecto es un programa desarrollado en Java para la gestión de reservas d
   <img width="12" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" height="100" alt="mysql logo"  />
 </div>
+
+
+## ⚙️ Instalación
+
+
+Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas. 
+1. **Clona el repositorio:**
+   ```bash
+   git clone https://github.com/Aracelly126/Vanguardia_Project.git
+
+   
+## Pre-requisitos 📋
+Importa el proyecto en tu IDE favorito (Eclipse, NetBeans).
+
+🔧 Configura la base de datos:
+
+   - Crea una base de datos en MySQL.
+   - Importa el archivo `vanguardia.sql` para crear las tablas necesarias.
+   - Configura las credenciales de la base de datos en el archivo.
+
+🚀 Compila y ejecuta el proyecto:
+   - Compila el proyecto en tu IDE.
+   - Ejecuta el archivo principal `Main.java` desde tu IDE.
+
