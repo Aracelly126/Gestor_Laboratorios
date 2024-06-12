@@ -10,7 +10,7 @@ public class Conex {
     private static String url = "jdbc:mysql://localhost:" + puerto + "/";
     private static String nombre_db = "vanguardia";
     private static String user = "root";
-    private static String pass = "SteevenLoor24";
+    private static String pass = "StevenLoor24";
 
     private static Connection con;
 

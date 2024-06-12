@@ -503,6 +503,13 @@ public class Menu extends javax.swing.JFrame {
 
     private void jPanelProfesorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelProfesorMouseClicked
         jTabbedPane1.setSelectedIndex(4);
+        Profesores esp = new Profesores();
+        esp.setSize(710, 596);
+        jPanel9.removeAll();
+        jPanel9.add(esp);
+        esp.setVisible(true);
+        jPanel9.repaint();
+        jPanel9.revalidate();
     }//GEN-LAST:event_jPanelProfesorMouseClicked
 
     private void jPanelProfesorMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelProfesorMouseMoved
