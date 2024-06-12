@@ -4,7 +4,6 @@
  */
 package CodesBD;
 
-
 import Utils.Conex;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,16 +12,18 @@ import javax.swing.JOptionPane;
 
 public class CrudReservas {
 
-    public static boolean guardarReserva(String cedula, String nombre, String correo, String descripcion) {
-        String sql = "INSERT INTO reservas (cedula, nombre, correo, descripcion) VALUES (?, ?, ?, ?)";
+    public static boolean guardarReserva(String Fecha, String id, String Horas, String cedula, String nombre, String correo, String descripcion) {
+        String sql = "INSERT INTO prestamos (Fecha, HORAS_PRESTAMO,cedula, nombre_usuario, correo, observacion,ID_ESPACIO_PERTENECE ) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = Conex.getConex();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try ( Connection conn = Conex.getConex();  PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, cedula);
-            pstmt.setString(2, nombre);
-            pstmt.setString(3, correo);
-            pstmt.setString(4, descripcion);
+            pstmt.setString(1, Fecha);
+            pstmt.setString(2, Horas);
+            pstmt.setString(3, cedula);
+            pstmt.setString(4, nombre);
+            pstmt.setString(5, correo);
+            pstmt.setString(6, descripcion);
+            pstmt.setString(7, id);
 
             int filasInsertadas = pstmt.executeUpdate();
             return filasInsertadas > 0;
@@ -34,5 +35,4 @@ public class CrudReservas {
         }
     }
 
-    // Agregar nuevas consultas panas
 }
