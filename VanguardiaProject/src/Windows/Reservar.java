@@ -5,15 +5,25 @@
 package Windows;
 
 import CodesBD.CrudReservas;
+import ComponentesPropios.TablaReservas;
+import Utils.Conex;
 import Validaciones.Validaciones;
+import com.mysql.jdbc.PreparedStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author User
  */
 public class Reservar extends javax.swing.JFrame {
-
+String Fecha;
     /**
      * Creates new form Reservar
      */
@@ -21,6 +31,19 @@ public class Reservar extends javax.swing.JFrame {
         initComponents();
         
     }
+public void setDatosReserva(String fecha, String bloque, String tipoEspacio, String numeroAula, String hora) {
+    // Crear un arreglo para almacenar los datos de la reserva, incluida la hora
+    Object[] reserva = {fecha, hora, bloque, tipoEspacio, numeroAula};
+
+    // Agregar la reserva a la tabla
+    tablaReservas2.agregarReserva(reserva);
+}
+public void consumirFecha(String Fecha){
+    this.Fecha = Fecha;
+}
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,6 +69,8 @@ public class Reservar extends javax.swing.JFrame {
         Barrasuperior = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaReservas2 = new ComponentesPropios.TablaReservas();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,7 +128,7 @@ public class Reservar extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(75, 75, 75)
                 .addComponent(jLabel2)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         BarrasuperiorLayout.setVerticalGroup(
             BarrasuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,54 +140,64 @@ public class Reservar extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jScrollPane2.setViewportView(tablaReservas2);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Barrasuperior, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(58, 58, 58)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(23, 23, 23)
-                        .addComponent(jtxtNombre))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(31, 31, 31)
-                        .addComponent(jtxtCedula))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(50, 50, 50)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jbtnGuardar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jbtnActualizar))
-                            .addComponent(jtxtCorreo)
-                            .addComponent(jtxtDescripcion))))
-                .addGap(57, 57, 57))
-            .addComponent(Barrasuperior, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel10)
-                .addGap(158, 158, 158))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel8))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(23, 23, 23)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jbtnGuardar)
+                                        .addGap(192, 192, 192)
+                                        .addComponent(jbtnActualizar))
+                                    .addComponent(jtxtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+                                    .addComponent(jtxtNombre)
+                                    .addComponent(jtxtCorreo)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(31, 31, 31)
+                                .addComponent(jtxtCedula))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(260, 260, 260)
+                        .addComponent(jLabel10))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Barrasuperior, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jtxtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jtxtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(jtxtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -174,16 +209,16 @@ public class Reservar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtnGuardar)
                     .addComponent(jbtnActualizar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10)
-                .addGap(73, 73, 73))
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -208,44 +243,69 @@ public class Reservar extends javax.swing.JFrame {
     }//GEN-LAST:event_jtxtCedulaActionPerformed
 
     private void jbtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarActionPerformed
-        
-         String cedula = jtxtCedula.getText();
-        String nombre = jtxtNombre.getText();
-        String correo = jtxtCorreo.getText();
-        String descripcion = jtxtDescripcion.getText();
+      
 
-       if (!Validaciones.validarCedula(cedula)) {
-            JOptionPane.showMessageDialog(this, "Cédula inválida. Debe ingresar una cedula valida.");
-            return;
-        }
+    // Obtenemos los datos restantes de los campos de texto
+    String cedula = jtxtCedula.getText();
+    String nombre = jtxtNombre.getText();
+    String correo = jtxtCorreo.getText();
+    String descripcion = jtxtDescripcion.getText();
 
-        if (!Validaciones.validarNombre(nombre)) {
-            JOptionPane.showMessageDialog(this, "Nombre inválido. Debe contener solo letras.");
-            return;
-        }
+    // Validamos los campos
+    if (!Validaciones.validarCedula(cedula)) {
+        JOptionPane.showMessageDialog(this, "Cédula inválida. Debe ingresar una cedula valida.");
+        return;
+    }
 
-        if (!Validaciones.validarCorreo(correo)) {
-            JOptionPane.showMessageDialog(this, "Correo inválido. Debe contener un '@example.com o @uta.edu.ec'.");
-            return;
-        }
+    if (!Validaciones.validarNombre(nombre)) {
+        JOptionPane.showMessageDialog(this, "Nombre inválido. Debe contener solo letras.");
+        return;
+    }
 
-        if (CrudReservas.guardarReserva(cedula, nombre, correo, descripcion)) {
-            JOptionPane.showMessageDialog(this, "Reserva guardada exitosamente!");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al guardar la reserva.");
-        }
-    
+    if (!Validaciones.validarCorreo(correo)) {
+        JOptionPane.showMessageDialog(this, "Correo inválido. Debe contener un '@example.com o @uta.edu.ec'.");
+        return;
+    }
 
+    // Guardamos la reserva con todos los datos
+    if (CrudReservas.guardarReserva(this.Fecha, buscarIdAula(),obtenerhora(),cedula, nombre, correo, descripcion)) {
+        JOptionPane.showMessageDialog(this, "Reserva guardada exitosamente!");
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al guardar la reserva.");
+    }
         
     }//GEN-LAST:event_jbtnGuardarActionPerformed
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-             Horarios horarios = new Horarios();
-    this.setVisible(false); 
-    horarios.setVisible(true);
+             
+    this.dispose();
         
     }//GEN-LAST:event_jLabel10MouseClicked
+        private String obtenerhora(){
+            String[] Hora  = String.valueOf(this.tablaReservas2.getValueAt(0, 1)).split(":");
+            return Hora[0];
+        }
+        
+        
+         private String buscarIdAula() {
+        String idAula = "";
 
+        try {
+            Connection conn = Conex.getConex();
+            String queryBuscarIdAula = "SELECT ID_ESPACIO FROM espacios WHERE NOMBRE= ?";
+            PreparedStatement declaración = (PreparedStatement) conn.prepareStatement(queryBuscarIdAula);
+            declaración.setString(1, (String) this.tablaReservas2.getValueAt(0, 4));
+            ResultSet resultado = declaración.executeQuery();
+            if (resultado.next()) {
+                idAula = resultado.getString("ID_ESPACIO");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(HorariosFISEI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return idAula;
+    }
+        
     /**
      * @param args the command line arguments
      */
@@ -291,11 +351,16 @@ public class Reservar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbtnActualizar;
     private javax.swing.JButton jbtnGuardar;
     private javax.swing.JTextField jtxtCedula;
     private javax.swing.JTextField jtxtCorreo;
     private javax.swing.JTextField jtxtDescripcion;
     private javax.swing.JTextField jtxtNombre;
+    private ComponentesPropios.TablaReservas tablaReservas2;
     // End of variables declaration//GEN-END:variables
+
+   
+   
 }

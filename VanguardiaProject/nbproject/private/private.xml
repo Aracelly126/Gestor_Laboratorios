@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/thexe/OneDrive/Documentos/WorkSpace/Manejo_project/Vanguardia_Project/VanguardiaProject/src/Windows/Bloques.java</file>
-            <file>file:/C:/Users/thexe/OneDrive/Documentos/WorkSpace/Manejo_project/Vanguardia_Project/VanguardiaProject/src/Windows/HorariosFISEI.java</file>
-            <file>file:/C:/Users/thexe/OneDrive/Documentos/WorkSpace/Manejo_project/Vanguardia_Project/VanguardiaProject/src/Windows/Menu.java</file>
-            <file>file:/C:/Users/thexe/OneDrive/Documentos/WorkSpace/Manejo_project/Vanguardia_Project/VanguardiaProject/src/Utils/Conex.java</file>
-            <file>file:/C:/Users/thexe/OneDrive/Documentos/WorkSpace/Manejo_project/Vanguardia_Project/VanguardiaProject/src/Main/Main.java</file>
+            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Codes/Horarios.java</file>
+            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/ComponentesPropios/TablaReservas.java</file>
+            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Windows/Menu.java</file>
+            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Windows/HorariosFISEI.java</file>
+            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/CodesBD/CrudReservas.java</file>
+            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Windows/Reservar.java</file>
         </group>
     </open-files>
 </project-private>

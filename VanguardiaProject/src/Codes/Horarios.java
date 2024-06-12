@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Horarios {
@@ -47,7 +48,7 @@ public class Horarios {
                     }
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e); e.printStackTrace();
             }
         } else {
             System.out.println("La conexión es nula");
