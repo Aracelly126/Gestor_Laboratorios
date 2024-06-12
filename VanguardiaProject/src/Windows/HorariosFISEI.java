@@ -4,11 +4,14 @@
  */
 package Windows;
 
+import java.sql.ResultSet;
 import Codes.Bloques;
 import Codes.FiltradorAulas_Lab;
 import Codes.Horario;
 import Codes.Horarios;
 import Codes.Lab_Aulas;
+import Utils.Conex;
+import com.mysql.jdbc.PreparedStatement;
 import com.toedter.calendar.IDateEvaluator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
@@ -18,14 +21,22 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,7 +46,6 @@ import javax.swing.table.DefaultTableModel;
 public class HorariosFISEI extends javax.swing.JPanel {
 
     private JPopupMenu popupMenu;
-    private int selectedDayOfWeek = -1;
 
     /**
      * Creates new form HorariosFISEI
@@ -167,16 +177,33 @@ public class HorariosFISEI extends javax.swing.JPanel {
         popupMenu = new JPopupMenu();
         JMenuItem reservarItem = new JMenuItem("Reservar");
         JMenuItem modificarReservaItem = new JMenuItem("Modificar Reserva");
+        JMenuItem eliminarReservaItem = new JMenuItem("Eliminar Reserva");
 
         reservarItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí va la lógica para la acción de "Reservar"
                 int row = utcJTable1.getSelectedRow();
                 int col = utcJTable1.getSelectedColumn();
                 if (row >= 0 && col >= 0) {
                     String valorCelda = (String) utcJTable1.getValueAt(row, col);
-                    JOptionPane.showMessageDialog(null, "Reservando celda en fila " + row + ", columna " + col + " con valor: " + valorCelda);
+                    String hora = (String) utcJTable1.getValueAt(row, 0); // Obteniendo la hora de la casilla seleccionada
+                    JOptionPane.showMessageDialog(null, "Reservando celda en fila " + row + ", columna " + col + " con valor: " + valorCelda + " en hora: " + hora);
+
+                    // Cambiar el valor de la celda seleccionada a "Reservado"
+                    utcJTable1.setValueAt("Reservado", row, col);
+
+                    // Obtener los datos seleccionados
+                    String fecha = ((JTextField) jDateChooser2.getDateEditor().getUiComponent()).getText();
+                    String bloque = (String) jcmbBloques.getSelectedItem();
+                    String tipoEspacio = (String) jcmbLabAulas.getSelectedItem();
+                    String numeroAula = (String) jcmbNumLabAulas.getSelectedItem();
+
+                    // Crear instancia del JFrame Reservar y pasar los datos
+                    Reservar reservarFrame = new Reservar();
+                    reservarFrame.setDatosReserva(fecha, bloque, tipoEspacio, numeroAula, hora); // Pasar la hora
+                    reservarFrame.consumirFecha(ObtenerFecha());
+                    reservarFrame.setVisible(true);
+
                 }
             }
         });
@@ -184,7 +211,6 @@ public class HorariosFISEI extends javax.swing.JPanel {
         modificarReservaItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí va la lógica para la acción de "Modificar Reserva"
                 int row = utcJTable1.getSelectedRow();
                 int col = utcJTable1.getSelectedColumn();
                 if (row >= 0 && col >= 0) {
@@ -194,8 +220,22 @@ public class HorariosFISEI extends javax.swing.JPanel {
             }
         });
 
+        eliminarReservaItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = utcJTable1.getSelectedRow();
+                int col = utcJTable1.getSelectedColumn();
+                if (row >= 0 && col >= 0) {
+                    // Eliminar la reserva de la celda seleccionada
+                    utcJTable1.setValueAt("", row, col);
+                    JOptionPane.showMessageDialog(null, "Reserva eliminada en celda en fila " + row + ", columna " + col);
+                }
+            }
+        });
+
         popupMenu.add(reservarItem);
         popupMenu.add(modificarReservaItem);
+        popupMenu.add(eliminarReservaItem);
 
         utcJTable1.addMouseListener(new MouseAdapter() {
             @Override
@@ -227,9 +267,14 @@ public class HorariosFISEI extends javax.swing.JPanel {
                         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
                         // Mapear el día de la semana a las columnas de la tabla (lunes -> 1, martes -> 2, ...)
-                        int selectedColumn = dayOfWeek -2;
+                        int selectedColumn = dayOfWeek - 1;
 
-                        // Verificar si la columna seleccionada no coincide con el día de la semana
+                        // Actualizar el JDateChooser si la columna seleccionada es diferente al día seleccionado
+                        if (col != selectedColumn) {
+                            calendar.add(Calendar.DAY_OF_MONTH, col - selectedColumn);
+                            jDateChooser2.setDate(calendar.getTime());
+                        }
+
                         if (col != selectedColumn) {
                             // Si la columna seleccionada es posterior al día seleccionado, mostrar el menú emergente
                             if (col >= selectedColumn) {
@@ -240,10 +285,15 @@ public class HorariosFISEI extends javax.swing.JPanel {
                     }
                 }
             }
-
         });
     }
 
+    
+private String ObtenerFecha(){
+     SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+   return formatoFecha.format(this.jDateChooser2.getCalendar().getTime());
+    
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -324,9 +374,18 @@ public class HorariosFISEI extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
+<<<<<<< HEAD
                         .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+=======
+                        .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(39, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
+>>>>>>> 357e77e15f69c2efb719d1a84a46c6560025fefc
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

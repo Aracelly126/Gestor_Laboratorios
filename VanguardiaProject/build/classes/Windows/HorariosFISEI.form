@@ -36,7 +36,16 @@
                   </Group>
                   <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
+<<<<<<< HEAD
               <EmptySpace max="32767" attributes="0"/>
+=======
+              <EmptySpace pref="39" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="25" max="32767" attributes="0"/>
+              <Component id="jScrollPane2" min="-2" pref="627" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+>>>>>>> 357e77e15f69c2efb719d1a84a46c6560025fefc
           </Group>
       </Group>
     </DimensionLayout>
