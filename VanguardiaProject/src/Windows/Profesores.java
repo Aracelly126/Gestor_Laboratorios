@@ -29,6 +29,7 @@ public class Profesores extends javax.swing.JPanel {
 
     DefaultTableModel tablaModelo = new DefaultTableModel(new Object[]{"Profesor", "Materia", "Tipo", "Nombre", "Bloque"}, 0);
     String nombre = "";
+    int idpro = 0;
 
     /**
      * Creates new form Profesores
@@ -52,8 +53,11 @@ public class Profesores extends javax.swing.JPanel {
         jcbxBloques.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println(jcbxBloques.getSelectedItem().toString());
                 cargarAulasOLaboratorios();
-                profesores.cargarMaterias(jcbxMateria, jcbxBloques, jcbxTipo);
+                //profesores.cargarMaterias(jcbxMateria, jcbxBloques, jcbxTipo);
+                
+                System.out.println(jcbxBloques.getSelectedItem().toString());
             }
         });
 
@@ -61,16 +65,24 @@ public class Profesores extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cargarAulasOLaboratorios();
-                profesores.cargarMaterias(jcbxMateria, jcbxBloques, jcbxTipo);
+                cargarMateria();
+                
+                
             }
         });
 
         jcbxMateria.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // No es necesario cargar las materias aquí, ya se cargan cuando se selecciona un nuevo bloque o tipo
+                cargarMateria();
             }
         });
+    }
+
+    private void cargarMateria() {
+        String selectedBloque = (String) jcbxBloques.getSelectedItem();
+        String selectedTipo = (String) jcbxTipo.getSelectedItem();
+        profesores.cargarMaterias(jcbxMateria, selectedBloque, selectedTipo);
     }
 
     private void cargarAulasOLaboratorios() {
@@ -79,6 +91,8 @@ public class Profesores extends javax.swing.JPanel {
         if (selectedBloqueObj != null && selectedTipoObj != null) {
             String selectedBloque = selectedBloqueObj.toString();
             String selectedTipo = selectedTipoObj.toString();
+            System.out.println("Selected Bloque: " + selectedBloque);
+            System.out.println("Selected Tipo: " + selectedTipo);
             profesores.llenarComboBoxAulas(jComboBox1, jcbxTipo, jcbxBloques);
         } else {
             System.out.println("No hay bloque o tipo seleccionado.");
@@ -97,13 +111,16 @@ public class Profesores extends javax.swing.JPanel {
 
         if (filaSeleccionada >= 0) {
             String nombre = jTable1.getValueAt(filaSeleccionada, 0).toString();
-            String materiaSeleccionada = jTable1.getValueAt(filaSeleccionada, 1).toString();
-            String bloqueSeleccionado = jTable1.getValueAt(filaSeleccionada, 2).toString();
-            String aulaSeleccionada = jTable1.getValueAt(filaSeleccionada, 3).toString();
+            String materiaSeleccionada = (String) jTable1.getValueAt(filaSeleccionada, 1);
+            String tiposeleccionado = (String) jTable1.getValueAt(filaSeleccionada, 2);
+            String aulaSeleccionada = (String) jTable1.getValueAt(filaSeleccionada, 3);
+            String bloqueSeleccionado = (String) jTable1.getValueAt(filaSeleccionada, 4);
+            
 
             // Mostrar los datos en los componentes correspondientes
             jtxtNombre.setText(nombre);
             jcbxMateria.setSelectedItem(materiaSeleccionada);
+            jcbxTipo.setSelectedItem(tiposeleccionado);
             jcbxBloques.setSelectedItem(bloqueSeleccionado);
             jComboBox1.setSelectedItem(aulaSeleccionada);
         } else {
@@ -234,12 +251,9 @@ public class Profesores extends javax.swing.JPanel {
             String bloqueSeleccionado = (String) jcbxBloques.getSelectedItem();
             String tipoSeleccionado = (String) jcbxTipo.getSelectedItem();
             String aulaSeleccionada = (String) jComboBox1.getSelectedItem();
-            ps.addProfesor(nombre, materiaSeleccionada, bloqueSeleccionado, tipoSeleccionado, aulaSeleccionada, jTable1);
+            profesores.addProfesor(nombre, materiaSeleccionada, bloqueSeleccionado, tipoSeleccionado, aulaSeleccionada, jTable1);
             jtxtNombre.setText("");
-            jcbxMateria.setSelectedIndex(0);
-            jcbxBloques.setSelectedIndex(0);
-            jcbxTipo.setSelectedIndex(0);
-            jComboBox1.setSelectedIndex(0);
+            
         } catch (Exception ex) {
             Logger.getLogger(Profesores.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -256,25 +270,8 @@ public class Profesores extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-
-if (filaSeleccionada >= 0) {
-    String nombre = jTable1.getValueAt(filaSeleccionada, 0).toString();
-    String materiaSeleccionada = jTable1.getValueAt(filaSeleccionada, 1).toString();
-    String tipoSeleccionado = jTable1.getValueAt(filaSeleccionada, 2).toString();
-    String nombreEspacio = jTable1.getValueAt(filaSeleccionada, 3).toString();
-    int idProfesor = Integer.parseInt(jTable1.getValueAt(filaSeleccionada, 4).toString());
-
-    try {
-        ep.editarProfesor(nombre, materiaSeleccionada, tipoSeleccionado, nombreEspacio, idProfesor);
-        JOptionPane.showMessageDialog(null, "Profesor editado correctamente.", "Editar Profesor", JOptionPane.INFORMATION_MESSAGE);
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error al editar el profesor: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-} else {
-    JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
-}
+        
+        profesores.editarProfesor(nombre, jcbxTipo.getSelectedItem().toString(), jComboBox1.getSelectedItem().toString(), jcbxMateria.getSelectedItem().toString(), nombre);
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -283,6 +280,7 @@ if (filaSeleccionada >= 0) {
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+
         mostrarDatosSeleccionados();
     }//GEN-LAST:event_jTable1MouseClicked
 
