@@ -29,7 +29,7 @@ String Fecha;
      */
     public Reservar() {
         initComponents();
-        
+        this.setLocationRelativeTo(null);
     }
 public void setDatosReserva(String fecha, String bloque, String tipoEspacio, String numeroAula, String hora) {
     // Crear un arreglo para almacenar los datos de la reserva, incluida la hora
@@ -72,7 +72,7 @@ public void consumirFecha(String Fecha){
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaReservas2 = new ComponentesPropios.TablaReservas();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

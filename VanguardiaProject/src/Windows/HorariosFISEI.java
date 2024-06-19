@@ -187,7 +187,6 @@ public class HorariosFISEI extends javax.swing.JPanel {
                 if (row >= 0 && col >= 0) {
                     String valorCelda = (String) utcJTable1.getValueAt(row, col);
                     String hora = (String) utcJTable1.getValueAt(row, 0); // Obteniendo la hora de la casilla seleccionada
-                    JOptionPane.showMessageDialog(null, "Reservando celda en fila " + row + ", columna " + col + " con valor: " + valorCelda + " en hora: " + hora);
 
                     // Cambiar el valor de la celda seleccionada a "Reservado"
                     utcJTable1.setValueAt("Reservado", row, col);
@@ -307,12 +306,15 @@ private String ObtenerFecha(){
         jcmbBloques = new javax.swing.JComboBox<>();
         jcmbLabAulas = new javax.swing.JComboBox<>();
         jcmbNumLabAulas = new javax.swing.JComboBox<>();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        utcJTable1 = new ComponentesPropios.utcJTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setText("Espacios Aulas/Laboratorios");
+        add(jLabel2);
 
         jcmbBloques.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -337,6 +339,7 @@ private String ObtenerFecha(){
                 jcmbBloquesKeyPressed(evt);
             }
         });
+        add(jcmbBloques);
 
         jcmbLabAulas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -348,6 +351,7 @@ private String ObtenerFecha(){
                 jcmbLabAulasActionPerformed(evt);
             }
         });
+        add(jcmbLabAulas);
 
         jcmbNumLabAulas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -359,52 +363,12 @@ private String ObtenerFecha(){
                 jcmbNumLabAulasActionPerformed(evt);
             }
         });
+        add(jcmbNumLabAulas);
+        add(jDateChooser2);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jcmbBloques, 0, 148, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-<<<<<<< HEAD
-                        .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-=======
-                        .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(39, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
->>>>>>> 357e77e15f69c2efb719d1a84a46c6560025fefc
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(38, 38, 38))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcmbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jcmbLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jcmbNumLabAulas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(405, Short.MAX_VALUE))
-        );
+        jScrollPane1.setViewportView(utcJTable1);
+
+        add(jScrollPane1);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcmbBloquesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jcmbBloquesFocusLost
@@ -455,10 +419,12 @@ private String ObtenerFecha(){
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> jcmbBloques;
     private javax.swing.JComboBox<String> jcmbLabAulas;
     private javax.swing.JComboBox<String> jcmbNumLabAulas;
+    private ComponentesPropios.utcJTable utcJTable1;
     // End of variables declaration//GEN-END:variables
 }
