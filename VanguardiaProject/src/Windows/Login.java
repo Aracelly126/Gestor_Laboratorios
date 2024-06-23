@@ -36,7 +36,7 @@ public class Login extends javax.swing.JFrame {
         }
         //</editor-fold>
         initComponents();
-        
+         this.setLocationRelativeTo(null);
         ManejoComp.crearlabel(this.lbl_header, "src\\IMG\\banner-fisei-uta.png");
         Image img = Toolkit.getDefaultToolkit().getImage("src\\IMG\\favicon.png");
         this.setIconImage(img);
@@ -45,7 +45,7 @@ public class Login extends javax.swing.JFrame {
     }
     
     public void iniciar(){
-        this.setLocationRelativeTo(null);
+       
         this.setVisible(true);
     }   
 

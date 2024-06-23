@@ -55,6 +55,10 @@ public class Menu extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         panelShadow1 = new Utils.PanelShadow();
         jLabel7 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        pnlCerrarSesion = new Utils.PanelShadow();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
@@ -243,29 +247,34 @@ public class Menu extends javax.swing.JFrame {
                 panelShadow1MouseClicked(evt);
             }
         });
+        panelShadow1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Formulario");
+        jLabel7.setText("Enviar Solicitud");
+        panelShadow1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
 
-        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
-        panelShadow1.setLayout(panelShadow1Layout);
-        panelShadow1Layout.setHorizontalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
-                .addContainerGap(56, Short.MAX_VALUE)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
-        );
-        panelShadow1Layout.setVerticalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelShadow1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel7)
-                .addContainerGap(27, Short.MAX_VALUE))
-        );
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/documents.png"))); // NOI18N
+        panelShadow1.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 14, -1, 32));
 
-        jPanel2.add(panelShadow1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 460, 190, 70));
+        jPanel2.add(panelShadow1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 190, 60));
+
+        pnlCerrarSesion.setBackground(new java.awt.Color(204, 204, 204));
+        pnlCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlCerrarSesionMouseClicked(evt);
+            }
+        });
+        pnlCerrarSesion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jLabel8.setText("Cerrar Sesión");
+        pnlCerrarSesion.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 1, -1, 40));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/logout.png"))); // NOI18N
+        pnlCerrarSesion.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 40, 40));
+
+        jPanel2.add(pnlCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 510, 190, 50));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 260, 630));
 
@@ -290,7 +299,7 @@ public class Menu extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 512, Short.MAX_VALUE))
+                .addContainerGap(514, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab1", jPanel4);
@@ -553,7 +562,14 @@ public class Menu extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_panelShadow1MouseClicked
-
+    Login log = new Login();
+    private void pnlCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCerrarSesionMouseClicked
+        setVisible(false);
+        dispose();
+    
+        log.setVisible(true);
+    }//GEN-LAST:event_pnlCerrarSesionMouseClicked
+   
     /**
      * @param args the command line arguments
      */
@@ -604,11 +620,14 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -626,5 +645,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel jlblBaner;
     private Utils.PanelShadow panelShadow1;
+    private Utils.PanelShadow pnlCerrarSesion;
     // End of variables declaration//GEN-END:variables
 }
