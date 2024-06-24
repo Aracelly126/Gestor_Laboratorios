@@ -1,29 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ComponentesPropios;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-/**
- *
- * @author Dalex
- */
 public class utcJTable extends JTable {
 
-    DefaultTableModel modelotabla = new DefaultTableModel(new Object[]{"Hora", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes","Sabado"}, 12);
+    DefaultTableModel modelotabla = new DefaultTableModel(new Object[]{"Hora", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"}, 12);
 
     public utcJTable() {
         this.setModel(modelotabla);
@@ -58,30 +47,37 @@ public class utcJTable extends JTable {
 
     @Override
     public Component prepareRenderer(TableCellRenderer renderer, int fila, int columna) {
-    Component componente = super.prepareRenderer(renderer, fila, columna);
-    Object valorCelda = getValueAt(fila, columna);
-    String valor = String.valueOf(valorCelda);
-    
-    // Verificar si la columna es la columna de la hora
-    if (columna == 0) {
-        // Cambiar el color de fondo y el texto para la columna de la hora
-        componente.setBackground(Color.WHITE);
-        componente.setForeground(Color.BLACK);
-    } else {
-        // Verificar si el valor contiene "Reservado" para aplicar el color de fondo apropiado
-        if (valor != null && valor.contains("Reservado")) {
-            componente.setBackground(new Color(243, 185, 181)); // Color rosa claro
+        Component componente = super.prepareRenderer(renderer, fila, columna);
+        Object valorCelda = getValueAt(fila, columna);
+        String valor = String.valueOf(valorCelda);
+
+        // Verificar si la columna es la columna de la hora
+        if (columna == 0) {
+            // Cambiar el color de fondo y el texto para la columna de la hora
+            componente.setBackground(Color.WHITE);
             componente.setForeground(Color.BLACK);
         } else {
-            // Cambiar el color de fondo de las otras columnas a un verde más opaco
-            componente.setBackground(new Color(152, 251, 152)); // Verde claro, más opaco
-            componente.setForeground(Color.BLACK);
+            // Verificar si el valor contiene "Clase" o "Reservado" para aplicar el color de fondo apropiado
+            if (valor != null) {
+                if (valor.contains("Clase")) {
+                    componente.setBackground(new Color(243, 76, 53)); // Color rojo para clases
+                    componente.setForeground(Color.BLACK);
+                } else if (valor.contains("Reservado")) {
+                    componente.setBackground(new Color(173, 216, 230)); // Color celeste para reservas
+                    componente.setForeground(Color.BLACK);
+                } else {
+                    componente.setBackground(new Color(152, 251, 152)); // Verde claro, más opaco
+                    componente.setForeground(Color.BLACK);
+                }
+            } else {
+                componente.setBackground(new Color(152, 251, 152)); // Verde claro, más opaco
+                componente.setForeground(Color.BLACK);
+            }
         }
+        return componente;
     }
-    return componente;
-}
 
-    public void horasDia() {  // Asegúrate de que este método sea público
+    public void horasDia() { // Asegúrate de que este método sea público
         this.setBorder(BorderFactory.createLineBorder(Color.black));
         this.setValueAt("07:00-08:00", 0, 0);
         this.setValueAt("08:00-09:00", 1, 0);
@@ -111,4 +107,3 @@ public class utcJTable extends JTable {
         this.setRowHeight(0, 70);
     }
 }
-
