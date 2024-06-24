@@ -201,13 +201,26 @@ public class Profesores extends javax.swing.JPanel {
             jtxtCedula.setText("");
             jtxtNombre.setText("");
             jtxtApellido.setText("");
+            jbtnCancelar.setEnabled(false);
+            jbtnCrear.setEnabled(true);
         } else {
             System.out.println("Por favor, seleccione un profesor para eliminar.");
         }
     }//GEN-LAST:event_jbtnEliminarActionPerformed
 
     private void jbtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEditarActionPerformed
-
+        int filaSeleccionada = jTable1.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            profesores.editarProfesor(jtxtIdentificador.getText(),jtxtCedula.getText(),jtxtNombre.getText(),jtxtApellido.getText(),jTable1);
+            profesores.actualizarLabelIdentificador(jtxtIdentificador);
+            jtxtCedula.setText("");
+            jtxtNombre.setText("");
+            jtxtApellido.setText("");
+            jbtnCancelar.setEnabled(false);
+            jbtnCrear.setEnabled(true);
+        } else {
+            System.out.println("Por favor, seleccione un profesor para editar.");
+        }
 
     }//GEN-LAST:event_jbtnEditarActionPerformed
 

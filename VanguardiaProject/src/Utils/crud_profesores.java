@@ -66,10 +66,10 @@ public class crud_profesores {
                 statement.setString(1, identificador);
                 int filasAfectadas = statement.executeUpdate();
                 if (filasAfectadas > 0) {
-                    JOptionPane.showMessageDialog(null,"El profesor con identificador " + identificador + " ha sido eliminado correctamente.");
+                    JOptionPane.showMessageDialog(null, "El profesor con identificador " + identificador + " ha sido eliminado correctamente.");
                     cargarTabla(table);
                 } else {
-                    JOptionPane.showMessageDialog(null,"No se encontró ningún profesor con el identificador " + identificador);
+                    JOptionPane.showMessageDialog(null, "No se encontró ningún profesor con el identificador " + identificador);
                 }
             } catch (SQLException e) {
                 System.err.println("Error al eliminar al profesor: " + e.getMessage());
@@ -77,45 +77,26 @@ public class crud_profesores {
         }
     }
 
-    public void editarProfesor(String identificador, String cedula, String nombre, String apellido, String identificadorProfesor) {
-        int idProfesor = obtenerIdProfesor(identificadorProfesor);
-
-        if (idProfesor == -1) {
-            System.out.println("No se encontró ningún profesor con el identificador proporcionado.");
-            return;
-        }
-
-        String updateQuery = "UPDATE profesores SET identificador = ?, cedula = ?, nombre = ?, apellido = ? WHERE id = ?";
+    public void editarProfesor(String identificador, String cedula, String nombre, String apellido, JTable table) {
+        String updateQuery = "UPDATE profesores SET cedula = ?, nombre = ?, apellido = ? WHERE identificador = ?";
 
         try {
             Connection connection = Conex.getConex();
             PreparedStatement updateStmt = connection.prepareStatement(updateQuery);
-            updateStmt.setString(1, identificador);
-            updateStmt.setString(2, cedula);
-            updateStmt.setString(3, nombre);
-            updateStmt.setString(4, apellido);
-            updateStmt.setInt(5, idProfesor);
-            updateStmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private int obtenerIdProfesor(String identificadorProfesor) {
-        int idProfesor = -1;
-        String query = "SELECT id FROM profesores WHERE identificador = ?";
-        try {
-            Connection connection = Conex.getConex();
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, identificadorProfesor);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                idProfesor = rs.getInt("id");
+            updateStmt.setString(1, cedula);
+            updateStmt.setString(2, nombre);
+            updateStmt.setString(3, apellido);
+            updateStmt.setString(4, identificador);
+            int filasAfectadas = updateStmt.executeUpdate();
+            if (filasAfectadas > 0) {
+                JOptionPane.showMessageDialog(null,"El profesor con identificador " + identificador + " ha sido actualizado correctamente.");
+                cargarTabla(table);
+            } else {
+                JOptionPane.showMessageDialog(null,"No se encontró ningún profesor con el identificador " + identificador);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return idProfesor;
     }
 
     public String obtenerUltimoIdentificador() {
