@@ -324,7 +324,7 @@ private void configurePopupMenu() {
                     reservarItem.setEnabled(false);
                     modificarReservaItem.setEnabled(true);
                     eliminarReservaItem.setEnabled(true);
-                } else if (!selectedDate.before(currentDate) && (!isSameDay || esHoraValida(horaSeleccionada, horaActual))) {
+                } else if (isSameDay && esHoraValida(horaSeleccionada, horaActual)) {
                     reservarItem.setEnabled(true);
                     modificarReservaItem.setEnabled(false);
                     eliminarReservaItem.setEnabled(false);
