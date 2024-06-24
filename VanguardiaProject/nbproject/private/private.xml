@@ -2,30 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Utils/ManejoComp.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Codes/Materia.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Utils/Encript.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/CodesBD/Reserva.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Windows/Profesores.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Codes/bd_materias.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/ComponentesPropios/utcJTable.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Utils/PanelShadow.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/CodesBD/CrudReservas.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Main/Main.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Windows/Reservar.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Utils/crud_bloques.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Codes/Horarios.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Codes/FiltradorAulas_Lab.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Windows/Bloques.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Codes/Lab_Aulas.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Windows/Menu.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Windows/HorariosFISEI.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Utils/crud_profesores.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Codes/bd_bloques.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Utils/Conex.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Validaciones/Validaciones.java</file>
-            <file>file:/C:/Users/User/OneDrive/Escritorio/manejo/Vanguardia_Project/VanguardiaProject/src/Codes/bd_login.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
