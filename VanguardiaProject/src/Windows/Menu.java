@@ -55,7 +55,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         panelShadow1 = new Utils.PanelShadow();
         jLabel7 = new javax.swing.JLabel();
-        inicio = new Utils.PanelShadow();
+        panelShadow2 = new Utils.PanelShadow();
         jLabel9 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
@@ -271,21 +271,35 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel2.add(panelShadow1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 500, 120, 60));
 
-        inicio.setBackground(new java.awt.Color(173, 39, 46));
-        inicio.setForeground(new java.awt.Color(255, 255, 255));
-        inicio.addMouseListener(new java.awt.event.MouseAdapter() {
+        panelShadow2.setBackground(new java.awt.Color(173, 39, 46));
+        panelShadow2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                inicioMouseClicked(evt);
+                panelShadow2MouseClicked(evt);
             }
         });
-        inicio.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("INICIO");
-        inicio.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
-        jPanel2.add(inicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 90, 40));
+        javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
+        panelShadow2.setLayout(panelShadow2Layout);
+        panelShadow2Layout.setHorizontalGroup(
+            panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelShadow2Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel9)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+        panelShadow2Layout.setVerticalGroup(
+            panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelShadow2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel9)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        jPanel2.add(panelShadow2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, -1, 50));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 260, 630));
 
@@ -581,6 +595,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void pnlEliminarBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlEliminarBloqueMouseClicked
         // TODO add your handling code here:
+//       
         
     }//GEN-LAST:event_pnlEliminarBloqueMouseClicked
 
@@ -594,16 +609,16 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_panelShadow1MouseClicked
 
-    private void inicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inicioMouseClicked
-       jTabbedPane1.setSelectedIndex(0);
+    private void panelShadow2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelShadow2MouseClicked
+         jTabbedPane1.setSelectedIndex(0);
         Inicio nn = new Inicio();
         nn.setSize(710,596);
         jPanel4.removeAll();
         jPanel4.add(nn);
         nn.setVisible(true);
         jPanel4.repaint();
-        jPanel4.revalidate();  
-    }//GEN-LAST:event_inicioMouseClicked
+        jPanel4.revalidate();
+    }//GEN-LAST:event_panelShadow2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -641,7 +656,6 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Utils.PanelShadow inicio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -681,5 +695,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel jlblBaner;
     private Utils.PanelShadow panelShadow1;
+    private Utils.PanelShadow panelShadow2;
     // End of variables declaration//GEN-END:variables
 }
