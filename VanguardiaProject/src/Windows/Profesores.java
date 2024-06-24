@@ -38,6 +38,7 @@ public class Profesores extends javax.swing.JPanel {
         initComponents();
         jTable1.setModel(tablaModelo);
         profesores.cargarTabla(jTable1);
+        jbtnCancelar.setEnabled(false);
         jtxtIdentificador.setEnabled(false);
         profesores.actualizarLabelIdentificador(jtxtIdentificador);
 
@@ -66,6 +67,8 @@ public class Profesores extends javax.swing.JPanel {
             String apellido = (String) jTable1.getValueAt(filaSeleccionada, 3);
 
             // Mostrar los datos en los componentes correspondientes
+            jbtnCrear.setEnabled(false);
+            jbtnCancelar.setEnabled(true);
             jtxtNombre.setText(nombre);
             jtxtCedula.setText(cedula);
             jtxtApellido.setText(apellido);
@@ -99,6 +102,7 @@ public class Profesores extends javax.swing.JPanel {
         jtxtCedula = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jtxtIdentificador = new javax.swing.JTextField();
+        jbtnCancelar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -153,7 +157,7 @@ public class Profesores extends javax.swing.JPanel {
                 jbtnEliminarActionPerformed(evt);
             }
         });
-        add(jbtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
+        add(jbtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, -1, -1));
 
         jbtnEditar.setText("Editar");
         jbtnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -161,7 +165,7 @@ public class Profesores extends javax.swing.JPanel {
                 jbtnEditarActionPerformed(evt);
             }
         });
-        add(jbtnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 220, -1, -1));
+        add(jbtnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, -1, -1));
         add(jtxtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 177, 150, -1));
 
         jLabel6.setText("Cedula:");
@@ -171,6 +175,14 @@ public class Profesores extends javax.swing.JPanel {
         jLabel7.setText("Identificador:");
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, -1, -1));
         add(jtxtIdentificador, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 107, 80, -1));
+
+        jbtnCancelar.setText("Cancelar");
+        jbtnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnCancelarActionPerformed(evt);
+            }
+        });
+        add(jbtnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCrearActionPerformed
@@ -208,6 +220,14 @@ public class Profesores extends javax.swing.JPanel {
         mostrarDatosSeleccionados();
     }//GEN-LAST:event_jTable1MouseClicked
 
+    private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
+        // TODO add your handling code here:
+        profesores.actualizarLabelIdentificador(jtxtIdentificador);
+        jtxtCedula.setText("");
+        jtxtNombre.setText("");
+        jtxtApellido.setText("");
+    }//GEN-LAST:event_jbtnCancelarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -217,6 +237,7 @@ public class Profesores extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbtnCancelar;
     private javax.swing.JButton jbtnCrear;
     private javax.swing.JButton jbtnEditar;
     private javax.swing.JButton jbtnEliminar;
