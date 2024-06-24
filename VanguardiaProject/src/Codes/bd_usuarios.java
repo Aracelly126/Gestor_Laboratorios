@@ -37,7 +37,7 @@ public class bd_usuarios {
                 int rowsInserted = pstmtInsert.executeUpdate();
 
                 if (rowsInserted > 0) {
-                    JOptionPane.showMessageDialog(null, "Usuario creado con éxito.");
+                    
                     return true;
                 }
             }
