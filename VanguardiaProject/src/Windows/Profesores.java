@@ -49,11 +49,6 @@ public class Profesores extends javax.swing.JPanel {
 
     }
 
-    
-
-   
-   
-
     private void jtxtNombreFocusLost(java.awt.event.FocusEvent evt) {
         // Recuperar el texto del JTextField cuando pierde el foco
         nombre = jtxtNombre.getText();
@@ -65,16 +60,17 @@ public class Profesores extends javax.swing.JPanel {
         int filaSeleccionada = jTable1.getSelectedRow();
 
         if (filaSeleccionada >= 0) {
-            String nombre = jTable1.getValueAt(filaSeleccionada, 0).toString();
-            String materiaSeleccionada = (String) jTable1.getValueAt(filaSeleccionada, 1);
-            String tiposeleccionado = (String) jTable1.getValueAt(filaSeleccionada, 2);
-            String aulaSeleccionada = (String) jTable1.getValueAt(filaSeleccionada, 3);
-            String bloqueSeleccionado = (String) jTable1.getValueAt(filaSeleccionada, 4);
-            
+            String identificador = jTable1.getValueAt(filaSeleccionada, 0).toString();
+            String cedula = (String) jTable1.getValueAt(filaSeleccionada, 1);
+            String nombre = (String) jTable1.getValueAt(filaSeleccionada, 2);
+            String apellido = (String) jTable1.getValueAt(filaSeleccionada, 3);
 
             // Mostrar los datos en los componentes correspondientes
             jtxtNombre.setText(nombre);
-            
+            jtxtCedula.setText(cedula);
+            jtxtApellido.setText(apellido);
+            jtxtIdentificador.setText(identificador);
+
         } else {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
@@ -95,9 +91,9 @@ public class Profesores extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jbtnCrear = new javax.swing.JButton();
+        jbtnEliminar = new javax.swing.JButton();
+        jbtnEditar = new javax.swing.JButton();
         jtxtApellido = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jtxtCedula = new javax.swing.JTextField();
@@ -138,34 +134,34 @@ public class Profesores extends javax.swing.JPanel {
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, 580, 320));
 
-        jButton1.setText("Crear");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jbtnCrear.setText("Crear");
+        jbtnCrear.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jbtnCrearMouseClicked(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jbtnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jbtnCrearActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, -1, -1));
+        add(jbtnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, -1, -1));
 
-        jButton2.setText("Eliminar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jbtnEliminar.setText("Eliminar");
+        jbtnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jbtnEliminarActionPerformed(evt);
             }
         });
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
+        add(jbtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
 
-        jButton3.setText("Editar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jbtnEditar.setText("Editar");
+        jbtnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jbtnEditarActionPerformed(evt);
             }
         });
-        add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 220, -1, -1));
+        add(jbtnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 220, -1, -1));
         add(jtxtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 177, 150, -1));
 
         jLabel6.setText("Cedula:");
@@ -177,28 +173,35 @@ public class Profesores extends javax.swing.JPanel {
         add(jtxtIdentificador, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 107, 80, -1));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jbtnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCrearActionPerformed
+        profesores.addProfesor(jtxtIdentificador.getText(), jtxtCedula.getText(), jtxtNombre.getText(), jtxtApellido.getText(), jTable1);
+        profesores.actualizarLabelIdentificador(jtxtIdentificador);
+        jtxtCedula.setText("");
+        jtxtNombre.setText("");
+        jtxtApellido.setText("");
+    }//GEN-LAST:event_jbtnCrearActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jbtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEliminarActionPerformed
         int filaSeleccionada = jTable1.getSelectedRow();
         if (filaSeleccionada != -1) {
-            String nombreProfesor = jTable1.getValueAt(filaSeleccionada, 0).toString();
-            profesores.eliminarProfesor(nombreProfesor, jTable1);
+            profesores.eliminarProfesor(jtxtIdentificador.getText(), jTable1);
+            profesores.actualizarLabelIdentificador(jtxtIdentificador);
+            jtxtCedula.setText("");
+            jtxtNombre.setText("");
+            jtxtApellido.setText("");
         } else {
             System.out.println("Por favor, seleccione un profesor para eliminar.");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jbtnEliminarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void jbtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEditarActionPerformed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
 
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_jbtnEditarActionPerformed
+
+    private void jbtnCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCrearMouseClicked
+
+    }//GEN-LAST:event_jbtnCrearMouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 
@@ -207,9 +210,6 @@ public class Profesores extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
@@ -217,6 +217,9 @@ public class Profesores extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbtnCrear;
+    private javax.swing.JButton jbtnEditar;
+    private javax.swing.JButton jbtnEliminar;
     private javax.swing.JTextField jtxtApellido;
     private javax.swing.JTextField jtxtCedula;
     private javax.swing.JTextField jtxtIdentificador;
