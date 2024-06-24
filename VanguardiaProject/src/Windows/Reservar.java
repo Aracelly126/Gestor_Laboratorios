@@ -9,6 +9,8 @@ import ComponentesPropios.TablaReservas;
 import Utils.Conex;
 import Validaciones.Validaciones;
 import com.mysql.jdbc.PreparedStatement;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,27 +25,34 @@ import javax.swing.table.DefaultTableModel;
  * @author User
  */
 public class Reservar extends javax.swing.JFrame {
-String Fecha;
+
+    String Fecha;
+
     /**
      * Creates new form Reservar
      */
     public Reservar() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                confirmarCierre();
+            }
+        });
     }
-public void setDatosReserva(String fecha, String bloque, String tipoEspacio, String numeroAula, String hora) {
-    // Crear un arreglo para almacenar los datos de la reserva, incluida la hora
-    Object[] reserva = {fecha, hora, bloque, tipoEspacio, numeroAula};
 
-    // Agregar la reserva a la tabla
-    tablaReservas2.agregarReserva(reserva);
-}
-public void consumirFecha(String Fecha){
-    this.Fecha = Fecha;
-}
+    public void setDatosReserva(String fecha, String bloque, String tipoEspacio, String numeroAula, String hora) {
+        // Crear un arreglo para almacenar los datos de la reserva, incluida la hora
+        Object[] reserva = {fecha, hora, bloque, tipoEspacio, numeroAula};
 
+        // Agregar la reserva a la tabla
+        tablaReservas2.agregarReserva(reserva);
+    }
 
-
+    public void consumirFecha(String Fecha) {
+        this.Fecha = Fecha;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,7 +70,6 @@ public void consumirFecha(String Fecha){
         jLabel9 = new javax.swing.JLabel();
         jbtnGuardar = new javax.swing.JButton();
         jbtnActualizar = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
         jtxtCedula = new javax.swing.JTextField();
         jtxtNombre = new javax.swing.JTextField();
         jtxtCorreo = new javax.swing.JTextField();
@@ -95,13 +103,6 @@ public void consumirFecha(String Fecha){
         jbtnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnActualizarActionPerformed(evt);
-            }
-        });
-
-        jLabel10.setText("Finalizar renta");
-        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel10MouseClicked(evt);
             }
         });
 
@@ -175,9 +176,6 @@ public void consumirFecha(String Fecha){
                                 .addGap(31, 31, 31)
                                 .addComponent(jtxtCedula))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(260, 260, 260)
-                        .addComponent(jLabel10))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -209,9 +207,7 @@ public void consumirFecha(String Fecha){
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtnGuardar)
                     .addComponent(jbtnActualizar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel10)
-                .addGap(22, 22, 22))
+                .addGap(50, 50, 50))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -243,69 +239,141 @@ public void consumirFecha(String Fecha){
     }//GEN-LAST:event_jtxtCedulaActionPerformed
 
     private void jbtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarActionPerformed
-      
-
-    // Obtenemos los datos restantes de los campos de texto
-    String cedula = jtxtCedula.getText();
-    String nombre = jtxtNombre.getText();
-    String correo = jtxtCorreo.getText();
-    String descripcion = jtxtDescripcion.getText();
-
-    // Validamos los campos
-    if (!Validaciones.validarCedula(cedula)) {
-        JOptionPane.showMessageDialog(this, "Cédula inválida. Debe ingresar una cedula valida.");
-        return;
-    }
-
-    if (!Validaciones.validarNombre(nombre)) {
-        JOptionPane.showMessageDialog(this, "Nombre inválido. Debe contener solo letras.");
-        return;
-    }
-
-    if (!Validaciones.validarCorreo(correo)) {
-        JOptionPane.showMessageDialog(this, "Correo inválido. Debe contener un '@example.com o @uta.edu.ec'.");
-        return;
-    }
-
-    // Guardamos la reserva con todos los datos
-    if (CrudReservas.guardarReserva(this.Fecha, buscarIdAula(),obtenerhora(),cedula, nombre, correo, descripcion)) {
-        JOptionPane.showMessageDialog(this, "Reserva guardada exitosamente!");
-    } else {
-        JOptionPane.showMessageDialog(this, "Error al guardar la reserva.");
-    }
-        
+        guardarReserva();
     }//GEN-LAST:event_jbtnGuardarActionPerformed
-
-    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-             
-    this.dispose();
-        
-    }//GEN-LAST:event_jLabel10MouseClicked
-        private String obtenerhora(){
-            String[] Hora  = String.valueOf(this.tablaReservas2.getValueAt(0, 1)).split(":");
-            return Hora[0];
+   private String obtenerhora() {
+        String hora = "";
+        if (tablaReservas2.getRowCount() > 0 && tablaReservas2.getValueAt(0, 1) != null) {
+            String[] Hora = String.valueOf(this.tablaReservas2.getValueAt(0, 1)).split(":");
+            if (Hora.length > 0) {
+                hora = Hora[0];
+            }
         }
-        
-        
-         private String buscarIdAula() {
+        return hora;
+    }
+
+    private String buscarIdAula() {
         String idAula = "";
 
         try {
             Connection conn = Conex.getConex();
             String queryBuscarIdAula = "SELECT ID_ESPACIO FROM espacios WHERE NOMBRE= ?";
             PreparedStatement declaración = (PreparedStatement) conn.prepareStatement(queryBuscarIdAula);
-            declaración.setString(1, (String) this.tablaReservas2.getValueAt(0, 4));
-            ResultSet resultado = declaración.executeQuery();
-            if (resultado.next()) {
-                idAula = resultado.getString("ID_ESPACIO");
+            if (tablaReservas2.getRowCount() > 0 && tablaReservas2.getValueAt(0, 4) != null) {
+                declaración.setString(1, (String) this.tablaReservas2.getValueAt(0, 4));
+                ResultSet resultado = declaración.executeQuery();
+                if (resultado.next()) {
+                    idAula = resultado.getString("ID_ESPACIO");
+                }
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(HorariosFISEI.class.getName()).log(Level.SEVERE, null, ex);
         }
         return idAula;
     }
-        
+
+    private boolean hayDatosEnCamposReserva() {
+        return !jtxtCedula.getText().trim().isEmpty()
+                || !jtxtNombre.getText().trim().isEmpty()
+                || !jtxtCorreo.getText().trim().isEmpty()
+                || !jtxtDescripcion.getText().trim().isEmpty();
+    }
+
+    private boolean esFormularioVacio() {
+        return jtxtCedula.getText().trim().isEmpty()
+                && jtxtNombre.getText().trim().isEmpty()
+                && jtxtCorreo.getText().trim().isEmpty()
+                && jtxtDescripcion.getText().trim().isEmpty()
+                && (this.Fecha == null || this.Fecha.isEmpty())
+                && (obtenerhora().isEmpty() || obtenerhora() == null);
+    }
+
+    private boolean validarCampos(String cedula, String nombre, String correo, String descripcion, String fecha, String hora) {
+        if (cedula.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Cédula es obligatoria.");
+            return false;
+        }
+        if (!Validaciones.validarCedula(cedula)) {
+            JOptionPane.showMessageDialog(this, "Cédula inválida. Debe ingresar una cédula válida.");
+            return false;
+        }
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre es obligatorio.");
+            return false;
+        }
+        if (!Validaciones.validarNombre(nombre)) {
+            JOptionPane.showMessageDialog(this, "Nombre inválido. Debe contener solo letras.");
+            return false;
+        }
+        if (correo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Correo es obligatorio.");
+            return false;
+        }
+        if (!Validaciones.validarCorreo(correo)) {
+            JOptionPane.showMessageDialog(this, "Correo inválido. Debe contener un '@example.com o @uta.edu.ec'.");
+            return false;
+        }
+        if (descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar una descripción.");
+            return false;
+        }
+        if (fecha == null || fecha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Fecha es obligatoria.");
+            return false;
+        }
+        if (hora == null || hora.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Hora es obligatoria.");
+            return false;
+        }
+        return true;
+    }
+
+    private void guardarReserva() {
+        String cedula = jtxtCedula.getText().trim();
+        String nombre = jtxtNombre.getText().trim();
+        String correo = jtxtCorreo.getText().trim();
+        String descripcion = jtxtDescripcion.getText().trim();
+        String fecha = this.Fecha;
+        String hora = obtenerhora();
+
+        if (!validarCampos(cedula, nombre, correo, descripcion, fecha, hora)) {
+            return; // No continuar si la validación falla
+        }
+
+        if (CrudReservas.guardarReserva(fecha, buscarIdAula(), hora, cedula, nombre, correo, descripcion)) {
+            JOptionPane.showMessageDialog(this, "Reserva guardada exitosamente!");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al guardar la reserva.");
+        }
+    }
+
+    private void confirmarCierre() {
+        if (!esFormularioVacio()) {
+            // Datos parcialmente ingresados
+            int option = JOptionPane.showConfirmDialog(this,
+                    "¿Está seguro de que quiere salir sin guardar la reserva?",
+                    "Confirmar Salida",
+                    JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.NO_OPTION) {
+                setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            } else {
+                setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            }
+        } else {
+            // Formulario completamente vacío
+            int option = JOptionPane.showConfirmDialog(this,
+                    "No se han ingresado datos de la reserva. ¿Desea cerrar la ventana de todos modos?",
+                    "Confirmar Salida",
+                    JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.NO_OPTION) {
+                setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            } else {
+                setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            }
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -344,7 +412,6 @@ public void consumirFecha(String Fecha){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Barrasuperior;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -361,6 +428,4 @@ public void consumirFecha(String Fecha){
     private ComponentesPropios.TablaReservas tablaReservas2;
     // End of variables declaration//GEN-END:variables
 
-   
-   
 }

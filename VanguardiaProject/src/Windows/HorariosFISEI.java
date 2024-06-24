@@ -10,6 +10,8 @@ import Codes.FiltradorAulas_Lab;
 import Codes.Horario;
 import Codes.Horarios;
 import Codes.Lab_Aulas;
+import CodesBD.CrudReservas;
+import CodesBD.Reserva;
 import Utils.Conex;
 import com.mysql.jdbc.PreparedStatement;
 import com.toedter.calendar.IDateEvaluator;
@@ -82,68 +84,111 @@ public class HorariosFISEI extends javax.swing.JPanel {
     }
 
     public void filtroDos() {
-        String nombreBloqueSeleccionado = (String) jcmbBloques.getSelectedItem();
-        String tipoEspacioSeleccionado = (String) jcmbLabAulas.getSelectedItem();
-        Lab_Aulas labAulas = new Lab_Aulas();
-        List<String> aulas = labAulas.obtenerAulasPorBloque(nombreBloqueSeleccionado, tipoEspacioSeleccionado);
-        jcmbNumLabAulas.removeAllItems();
-        for (String aula : aulas) {
-            jcmbNumLabAulas.addItem(aula);
+    String nombreBloqueSeleccionado = (String) jcmbBloques.getSelectedItem();
+    String tipoEspacioSeleccionado = (String) jcmbLabAulas.getSelectedItem();
+
+    if (nombreBloqueSeleccionado == null || tipoEspacioSeleccionado == null) {
+        return;  // No hacer nada si los valores seleccionados son nulos
+    }
+
+    Lab_Aulas labAulas = new Lab_Aulas();
+    List<String> aulas = labAulas.obtenerAulasPorBloque(nombreBloqueSeleccionado, tipoEspacioSeleccionado);
+    jcmbNumLabAulas.removeAllItems();
+    for (String aula : aulas) {
+        jcmbNumLabAulas.addItem(aula);
+    }
+
+    // Llama a insertar() solo si hay elementos en jcmbNumLabAulas
+    if (jcmbNumLabAulas.getItemCount() > 0) {
+        insertar();
+    }
+}
+
+
+public void insertar() {
+    Object bloqueSeleccionado = jcmbBloques.getSelectedItem();
+    Object tipoEspacioSeleccionado = jcmbLabAulas.getSelectedItem();
+    Object laboAulSeleccionado = jcmbNumLabAulas.getSelectedItem();
+
+    if (bloqueSeleccionado == null || tipoEspacioSeleccionado == null || laboAulSeleccionado == null) {
+        JOptionPane.showMessageDialog(null, "Por favor seleccione todos los campos antes de continuar.");
+        return;
+    }
+
+    String nombreBloque = bloqueSeleccionado.toString();
+    String tipoEspacio = tipoEspacioSeleccionado.toString();
+    String laboAul = laboAulSeleccionado.toString();
+
+    Horarios horarios = new Horarios();
+    List<Horario> horariosList = horarios.obtenerAulasPorBloqueYSala(nombreBloque, tipoEspacio, laboAul);
+
+    DefaultTableModel model = (DefaultTableModel) utcJTable1.getModel();
+    for (int i = 0; i < model.getRowCount(); i++) {
+        for (int j = 1; j < model.getColumnCount(); j++) {
+            model.setValueAt("", i, j);  // Limpiar la tabla antes de insertar nuevos datos
+        }
+    }
+    for (Horario horario : horariosList) {
+        String hora = horario.getHora();
+        int fila = obtenerFilaPorHora(hora);
+        if (fila >= 0) {
+            if (horario.getLunes() != null && !horario.getLunes().isEmpty()) {
+                model.setValueAt("Clase: " + horario.getLunes(), fila, 1);
+            }
+            if (horario.getMartes() != null && !horario.getMartes().isEmpty()) {
+                model.setValueAt("Clase: " + horario.getMartes(), fila, 2);
+            }
+            if (horario.getMiercoles() != null && !horario.getMiercoles().isEmpty()) {
+                model.setValueAt("Clase: " + horario.getMiercoles(), fila, 3);
+            }
+            if (horario.getJueves() != null && !horario.getJueves().isEmpty()) {
+                model.setValueAt("Clase: " + horario.getJueves(), fila, 4);
+            }
+            if (horario.getViernes() != null && !horario.getViernes().isEmpty()) {
+                model.setValueAt("Clase: " + horario.getViernes(), fila, 5);
+            }
+        } else {
+            System.out.println("Hora no encontrada: " + hora);
         }
     }
 
-    public void insertar() {
-        Object bloqueSeleccionado = jcmbBloques.getSelectedItem();
-        Object tipoEspacioSeleccionado = jcmbLabAulas.getSelectedItem();
-        Object laboAulSeleccionado = jcmbNumLabAulas.getSelectedItem();
+    // Cargar los préstamos y mostrarlos en celeste
+    CrudReservas crudReservas = new CrudReservas();
+    List<Reserva> reservasList = crudReservas.obtenerReservasPorEspacio(laboAul);
 
-        String nombreBloque = bloqueSeleccionado.toString();
-        String tipoEspacio = tipoEspacioSeleccionado.toString();
-        String laboAul = (laboAulSeleccionado != null) ? laboAulSeleccionado.toString() : "";
-
-        Horarios horarios = new Horarios();
-        List<Horario> horariosList = horarios.obtenerAulasPorBloqueYSala(nombreBloque, tipoEspacio, laboAul);
-        DefaultTableModel model = (DefaultTableModel) utcJTable1.getModel();
-        for (int i = 0; i < model.getRowCount(); i++) {
-            for (int j = 1; j < model.getColumnCount(); j++) {
-                model.setValueAt("", i, j);
-            }
-        }
-        for (Horario horario : horariosList) {
-            System.out.println("Insertando horario: " + horario.getHora());
-            String hora = horario.getHora();
-            int fila = obtenerFilaPorHora(hora);
-            if (fila >= 0) {
-                if (horario.getLunes() != null && !horario.getLunes().isEmpty()) {
-                    model.setValueAt("Reservado: " + "\n" + horario.getLunes(), fila, 1);
-                }
-                if (horario.getMartes() != null && !horario.getMartes().isEmpty()) {
-                    model.setValueAt("Reservado: " + "\n" + horario.getMartes(), fila, 2);
-                }
-                if (horario.getMiercoles() != null && !horario.getMiercoles().isEmpty()) {
-                    model.setValueAt("Reservado: " + "\n" + horario.getMiercoles(), fila, 3);
-                }
-                if (horario.getJueves() != null && !horario.getJueves().isEmpty()) {
-                    model.setValueAt("Reservado: " + "\n" + horario.getJueves(), fila, 4);
-                }
-                if (horario.getViernes() != null && !horario.getViernes().isEmpty()) {
-                    model.setValueAt("Reservado: " + horario.getViernes(), fila, 5);
-                }
-            } else {
-                System.out.println("Hora no encontrada: " + hora);
-            }
+    for (Reserva reserva : reservasList) {
+        String hora = reserva.getHora();
+        int fila = obtenerFilaPorHora(hora);
+        int columna = obtenerColumnaPorFecha(reserva.getFecha());
+        if (fila >= 0 && columna > 0) {  // Asegúrate de no sobrescribir la columna de la hora
+            model.setValueAt("Préstamo: " + reserva.getObservacion(), fila, columna);
         }
     }
 
-    private int obtenerFilaPorHora(String hora) {
-        for (int i = 0; i < utcJTable1.getRowCount(); i++) {
-            if (utcJTable1.getValueAt(i, 0).equals(hora)) {
-                return i;
-            }
+    utcJTable1.revalidate();
+    utcJTable1.repaint();
+}
+
+
+private int obtenerColumnaPorFecha(Date fecha) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(fecha);
+    int diaSemana = cal.get(Calendar.DAY_OF_WEEK);
+    // Mapear de Calendar.DAY_OF_WEEK a columna en la tabla
+    // domingo (Calendar.SUNDAY) es 1, lunes (Calendar.MONDAY) es 2, ...
+    // pero en tu tabla, domingo probablemente no se usa y lunes debería ser la columna 1
+    if (diaSemana == Calendar.SUNDAY) return -1; // Si es domingo, ignora ya que tu tabla probablemente no usa domingo
+    return diaSemana - 1; // De Calendar.SUNDAY (1) a Calendar.SATURDAY (7), restar 1 para mapear a la tabla
+}
+
+private int obtenerFilaPorHora(String hora) {
+    for (int i = 0; i < utcJTable1.getRowCount(); i++) {
+        if (utcJTable1.getValueAt(i, 0).equals(hora)) {
+            return i;
         }
-        return -1;
     }
-//falta arreglar esta conf
+    return -1;
+}
 
     private void configureJDateChooser() {
         jDateChooser2.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
@@ -173,119 +218,151 @@ public class HorariosFISEI extends javax.swing.JPanel {
         jcmbNumLabAulas.setEnabled(enable);
     }
 
-    private void configurePopupMenu() {
-        popupMenu = new JPopupMenu();
-        JMenuItem reservarItem = new JMenuItem("Reservar");
-        JMenuItem modificarReservaItem = new JMenuItem("Modificar Reserva");
-        JMenuItem eliminarReservaItem = new JMenuItem("Eliminar Reserva");
+private void configurePopupMenu() {
+    popupMenu = new JPopupMenu();
+    JMenuItem reservarItem = new JMenuItem("Reservar");
+    JMenuItem modificarReservaItem = new JMenuItem("Modificar Reserva");
+    JMenuItem eliminarReservaItem = new JMenuItem("Eliminar Reserva");
 
-        reservarItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = utcJTable1.getSelectedRow();
-                int col = utcJTable1.getSelectedColumn();
-                if (row >= 0 && col >= 0) {
+    reservarItem.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int row = utcJTable1.getSelectedRow();
+            int col = utcJTable1.getSelectedColumn();
+            if (row >= 0 && col >= 0) {
+                String hora = (String) utcJTable1.getValueAt(row, 0); // Obteniendo la hora de la casilla seleccionada
+
+                // Cambiar el valor de la celda seleccionada a "Reservado"
+                utcJTable1.setValueAt("Reservado", row, col);
+
+                // Obtener los datos seleccionados
+                String fecha = ((JTextField) jDateChooser2.getDateEditor().getUiComponent()).getText();
+                String bloque = (String) jcmbBloques.getSelectedItem();
+                String tipoEspacio = (String) jcmbLabAulas.getSelectedItem();
+                String numeroAula = (String) jcmbNumLabAulas.getSelectedItem();
+
+                // Crear instancia del JFrame Reservar y pasar los datos
+                Reservar reservarFrame = new Reservar();
+                reservarFrame.setDatosReserva(fecha, bloque, tipoEspacio, numeroAula, hora); // Pasar la hora
+                reservarFrame.consumirFecha(ObtenerFecha());
+                reservarFrame.setVisible(true);
+            }
+        }
+    });
+
+    modificarReservaItem.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int row = utcJTable1.getSelectedRow();
+            int col = utcJTable1.getSelectedColumn();
+            if (row >= 0 && col >= 0) {
+                String valorCelda = (String) utcJTable1.getValueAt(row, col);
+                JOptionPane.showMessageDialog(null, "Modificando reserva en celda en fila " + row + ", columna " + col + " con valor: " + valorCelda);
+            }
+        }
+    });
+
+    eliminarReservaItem.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int row = utcJTable1.getSelectedRow();
+            int col = utcJTable1.getSelectedColumn();
+            if (row >= 0 && col >= 0) {
+                // Eliminar la reserva de la celda seleccionada
+                utcJTable1.setValueAt("", row, col);
+                JOptionPane.showMessageDialog(null, "Reserva eliminada " );
+            }
+        }
+    });
+
+    popupMenu.add(reservarItem);
+    popupMenu.add(modificarReservaItem);
+    popupMenu.add(eliminarReservaItem);
+
+    utcJTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                showPopup(e);
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                showPopup(e);
+            }
+        }
+
+        private void showPopup(MouseEvent e) {
+            int row = utcJTable1.rowAtPoint(e.getPoint());
+            int col = utcJTable1.columnAtPoint(e.getPoint());
+            if (row >= 0 && col >= 0) {
+                utcJTable1.setRowSelectionInterval(row, row);
+                utcJTable1.setColumnSelectionInterval(col, col);
+
+                // Obtener la fecha seleccionada en el JDateChooser
+                Date selectedDate = jDateChooser2.getDate();
+                Date currentDate = new Date(); // Fecha actual
+
+                if (selectedDate != null) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(selectedDate);
+                    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+                    // Mapear el día de la semana a las columnas de la tabla (lunes -> 1, martes -> 2, ...)
+                    int selectedColumn = dayOfWeek - 1;
+
+                    // Actualizar el JDateChooser si la columna seleccionada es diferente al día seleccionado
+                    if (col != selectedColumn) {
+                        calendar.add(Calendar.DAY_OF_MONTH, col - selectedColumn);
+                        jDateChooser2.setDate(calendar.getTime());
+                    }
+
+                    // Comparar fechas
+                    boolean isSameDay = isSameDay(selectedDate, currentDate);
+                    String horaSeleccionada = (String) utcJTable1.getValueAt(row, 0);
+                    String horaActual = obtenerHoraActual();
+
+                    // Verificar si la celda ya está reservada
                     String valorCelda = (String) utcJTable1.getValueAt(row, col);
-                    String hora = (String) utcJTable1.getValueAt(row, 0); // Obteniendo la hora de la casilla seleccionada
 
-                    // Cambiar el valor de la celda seleccionada a "Reservado"
-                    utcJTable1.setValueAt("Reservado", row, col);
+                    // Ajustar las opciones del popupMenu según el estado de la celda
+                    if (valorCelda != null && !valorCelda.isEmpty()) {
+                        reservarItem.setEnabled(false);
+                        modificarReservaItem.setEnabled(true);
+                        eliminarReservaItem.setEnabled(true);
+                    } else if (!isSameDay || esHoraValida(horaSeleccionada, horaActual)) {
+                        reservarItem.setEnabled(true);
+                        modificarReservaItem.setEnabled(false);
+                        eliminarReservaItem.setEnabled(false);
+                    } else {
+                        reservarItem.setEnabled(false);
+                        modificarReservaItem.setEnabled(false);
+                        eliminarReservaItem.setEnabled(false);
+                    }
 
-                    // Obtener los datos seleccionados
-                    String fecha = ((JTextField) jDateChooser2.getDateEditor().getUiComponent()).getText();
-                    String bloque = (String) jcmbBloques.getSelectedItem();
-                    String tipoEspacio = (String) jcmbLabAulas.getSelectedItem();
-                    String numeroAula = (String) jcmbNumLabAulas.getSelectedItem();
-
-                    // Crear instancia del JFrame Reservar y pasar los datos
-                    Reservar reservarFrame = new Reservar();
-                    reservarFrame.setDatosReserva(fecha, bloque, tipoEspacio, numeroAula, hora); // Pasar la hora
-                    reservarFrame.consumirFecha(ObtenerFecha());
-                    reservarFrame.setVisible(true);
-
-                }
-            }
-        });
-
-        modificarReservaItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = utcJTable1.getSelectedRow();
-                int col = utcJTable1.getSelectedColumn();
-                if (row >= 0 && col >= 0) {
-                    String valorCelda = (String) utcJTable1.getValueAt(row, col);
-                    JOptionPane.showMessageDialog(null, "Modificando reserva en celda en fila " + row + ", columna " + col + " con valor: " + valorCelda);
-                }
-            }
-        });
-
-        eliminarReservaItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = utcJTable1.getSelectedRow();
-                int col = utcJTable1.getSelectedColumn();
-                if (row >= 0 && col >= 0) {
-                    // Eliminar la reserva de la celda seleccionada
-                    utcJTable1.setValueAt("", row, col);
-                    JOptionPane.showMessageDialog(null, "Reserva eliminada en celda en fila " + row + ", columna " + col);
-                }
-            }
-        });
-
-        popupMenu.add(reservarItem);
-        popupMenu.add(modificarReservaItem);
-        popupMenu.add(eliminarReservaItem);
-
-        utcJTable1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.isPopupTrigger()) {
-                    showPopup(e);
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (e.isPopupTrigger()) {
-                    showPopup(e);
-                }
-            }
-
-            private void showPopup(MouseEvent e) {
-                int row = utcJTable1.rowAtPoint(e.getPoint());
-                int col = utcJTable1.columnAtPoint(e.getPoint());
-                if (row >= 0 && col >= 0) {
-                    utcJTable1.setRowSelectionInterval(row, row);
-                    utcJTable1.setColumnSelectionInterval(col, col);
-
-                    // Obtener la fecha seleccionada en el JDateChooser
-                    Date selectedDate = jDateChooser2.getDate();
-                    if (selectedDate != null) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(selectedDate);
-                        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
-                        // Mapear el día de la semana a las columnas de la tabla (lunes -> 1, martes -> 2, ...)
-                        int selectedColumn = dayOfWeek - 1;
-
-                        // Actualizar el JDateChooser si la columna seleccionada es diferente al día seleccionado
-                        if (col != selectedColumn) {
-                            calendar.add(Calendar.DAY_OF_MONTH, col - selectedColumn);
-                            jDateChooser2.setDate(calendar.getTime());
-                        }
-
-                        if (col != selectedColumn) {
-                            // Si la columna seleccionada es posterior al día seleccionado, mostrar el menú emergente
-                            if (col >= selectedColumn) {
-                                popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                            }
-                            // Si la columna seleccionada es anterior al día seleccionado, no hacer nada
-                        }
+                    // Mostrar el menú emergente si es válido
+                    if (reservarItem.isEnabled() || modificarReservaItem.isEnabled() || eliminarReservaItem.isEnabled()) {
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se puede realizar ninguna acción en esta celda.");
                     }
                 }
             }
-        });
-    }
+        }
+    });
+}
+
+
+private boolean isSameDay(Date date1, Date date2) {
+    Calendar cal1 = Calendar.getInstance();
+    Calendar cal2 = Calendar.getInstance();
+    cal1.setTime(date1);
+    cal2.setTime(date2);
+    return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+           cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+}
 
     
 private String ObtenerFecha(){
@@ -293,6 +370,24 @@ private String ObtenerFecha(){
    return formatoFecha.format(this.jDateChooser2.getCalendar().getTime());
     
 }
+private String obtenerHoraActual() {
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+    return sdf.format(new Date());
+}
+private boolean esHoraValida(String horaSeleccionada, String horaActual) {
+    try {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Date horaSel = sdf.parse(horaSeleccionada.split("-")[0]);
+        Date horaAct = sdf.parse(horaActual);
+        return horaSel.after(horaAct); // Verifica que la hora seleccionada sea después de la hora actual
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -401,7 +496,7 @@ private String ObtenerFecha(){
 
     private void jcmbNumLabAulasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcmbNumLabAulasMouseClicked
         filtroDos();
-
+        
     }//GEN-LAST:event_jcmbNumLabAulasMouseClicked
 
     private void jDateChooser2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser1MouseClicked
@@ -414,7 +509,6 @@ private String ObtenerFecha(){
 
     private void jcmbNumLabAulasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbNumLabAulasActionPerformed
         insertar();
-
     }//GEN-LAST:event_jcmbNumLabAulasActionPerformed
 
 

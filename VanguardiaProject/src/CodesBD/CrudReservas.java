@@ -8,15 +8,18 @@ import Utils.Conex;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
+import java.sql.*;
 
 public class CrudReservas {
 
-    public static boolean guardarReserva(String Fecha, String id, String Horas, String cedula, String nombre, String correo, String descripcion) {
+   public static boolean guardarReserva(String Fecha, String id, String Horas, String cedula, String nombre, String correo, String descripcion) {
         String sql = "INSERT INTO prestamos (Fecha, HORAS_PRESTAMO,cedula, nombre_usuario, correo, observacion,ID_ESPACIO_PERTENECE ) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        try ( Connection conn = Conex.getConex();  PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        Connection conn = Conex.getConex();
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, Fecha);
             pstmt.setString(2, Horas);
             pstmt.setString(3, cedula);
@@ -33,6 +36,33 @@ public class CrudReservas {
             JOptionPane.showMessageDialog(null, "Error al guardar la reserva.");
             return false;
         }
+    }
+
+    // Añadir este método
+    public List<Reserva> obtenerReservasPorEspacio(String idEspacio) {
+        List<Reserva> reservas = new ArrayList<>();
+        String sql = "SELECT * FROM prestamos WHERE ID_ESPACIO_PERTENECE = ?";
+        Connection conn = Conex.getConex();
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, idEspacio);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Reserva reserva = new Reserva();
+                reserva.setFecha(rs.getDate("Fecha"));
+                reserva.setHora(rs.getString("HORAS_PRESTAMO"));
+                reserva.setCedula(rs.getString("cedula"));
+                reserva.setNombreUsuario(rs.getString("nombre_usuario"));
+                reserva.setCorreo(rs.getString("correo"));
+                reserva.setObservacion(rs.getString("observacion"));
+                reservas.add(reserva);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener reservas.");
+        }
+        return reservas;
     }
 
 }
