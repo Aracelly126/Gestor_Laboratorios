@@ -4,6 +4,7 @@
  */
 package Windows;
 
+import Codes.Carrera;
 import Codes.bd_materias;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -28,96 +29,179 @@ public class Materia extends javax.swing.JPanel {
         initComponents();
         materiaBD = new bd_materias();
         cargarMaterias();
-
+        jTableMateria.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                seleccionarFila();
+            }
+        });
     }
 
-     private void cargarMaterias() {
+    private void cargarMaterias() {
     List<Codes.Materia> materias = materiaBD.obtenerMaterias();
     DefaultTableModel model = (DefaultTableModel) jTableMateria.getModel();
-    model.setRowCount(0);
-    for (Codes.Materia materia : materias) {
+    model.setRowCount(0); // Limpia la tabla
+    for (Codes. Materia materia : materias) {
         model.addRow(new Object[]{
-            materia.getIdMateria(),        // materia_id
-            materia.getNombre(),           // nombre_materia
-            materia.getNumeroSemestre(),   // numero_semestre
-            materia.getNombreCarrera()     // nombre_carrera
+            materia.getIdMateria(),
+            materia.getNombre(),
+            materia.getNumeroSemestre(),
+            materia.getNombreCarrera()
         });
     }
 }
 
-private void seleccionarTabla() {
+    private void seleccionarTabla() {
+        int selectedRow = jTableMateria.getSelectedRow();
+        if (selectedRow != -1) {
+            DefaultTableModel model = (DefaultTableModel) jTableMateria.getModel();
+            selectedMateriaId = (int) model.getValueAt(selectedRow, 0);
+            jTextFieldMateria.setText((String) model.getValueAt(selectedRow, 1));
+            jTextFieldSemestre.setText(String.valueOf(model.getValueAt(selectedRow, 3)));
+        }
+    }
+
+    private void accionCrear() {
+        String nombreMateria = jTextFieldMateria.getText();
+        String semestreText = jTextFieldSemestre.getText();
+        Carrera carreraSeleccionada = (Carrera) jComboBoxCarrera.getSelectedItem(); // Obtiene la carrera seleccionada
+
+        if (nombreMateria != null && !nombreMateria.isEmpty() && semestreText != null && !semestreText.isEmpty() && carreraSeleccionada != null) {
+            try {
+                int numeroSemestre = Integer.parseInt(semestreText);
+                String nombreCarrera = carreraSeleccionada.getNombreCarrera(); // Obtiene el nombre de la carrera seleccionada
+
+                boolean creada = materiaBD.crearMateria(nombreMateria, numeroSemestre, nombreCarrera);
+                if (creada) {
+                    cargarMaterias(); // Actualiza la tabla de materias
+                    jTextFieldMateria.setText("");
+                    jTextFieldSemestre.setText("");
+                    jComboBoxCarrera.setSelectedIndex(-1); // Limpia la selección del ComboBox
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor ingrese un semestre válido.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor complete todos los campos.");
+        }
+    }
+
+    private void accionEditar() {
+        if (selectedMateriaId != -1) {
+            String nuevoNombre = jTextFieldMateria.getText();
+            String semestreText = jTextFieldSemestre.getText();
+            Carrera carreraSeleccionada = (Carrera) jComboBoxCarrera.getSelectedItem(); // Obtiene la carrera seleccionada
+
+            if (nuevoNombre != null && !nuevoNombre.isEmpty() && semestreText != null && !semestreText.isEmpty() && carreraSeleccionada != null) {
+                try {
+                    int numeroSemestre = Integer.parseInt(semestreText);
+                    String nombreCarrera = carreraSeleccionada.getNombreCarrera(); // Obtiene el nombre de la carrera seleccionada
+
+                    boolean editado = materiaBD.editarMateria(selectedMateriaId, nuevoNombre, numeroSemestre, nombreCarrera);
+                    if (editado) {
+                        JOptionPane.showMessageDialog(null, "Materia actualizada con éxito."); // Mensaje de éxito primero
+                        cargarMaterias();
+                        limpiarCampos(); // Limpia los campos
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Por favor ingrese un semestre válido.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor complete todos los campos.");
+            }
+        }
+    }
+
+// Método para limpiar los campos de entrada y reiniciar selectedMateriaId
+    private void limpiarCampos() {
+        jTextFieldMateria.setText("");
+        jTextFieldSemestre.setText("");
+        jComboBoxCarrera.setSelectedIndex(-1); // Limpia la selección del ComboBox
+        selectedMateriaId = -1;
+    }
+
+  private void seleccionarFila() {
     int selectedRow = jTableMateria.getSelectedRow();
     if (selectedRow != -1) {
         DefaultTableModel model = (DefaultTableModel) jTableMateria.getModel();
-        selectedMateriaId = (int) model.getValueAt(selectedRow, 0);
-        jTextFieldMateria.setText((String) model.getValueAt(selectedRow, 1));
-        jTextFieldSemestre.setText(String.valueOf(model.getValueAt(selectedRow, 3)));
-    }
-}
-private void accionCrear() {
-    String nombreMateria = jTextFieldMateria.getText();
-    String semestreText = jTextFieldSemestre.getText();
-    String nombreCarrera = jTextFieldCarrera.getText();
-
-    if (!nombreMateria.isEmpty() && !semestreText.isEmpty() && !nombreCarrera.isEmpty()) {
-        try {
-            int semestreId = Integer.parseInt(semestreText);
-
-            boolean creada = materiaBD.crearMateria(nombreMateria, semestreId, nombreCarrera);
-            if (creada) {
-                cargarMaterias(); // Actualiza la tabla de materias
-                jTextFieldMateria.setText("");
-                jTextFieldSemestre.setText("");
-                jTextFieldCarrera.setText("");
+        selectedMateriaId = (int) model.getValueAt(selectedRow, 0); // Asegúrate de que el ID se obtiene correctamente
+        jTextFieldMateria.setText((String) model.getValueAt(selectedRow, 1)); // Nombre de la Materia
+        jTextFieldSemestre.setText(String.valueOf(model.getValueAt(selectedRow, 2))); // Número de Semestre
+        
+        String nombreCarrera = (String) model.getValueAt(selectedRow, 3); // Obtén el nombre de la Carrera
+        for (int i = 0; i < jComboBoxCarrera.getItemCount(); i++) {
+            Carrera carrera = (Carrera) jComboBoxCarrera.getItemAt(i);
+            if (carrera.getNombreCarrera().equals(nombreCarrera)) {
+                jComboBoxCarrera.setSelectedIndex(i); // Selecciona la carrera en el ComboBox
+                break;
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Por favor ingrese un semestre válido.");
         }
-    } else {
-        JOptionPane.showMessageDialog(null, "Por favor complete todos los campos.");
-    }
+    } 
 }
 
-public void accionEditar() {
-    String nuevoNombre = jTextFieldMateria.getText();
-    String semestreText = jTextFieldSemestre.getText();
-    String nombreCarrera = jTextFieldCarrera.getText();
-
-    if (selectedMateriaId != -1 && !nuevoNombre.isEmpty() && !semestreText.isEmpty() && !nombreCarrera.isEmpty()) {
-        try {
-            int semestreId = Integer.parseInt(semestreText);
-
-            boolean editado = materiaBD.editarMateria(selectedMateriaId, nuevoNombre, semestreId, nombreCarrera);
-            if (editado) {
-                cargarMaterias();
-                jTextFieldMateria.setText("");
-                jTextFieldSemestre.setText("");
-                jTextFieldCarrera.setText("");
-                selectedMateriaId = -1;
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Por favor ingrese un semestre válido.");
-        }
-    } else {
-        JOptionPane.showMessageDialog(null, "Por favor complete todos los campos.");
-    }
-}
-
-
-    public void accionEliminar() {
-        if (selectedMateriaId != -1) {
+  private void accionEliminar() {
+    if (selectedMateriaId != -1) {
+        int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar esta materia?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
             boolean eliminado = materiaBD.eliminarMateria(selectedMateriaId);
             if (eliminado) {
-                cargarMaterias();
-                jTextFieldMateria.setText("");
-                jTextFieldSemestre.setText("");
-                selectedMateriaId = -1;
+                cargarMaterias(); // Actualiza la tabla de materias
+                limpiarCampos(); // Limpia los campos de entrada
+                JOptionPane.showMessageDialog(null, "Materia eliminada con éxito.");
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor seleccione una materia de la tabla para eliminar.");
+        }
+    } 
+}
+
+    private void cargarCarrerasEnComboBox() {
+        List<Carrera> carreras = materiaBD.obtenerCarreras();
+        jComboBoxCarrera.removeAllItems(); // Limpia el ComboBox
+
+        for (int i = 0; i < carreras.size(); i++) {
+            Carrera carrera = carreras.get(i); // Obtiene la carrera en la posición i
+            jComboBoxCarrera.addItem(carrera); // Añade la carrera al ComboBox
         }
     }
 
+    private void verificarYAccionEditar() {
+        String nombreMateria = jTextFieldMateria.getText();
+        String semestreText = jTextFieldSemestre.getText();
+        Carrera carreraSeleccionada = (Carrera) jComboBoxCarrera.getSelectedItem(); // Obtiene la carrera seleccionada
+
+        if (selectedMateriaId == -1) {
+            JOptionPane.showMessageDialog(null, "Por favor seleccione una fila de la tabla para editar.");
+            return;
+        }
+
+        if (nombreMateria == null || nombreMateria.trim().isEmpty()
+                || semestreText == null || semestreText.trim().isEmpty()
+                || carreraSeleccionada == null) {
+            JOptionPane.showMessageDialog(null, "Por favor complete todos los campos antes de editar.");
+        } else {
+            // Si todos los campos están completos, llama a la acción de editar
+            accionEditar();
+        }
+    }
+private boolean seleccionarFila1() {
+    int selectedRow = jTableMateria.getSelectedRow();
+    if (selectedRow != -1) {
+        DefaultTableModel model = (DefaultTableModel) jTableMateria.getModel();
+        selectedMateriaId = (int) model.getValueAt(selectedRow, 0); // Asegúrate de que el ID se obtiene correctamente
+        jTextFieldMateria.setText((String) model.getValueAt(selectedRow, 1)); // Nombre de la Materia
+        jTextFieldSemestre.setText(String.valueOf(model.getValueAt(selectedRow, 2))); // Número de Semestre
+        
+        String nombreCarrera = (String) model.getValueAt(selectedRow, 3); // Obtén el nombre de la Carrera
+        for (int i = 0; i < jComboBoxCarrera.getItemCount(); i++) {
+            Carrera carrera = (Carrera) jComboBoxCarrera.getItemAt(i);
+            if (carrera.getNombreCarrera().equals(nombreCarrera)) {
+                jComboBoxCarrera.setSelectedIndex(i); // Selecciona la carrera en el ComboBox
+                break;
+            }
+        }
+        return true; // Fila seleccionada exitosamente
+    } else {
+        return false; // No se seleccionó ninguna fila
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -144,7 +228,7 @@ public void accionEditar() {
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableMateria = new javax.swing.JTable();
-        jTextFieldCarrera = new javax.swing.JTextField();
+        jComboBoxCarrera = new javax.swing.JComboBox<>();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -237,13 +321,19 @@ public void accionEditar() {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID MATERIA", "MATERIA", "SEMESTRE", "Title 4"
             }
         ));
         jScrollPane1.setViewportView(jTableMateria);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 570, 300));
-        jPanel1.add(jTextFieldCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 250, -1));
+
+        jComboBoxCarrera.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBoxCarreraMouseClicked(evt);
+            }
+        });
+        jPanel1.add(jComboBoxCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 250, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -258,11 +348,16 @@ public void accionEditar() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
-        accionEliminar();
+        if (!seleccionarFila1()) {
+        JOptionPane.showMessageDialog(null, "Por favor elija una fila de la tabla.");
+        return; // No proceder si no se seleccionó una fila
+    }
+    accionEliminar();
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
-        accionEditar();
+        verificarYAccionEditar();
+
     }//GEN-LAST:event_jPanel3MouseClicked
 
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
@@ -271,12 +366,16 @@ public void accionEditar() {
     }//GEN-LAST:event_jPanel4MouseClicked
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
-        // TODO add your handling code here:
+        limpiarCampos();
     }//GEN-LAST:event_jPanel5MouseClicked
-   
+
+    private void jComboBoxCarreraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBoxCarreraMouseClicked
+        cargarCarrerasEnComboBox();
+    }//GEN-LAST:event_jComboBoxCarreraMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<Carrera> jComboBoxCarrera;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -292,7 +391,6 @@ public void accionEditar() {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableMateria;
-    private javax.swing.JTextField jTextFieldCarrera;
     private javax.swing.JTextField jTextFieldMateria;
     private javax.swing.JTextField jTextFieldSemestre;
     // End of variables declaration//GEN-END:variables
