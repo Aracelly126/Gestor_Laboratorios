@@ -55,7 +55,7 @@ public class Bloques extends javax.swing.JPanel {
         pnlEditarBloque = new Utils.PanelShadow();
         jLabel4 = new javax.swing.JLabel();
         pnlCrearBloque = new Utils.PanelShadow();
-        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -141,10 +141,10 @@ public class Bloques extends javax.swing.JPanel {
         });
         pnlCrearBloque.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("CREAR");
-        pnlCrearBloque.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, -1, -1));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("CREAR");
+        pnlCrearBloque.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, -1, -1));
 
         add(pnlCrearBloque, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 180, 180, 50));
     }// </editor-fold>//GEN-END:initComponents
@@ -156,10 +156,6 @@ public class Bloques extends javax.swing.JPanel {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void pnlCrearBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearBloqueMouseClicked
-        accionCrear();
-    }//GEN-LAST:event_pnlCrearBloqueMouseClicked
     public void accionCrear() {
         String nombreBloque = txtBloques.getText();
         if (!nombreBloque.isEmpty()) {
@@ -228,6 +224,10 @@ public class Bloques extends javax.swing.JPanel {
     private void tblBloquesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBloquesMouseClicked
         selecionarTabla();
     }//GEN-LAST:event_tblBloquesMouseClicked
+
+    private void pnlCrearBloqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearBloqueMouseClicked
+        accionCrear();
+    }//GEN-LAST:event_pnlCrearBloqueMouseClicked
     public void selecionarTabla() {
         int selectedRow = tblBloques.getSelectedRow();
         if (selectedRow != -1) {
@@ -240,8 +240,8 @@ public class Bloques extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField2;
     private Utils.PanelShadow pnlCrearBloque;
