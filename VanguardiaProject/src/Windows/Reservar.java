@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  * @author User
  */
 public class Reservar extends javax.swing.JFrame {
-
+    private boolean reservaGuardada;
     String Fecha;
 
     /**
@@ -34,6 +34,7 @@ public class Reservar extends javax.swing.JFrame {
     public Reservar() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.reservaGuardada = false;
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -241,7 +242,7 @@ public class Reservar extends javax.swing.JFrame {
     private void jbtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarActionPerformed
         guardarReserva();
     }//GEN-LAST:event_jbtnGuardarActionPerformed
-   private String obtenerhora() {
+    private String obtenerhora() {
         String hora = "";
         if (tablaReservas2.getRowCount() > 0 && tablaReservas2.getValueAt(0, 1) != null) {
             String[] Hora = String.valueOf(this.tablaReservas2.getValueAt(0, 1)).split(":");
@@ -342,10 +343,15 @@ public class Reservar extends javax.swing.JFrame {
 
         if (CrudReservas.guardarReserva(fecha, buscarIdAula(), hora, cedula, nombre, correo, descripcion)) {
             JOptionPane.showMessageDialog(this, "Reserva guardada exitosamente!");
+            this.reservaGuardada = true; // Establecer como true si se guarda exitosamente
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Error al guardar la reserva.");
         }
+    }
+    
+    public boolean reservaGuardadaExitosamente() {
+        return this.reservaGuardada;
     }
 
     private void confirmarCierre() {
@@ -358,6 +364,7 @@ public class Reservar extends javax.swing.JFrame {
             if (option == JOptionPane.NO_OPTION) {
                 setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
             } else {
+                // Aquí cerramos la ventana sin guardar
                 setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             }
         } else {
@@ -369,6 +376,7 @@ public class Reservar extends javax.swing.JFrame {
             if (option == JOptionPane.NO_OPTION) {
                 setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
             } else {
+                // Aquí cerramos la ventana sin guardar
                 setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             }
         }
