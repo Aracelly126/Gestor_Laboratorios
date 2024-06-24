@@ -37,12 +37,11 @@ public class bd_usuarios {
                 int rowsInserted = pstmtInsert.executeUpdate();
 
                 if (rowsInserted > 0) {
-                    
                     return true;
                 }
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al insertar el usuario: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al crear el usuario: " + e.getMessage());
         } finally {
             try {
                 if (rs != null) {

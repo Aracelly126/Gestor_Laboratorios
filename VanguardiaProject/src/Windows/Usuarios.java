@@ -8,6 +8,9 @@ import Codes.bd_usuarios;
 import static Validaciones.Validaciones.validarCorreo;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import javax.swing.JOptionPane;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
@@ -180,7 +183,7 @@ public class Usuarios extends javax.swing.JPanel {
         String verificarClave = new String(pswVerificarClave.getPassword());
 
         if (!validarCorreo(correo)) {
-            JOptionPane.showMessageDialog(this, "Correo no válido", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ingrese un correo válido", "Error", JOptionPane.ERROR_MESSAGE);
             txtCorreo.setText("");
             return;
         }
