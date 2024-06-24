@@ -4,6 +4,8 @@
  */
 package Windows;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author USER
@@ -57,7 +59,7 @@ public class Inicio extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))
-                        .addGap(81, 81, 81))))
+                        .addGap(114, 114, 114))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,8 +84,10 @@ public class Inicio extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+Login log = new Login();
+Menu men = new Menu(); 
 
-
+   //GEN-LAST:event_pnlCerrarSesionMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel22;
