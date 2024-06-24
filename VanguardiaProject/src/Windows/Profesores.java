@@ -186,11 +186,16 @@ public class Profesores extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCrearActionPerformed
-        profesores.addProfesor(jtxtIdentificador.getText(), jtxtCedula.getText(), jtxtNombre.getText(), jtxtApellido.getText(), jTable1);
-        profesores.actualizarLabelIdentificador(jtxtIdentificador);
-        jtxtCedula.setText("");
-        jtxtNombre.setText("");
-        jtxtApellido.setText("");
+        if (profesores.ComprobarCedula2(jtxtCedula.getText())) {
+            profesores.addProfesor(jtxtIdentificador.getText(), jtxtCedula.getText(), jtxtNombre.getText(), jtxtApellido.getText(), jTable1);
+            profesores.actualizarLabelIdentificador(jtxtIdentificador);
+            jtxtCedula.setText("");
+            jtxtNombre.setText("");
+            jtxtApellido.setText("");
+        }else{
+            return;
+        }
+
     }//GEN-LAST:event_jbtnCrearActionPerformed
 
     private void jbtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEliminarActionPerformed
@@ -211,13 +216,18 @@ public class Profesores extends javax.swing.JPanel {
     private void jbtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEditarActionPerformed
         int filaSeleccionada = jTable1.getSelectedRow();
         if (filaSeleccionada != -1) {
-            profesores.editarProfesor(jtxtIdentificador.getText(),jtxtCedula.getText(),jtxtNombre.getText(),jtxtApellido.getText(),jTable1);
+            if (profesores.ComprobarCedula2(jtxtCedula.getText())) {
+                profesores.editarProfesor(jtxtIdentificador.getText(), jtxtCedula.getText(), jtxtNombre.getText(), jtxtApellido.getText(), jTable1);
             profesores.actualizarLabelIdentificador(jtxtIdentificador);
             jtxtCedula.setText("");
             jtxtNombre.setText("");
             jtxtApellido.setText("");
             jbtnCancelar.setEnabled(false);
             jbtnCrear.setEnabled(true);
+            }else{
+                return;
+            }
+            
         } else {
             System.out.println("Por favor, seleccione un profesor para editar.");
         }

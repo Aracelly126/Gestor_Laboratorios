@@ -89,10 +89,10 @@ public class crud_profesores {
             updateStmt.setString(4, identificador);
             int filasAfectadas = updateStmt.executeUpdate();
             if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null,"El profesor con identificador " + identificador + " ha sido actualizado correctamente.");
+                JOptionPane.showMessageDialog(null, "El profesor con identificador " + identificador + " ha sido actualizado correctamente.");
                 cargarTabla(table);
             } else {
-                JOptionPane.showMessageDialog(null,"No se encontró ningún profesor con el identificador " + identificador);
+                JOptionPane.showMessageDialog(null, "No se encontró ningún profesor con el identificador " + identificador);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -135,6 +135,39 @@ public class crud_profesores {
         String ultimoIdentificador = obtenerUltimoIdentificador();
         String siguienteIdentificador = generarSiguienteIdentificador(ultimoIdentificador);
         labelIdentificador.setText(siguienteIdentificador);
+    }
+
+    public boolean ComprobarCedula2(String dato) {
+        String cedula = dato;
+        if (cedula.isEmpty()) {
+            return false;
+        }
+
+        if (!cedula.matches("[0-9]{10}")) {
+            JOptionPane.showMessageDialog(null, "Ingrese una cédula válida");
+            return false;
+        }
+
+        int tercerdigito = Integer.parseInt(cedula.substring(2, 3));
+        if (tercerdigito >= 6) {
+            JOptionPane.showMessageDialog(null, "Ingrese una cédula válida");
+            return false;
+        }
+
+        int[] coefValCedula = {2, 1, 2, 1, 2, 1, 2, 1, 2};
+        int verificador = Integer.parseInt(cedula.substring(9, 10));
+        int suma = 0;
+        int digito = 0;
+        for (int i = 0; i < (cedula.length() - 1); i++) {
+            digito = Integer.parseInt(cedula.substring(i, i + 1)) * coefValCedula[i];
+            suma += ((digito % 10) + (digito / 10));
+        }
+        if ((suma % 10 != 0) && (10 - (suma % 10)) != verificador) {
+            JOptionPane.showMessageDialog(null, "Ingrese una cédula válida");
+            return false;
+        }
+
+        return true;
     }
 
 }
