@@ -232,26 +232,32 @@ private void configurePopupMenu() {
             if (row >= 0 && col >= 0) {
                 String hora = (String) utcJTable1.getValueAt(row, 0); // Obteniendo la hora de la casilla seleccionada
 
-                // Obtener los datos seleccionados
-                String fecha = ((JTextField) jDateChooser2.getDateEditor().getUiComponent()).getText();
-                String bloque = (String) jcmbBloques.getSelectedItem();
-                String tipoEspacio = (String) jcmbLabAulas.getSelectedItem();
-                String numeroAula = (String) jcmbNumLabAulas.getSelectedItem();
+                // Verificar la hora actual y la hora seleccionada
+                String horaActual = obtenerHoraActual();
+                if (esHoraValida(hora, horaActual)) {
+                    // Obtener los datos seleccionados
+                    String fecha = ((JTextField) jDateChooser2.getDateEditor().getUiComponent()).getText();
+                    String bloque = (String) jcmbBloques.getSelectedItem();
+                    String tipoEspacio = (String) jcmbLabAulas.getSelectedItem();
+                    String numeroAula = (String) jcmbNumLabAulas.getSelectedItem();
 
-                // Crear instancia del JFrame Reservar y pasar los datos
-                Reservar reservarFrame = new Reservar() {
-                    @Override
-                    public void dispose() {
-                        super.dispose();
-                        // Verificar si la reserva fue guardada
-                        if (reservaGuardadaExitosamente()) {
-                            utcJTable1.setValueAt("Reservado", row, col); // Cambiar el valor de la celda seleccionada a "Reservado"
+                    // Crear instancia del JFrame Reservar y pasar los datos
+                    Reservar reservarFrame = new Reservar() {
+                        @Override
+                        public void dispose() {
+                            super.dispose();
+                            // Verificar si la reserva fue guardada
+                            if (reservaGuardadaExitosamente()) {
+                                utcJTable1.setValueAt("Reservado", row, col); // Cambiar el valor de la celda seleccionada a "Reservado"
+                            }
                         }
-                    }
-                };
-                reservarFrame.setDatosReserva(fecha, bloque, tipoEspacio, numeroAula, hora); // Pasar la hora
-                reservarFrame.consumirFecha(ObtenerFecha());
-                reservarFrame.setVisible(true);
+                    };
+                    reservarFrame.setDatosReserva(fecha, bloque, tipoEspacio, numeroAula, hora); // Pasar la hora
+                    reservarFrame.consumirFecha(ObtenerFecha());
+                    reservarFrame.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se puede reservar en horas anteriores a la actual.");
+                }
             }
         }
     });
@@ -277,29 +283,27 @@ private void configurePopupMenu() {
     });
 
     eliminarReservaItem.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int row = utcJTable1.getSelectedRow();
-        int col = utcJTable1.getSelectedColumn();
-        if (row >= 0 && col >= 0) {
-            int confirm = JOptionPane.showConfirmDialog(
-                null,
-                "¿Estás seguro de que deseas eliminar esta reserva?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION
-            );
-            if (confirm == JOptionPane.YES_OPTION) {
-                // Eliminar la reserva de la celda seleccionada
-                utcJTable1.setValueAt("", row, col);
-                JOptionPane.showMessageDialog(null, "Reserva eliminada");
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int row = utcJTable1.getSelectedRow();
+            int col = utcJTable1.getSelectedColumn();
+            if (row >= 0 && col >= 0) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "¿Estás seguro de que deseas eliminar esta reserva?",
+                        "Confirmar eliminación",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (confirm == JOptionPane.YES_OPTION) {
+                    // Eliminar la reserva de la celda seleccionada
+                    utcJTable1.setValueAt("", row, col);
+                    JOptionPane.showMessageDialog(null, "Reserva eliminada");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna reserva.");
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna reserva.");
         }
-    }
-});
-
-
+    });
 
     popupMenu.add(reservarItem);
     popupMenu.add(modificarReservaItem);
@@ -335,22 +339,44 @@ private void configurePopupMenu() {
                     // Comparar fechas
                     boolean isSameDay = isSameDay(selectedDate, currentDate);
                     String horaSeleccionada = (String) utcJTable1.getValueAt(row, 0);
+                    if (horaSeleccionada != null) {
+                        horaSeleccionada = horaSeleccionada.split("-")[0].trim() + ":00";
+                    }
                     String horaActual = obtenerHoraActual();
 
                     // Verificar si la celda ya está reservada
                     String valorCelda = (String) utcJTable1.getValueAt(row, col);
 
-                    // Ajustar las opciones del popupMenu según el estado de la celda
+                    // Ajustar las opciones del popupMenu según el estado de la celda y la fecha
                     if (valorCelda != null && !valorCelda.isEmpty()) {
                         reservarItem.setEnabled(false);
                         modificarReservaItem.setEnabled(true);
                         eliminarReservaItem.setEnabled(true);
-                    } else if ((isSameDay && esHoraValida(horaSeleccionada, horaActual)) || selectedDate.after(currentDate)) {
-                        reservarItem.setEnabled(true);
-                        modificarReservaItem.setEnabled(false);
-                        eliminarReservaItem.setEnabled(false);
                     } else {
-                        reservarItem.setEnabled(false);
+                        Calendar selectedCal = Calendar.getInstance();
+                        selectedCal.setTime(selectedDate);
+
+                        int selectedDayOfWeek = selectedCal.get(Calendar.DAY_OF_WEEK);
+
+                        // Obtener el día de la semana de la celda seleccionada
+                        Calendar cellCal = Calendar.getInstance();
+                        cellCal.setTime(selectedDate);
+                        cellCal.add(Calendar.DAY_OF_WEEK, col - 1); // Ajustar el día de la celda según la columna
+
+                        int cellDayOfWeek = cellCal.get(Calendar.DAY_OF_WEEK);
+
+                        // Verificar que el día de la celda no sea anterior al día seleccionado
+                        if (cellDayOfWeek <= selectedDayOfWeek) {
+                            if (!isSameDay || esHoraValida(horaSeleccionada, horaActual)) {
+                                reservarItem.setEnabled(true);
+                            } else {
+                                reservarItem.setEnabled(false);
+                                JOptionPane.showMessageDialog(null, "No se puede reservar en horas anteriores a la actual.");
+                            }
+                        } else {
+                            reservarItem.setEnabled(false);
+                            JOptionPane.showMessageDialog(null, "No se puede reservar en días anteriores al día seleccionado.");
+                        }
                         modificarReservaItem.setEnabled(false);
                         eliminarReservaItem.setEnabled(false);
                     }
@@ -359,7 +385,7 @@ private void configurePopupMenu() {
                     if (reservarItem.isEnabled() || modificarReservaItem.isEnabled() || eliminarReservaItem.isEnabled()) {
                         popupMenu.show(e.getComponent(), e.getX(), e.getY());
                     } else {
-                        JOptionPane.showMessageDialog(null, "No se puede realizar ninguna acción en esta celda.");
+                        
                     }
                 }
             }
@@ -389,14 +415,15 @@ private String obtenerHoraActual() {
 private boolean esHoraValida(String horaSeleccionada, String horaActual) {
     try {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        Date horaSel = sdf.parse(horaSeleccionada.split("-")[0].trim());
+        Date horaSel = sdf.parse(horaSeleccionada);
         Date horaAct = sdf.parse(horaActual);
-        return horaSel.after(horaAct); // Verifica que la hora seleccionada sea después de la hora actual
+        return !horaSel.before(horaAct); // Verifica que la hora seleccionada no sea antes de la hora actual
     } catch (Exception e) {
         e.printStackTrace();
         return false;
     }
 }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
