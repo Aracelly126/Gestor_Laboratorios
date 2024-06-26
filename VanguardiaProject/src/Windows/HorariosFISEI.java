@@ -221,7 +221,6 @@ public class HorariosFISEI extends javax.swing.JPanel {
 private void configurePopupMenu() {
     popupMenu = new JPopupMenu();
     JMenuItem reservarItem = new JMenuItem("Reservar");
-    JMenuItem modificarReservaItem = new JMenuItem("Modificar Reserva");
     JMenuItem eliminarReservaItem = new JMenuItem("Eliminar Reserva");
 
     reservarItem.addActionListener(new ActionListener() {
@@ -232,9 +231,9 @@ private void configurePopupMenu() {
             if (row >= 0 && col >= 0) {
                 String hora = (String) utcJTable1.getValueAt(row, 0); // Obteniendo la hora de la casilla seleccionada
 
-                // Verificar la hora actual y la hora seleccionada
+                // Verificar la hora actual y la hora seleccionada solo para el día actual
                 String horaActual = obtenerHoraActual();
-                if (esHoraValida(hora, horaActual)) {
+                if (!esDiaActual(col) || esHoraValida(hora, horaActual)) {
                     // Obtener los datos seleccionados
                     String fecha = ((JTextField) jDateChooser2.getDateEditor().getUiComponent()).getText();
                     String bloque = (String) jcmbBloques.getSelectedItem();
@@ -258,26 +257,6 @@ private void configurePopupMenu() {
                 } else {
                     JOptionPane.showMessageDialog(null, "No se puede reservar en horas anteriores a la actual.");
                 }
-            }
-        }
-    });
-
-    modificarReservaItem.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int row = utcJTable1.getSelectedRow();
-            if (row >= 0) {
-                String prestamoId = (String) utcJTable1.getValueAt(row, 0);
-                Reserva reserva = CrudReservas.obtenerReservaPorId(prestamoId);
-                if (reserva != null) {
-                    Reservar reservarFrame = new Reservar();
-                    reservarFrame.cargarDatosReserva(reserva);
-                    reservarFrame.setVisible(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se encontraron datos para la reserva seleccionada.");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Debe seleccionar una fila primero.");
             }
         }
     });
@@ -306,7 +285,6 @@ private void configurePopupMenu() {
     });
 
     popupMenu.add(reservarItem);
-    popupMenu.add(modificarReservaItem);
     popupMenu.add(eliminarReservaItem);
 
     utcJTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -330,63 +308,74 @@ private void configurePopupMenu() {
             if (row >= 0 && col >= 0) {
                 utcJTable1.setRowSelectionInterval(row, row);
                 utcJTable1.setColumnSelectionInterval(col, col);
+                String valorCelda = (String) utcJTable1.getValueAt(row, col);
+                if (valorCelda == null || valorCelda.isEmpty() || valorCelda.startsWith("Préstamo:") || valorCelda.startsWith("Asignado:")) {
+                    // Obtener la fecha seleccionada en el JDateChooser
+                    Date selectedDate = jDateChooser2.getDate();
+                    Date currentDate = new Date(); // Fecha actual
 
-                // Obtener la fecha seleccionada en el JDateChooser
-                Date selectedDate = jDateChooser2.getDate();
-                Date currentDate = new Date(); // Fecha actual
+                    if (selectedDate != null) {
+                        // Comparar fechas
+                        boolean isSameDay = isSameDay(selectedDate, currentDate);
+                        String horaSeleccionada = (String) utcJTable1.getValueAt(row, 0);
+                        if (horaSeleccionada != null) {
+                            horaSeleccionada = horaSeleccionada.split("-")[0].trim() + ":00";
+                        }
+                        String horaActual = obtenerHoraActual();
 
-                if (selectedDate != null) {
-                    // Comparar fechas
-                    boolean isSameDay = isSameDay(selectedDate, currentDate);
-                    String horaSeleccionada = (String) utcJTable1.getValueAt(row, 0);
-                    if (horaSeleccionada != null) {
-                        horaSeleccionada = horaSeleccionada.split("-")[0].trim() + ":00";
-                    }
-                    String horaActual = obtenerHoraActual();
+                        // Ajustar las opciones del popupMenu según el estado de la celda y la fecha
+                        if (valorCelda != null && !valorCelda.isEmpty()) {
+                            reservarItem.setEnabled(false);
+                            eliminarReservaItem.setEnabled(true);
+                        } else {
+                            Calendar selectedCal = Calendar.getInstance();
+                            selectedCal.setTime(selectedDate);
 
-                    // Verificar si la celda ya está reservada
-                    String valorCelda = (String) utcJTable1.getValueAt(row, col);
+                            int selectedDayOfWeek = selectedCal.get(Calendar.DAY_OF_WEEK);
 
-                    // Ajustar las opciones del popupMenu según el estado de la celda y la fecha
-                    if (valorCelda != null && !valorCelda.isEmpty()) {
-                        reservarItem.setEnabled(false);
-                        modificarReservaItem.setEnabled(true);
-                        eliminarReservaItem.setEnabled(true);
-                    } else {
-                        Calendar selectedCal = Calendar.getInstance();
-                        selectedCal.setTime(selectedDate);
+                            // Obtener el día de la semana de la celda seleccionada
+                            Calendar cellCal = Calendar.getInstance();
+                            cellCal.setTime(selectedDate);
+                            cellCal.add(Calendar.DAY_OF_WEEK, col - 1); // Ajustar el día de la celda según la columna
 
-                        int selectedDayOfWeek = selectedCal.get(Calendar.DAY_OF_WEEK);
+                            int cellDayOfWeek = cellCal.get(Calendar.DAY_OF_WEEK);
 
-                        // Obtener el día de la semana de la celda seleccionada
-                        Calendar cellCal = Calendar.getInstance();
-                        cellCal.setTime(selectedDate);
-                        cellCal.add(Calendar.DAY_OF_WEEK, col - 1); // Ajustar el día de la celda según la columna
+                            // Verificar que el día de la celda no sea anterior al día seleccionado
+                            if (cellDayOfWeek <= selectedDayOfWeek) {
+                                if (isSameDay) {
+                                    // Verificar la hora seleccionada solo si es el mismo día
+                                    String[] partesHora = horaSeleccionada.split(":");
+                                    int horaSeleccionadaInt = Integer.parseInt(partesHora[0]);
+                                    int minutosSeleccionadosInt = Integer.parseInt(partesHora[1]);
 
-                        int cellDayOfWeek = cellCal.get(Calendar.DAY_OF_WEEK);
+                                    String[] partesHoraActual = horaActual.split(":");
+                                    int horaActualInt = Integer.parseInt(partesHoraActual[0]);
+                                    int minutosActualesInt = Integer.parseInt(partesHoraActual[1]);
 
-                        // Verificar que el día de la celda no sea anterior al día seleccionado
-                        if (cellDayOfWeek <= selectedDayOfWeek) {
-                            if (!isSameDay || esHoraValida(horaSeleccionada, horaActual)) {
-                                reservarItem.setEnabled(true);
+                                    if ((horaSeleccionadaInt >= 7 && horaSeleccionadaInt < 20) &&
+                                        (horaSeleccionadaInt > horaActualInt || (horaSeleccionadaInt == horaActualInt && minutosSeleccionadosInt > minutosActualesInt))) {
+                                        reservarItem.setEnabled(true);
+                                    } else {
+                                        reservarItem.setEnabled(false);
+                                        JOptionPane.showMessageDialog(null, "No se puede reservar en horas anteriores a la actual.");
+                                    }
+                                } else {
+                                    reservarItem.setEnabled(true);
+                                }
                             } else {
                                 reservarItem.setEnabled(false);
-                                JOptionPane.showMessageDialog(null, "No se puede reservar en horas anteriores a la actual.");
+                                JOptionPane.showMessageDialog(null, "No se puede reservar en días anteriores al día actual.");
                             }
-                        } else {
-                            reservarItem.setEnabled(false);
-                            JOptionPane.showMessageDialog(null, "No se puede reservar en días anteriores al día seleccionado.");
+                            eliminarReservaItem.setEnabled(false);
                         }
-                        modificarReservaItem.setEnabled(false);
-                        eliminarReservaItem.setEnabled(false);
-                    }
 
-                    // Mostrar el menú emergente si es válido
-                    if (reservarItem.isEnabled() || modificarReservaItem.isEnabled() || eliminarReservaItem.isEnabled()) {
-                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                    } else {
-                        
+                        // Mostrar el menú emergente si es válido
+                        if ((isSameDay && reservarItem.isEnabled()) || !isSameDay) {
+                            popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                        }
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se puede realizar ninguna acción en esta celda porque ya está reservada.");
                 }
             }
         }
@@ -402,26 +391,37 @@ private boolean isSameDay(Date date1, Date date2) {
             && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
 }
 
+private boolean esDiaActual(int col) {
+    Calendar today = Calendar.getInstance();
+    int dayOfWeek = today.get(Calendar.DAY_OF_WEEK);
+
+    // Ajustar col para que corresponda al día de la semana (suponiendo que col 1 es lunes)
+    return col == (dayOfWeek - Calendar.MONDAY + 1);
+}
+
 private String ObtenerFecha() {
     SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
     return formatoFecha.format(this.jDateChooser2.getCalendar().getTime());
 }
 
 private String obtenerHoraActual() {
+    Calendar cal = Calendar.getInstance();
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-    return sdf.format(new Date());
+    return sdf.format(cal.getTime());
 }
 
 private boolean esHoraValida(String horaSeleccionada, String horaActual) {
-    try {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        Date horaSel = sdf.parse(horaSeleccionada);
-        Date horaAct = sdf.parse(horaActual);
-        return !horaSel.before(horaAct); // Verifica que la hora seleccionada no sea antes de la hora actual
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-    }
+    // Parsear las horas y minutos
+    String[] partesHoraSeleccionada = horaSeleccionada.split(":");
+    int horaSeleccionadaInt = Integer.parseInt(partesHoraSeleccionada[0]);
+    int minutosSeleccionadosInt = Integer.parseInt(partesHoraSeleccionada[1]);
+
+    String[] partesHoraActual = horaActual.split(":");
+    int horaActualInt = Integer.parseInt(partesHoraActual[0]);
+    int minutosActualesInt = Integer.parseInt(partesHoraActual[1]);
+
+    // Comparar las horas
+    return (horaSeleccionadaInt > horaActualInt) || (horaSeleccionadaInt == horaActualInt && minutosSeleccionadosInt > minutosActualesInt);
 }
 
 
