@@ -38,7 +38,6 @@ public class Profesores extends javax.swing.JPanel {
         initComponents();
         jTable1.setModel(tablaModelo);
         profesores.cargarTabla(jTable1);
-        jbtnCancelar.setEnabled(false);
         jtxtIdentificador.setEnabled(false);
         profesores.actualizarLabelIdentificador(jtxtIdentificador);
 
@@ -67,8 +66,7 @@ public class Profesores extends javax.swing.JPanel {
             String apellido = (String) jTable1.getValueAt(filaSeleccionada, 3);
 
             // Mostrar los datos en los componentes correspondientes
-            jbtnCrear.setEnabled(false);
-            jbtnCancelar.setEnabled(true);
+            pnlCrearProfesor.setEnabled(false);
             jtxtNombre.setText(nombre);
             jtxtCedula.setText(cedula);
             jtxtApellido.setText(apellido);
@@ -94,29 +92,33 @@ public class Profesores extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jbtnCrear = new javax.swing.JButton();
-        jbtnEliminar = new javax.swing.JButton();
-        jbtnEditar = new javax.swing.JButton();
         jtxtApellido = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jtxtCedula = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jtxtIdentificador = new javax.swing.JTextField();
-        jbtnCancelar = new javax.swing.JButton();
+        pnlEliminarProfesor = new Utils.PanelShadow();
+        jLabel3 = new javax.swing.JLabel();
+        pnlEditarProfesor = new Utils.PanelShadow();
+        jLabel4 = new javax.swing.JLabel();
+        pnlCrearProfesor = new Utils.PanelShadow();
+        jLabel8 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setText("PROFESORES");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
         add(jtxtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 142, 150, -1));
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Nombre:");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 145, -1, -1));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, -1, -1));
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Apellido:");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, -1, -1));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,69 +138,107 @@ public class Profesores extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, 580, 320));
-
-        jbtnCrear.setText("Crear");
-        jbtnCrear.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jbtnCrearMouseClicked(evt);
-            }
-        });
-        jbtnCrear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnCrearActionPerformed(evt);
-            }
-        });
-        add(jbtnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, -1, -1));
-
-        jbtnEliminar.setText("Eliminar");
-        jbtnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnEliminarActionPerformed(evt);
-            }
-        });
-        add(jbtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, -1, -1));
-
-        jbtnEditar.setText("Editar");
-        jbtnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnEditarActionPerformed(evt);
-            }
-        });
-        add(jbtnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, -1, -1));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 580, 320));
         add(jtxtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 177, 150, -1));
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Cedula:");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, -1, -1));
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, -1, -1));
         add(jtxtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 107, 150, -1));
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Identificador:");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, -1, -1));
-        add(jtxtIdentificador, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 107, 80, -1));
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 110, -1, -1));
+        add(jtxtIdentificador, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 110, 100, -1));
 
-        jbtnCancelar.setText("Cancelar");
-        jbtnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnCancelarActionPerformed(evt);
+        pnlEliminarProfesor.setBackground(new java.awt.Color(173, 39, 46));
+        pnlEliminarProfesor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlEliminarProfesorMouseClicked(evt);
             }
         });
-        add(jbtnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, -1, -1));
+        pnlEliminarProfesor.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("ELIMINAR");
+        pnlEliminarProfesor.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
+
+        add(pnlEliminarProfesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 160, 50));
+
+        pnlEditarProfesor.setBackground(new java.awt.Color(173, 39, 46));
+        pnlEditarProfesor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlEditarProfesorMouseClicked(evt);
+            }
+        });
+        pnlEditarProfesor.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("EDITAR");
+        pnlEditarProfesor.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, -1, -1));
+
+        add(pnlEditarProfesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, 160, 50));
+
+        pnlCrearProfesor.setBackground(new java.awt.Color(173, 39, 46));
+        pnlCrearProfesor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlCrearProfesorMouseClicked(evt);
+            }
+        });
+        pnlCrearProfesor.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("CREAR");
+        pnlCrearProfesor.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
+
+        add(pnlCrearProfesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 220, 150, 50));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbtnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCrearActionPerformed
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+
+        mostrarDatosSeleccionados();
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void pnlCrearProfesorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCrearProfesorMouseClicked
         if (profesores.ComprobarCedula2(jtxtCedula.getText())) {
             profesores.addProfesor(jtxtIdentificador.getText(), jtxtCedula.getText(), jtxtNombre.getText(), jtxtApellido.getText(), jTable1);
             profesores.actualizarLabelIdentificador(jtxtIdentificador);
             jtxtCedula.setText("");
             jtxtNombre.setText("");
             jtxtApellido.setText("");
-        }else{
+        } else {
             return;
         }
+    }//GEN-LAST:event_pnlCrearProfesorMouseClicked
 
-    }//GEN-LAST:event_jbtnCrearActionPerformed
+    private void pnlEditarProfesorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlEditarProfesorMouseClicked
+        int filaSeleccionada = jTable1.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            if (profesores.ComprobarCedula2(jtxtCedula.getText())) {
+                profesores.editarProfesor(jtxtIdentificador.getText(), jtxtCedula.getText(), jtxtNombre.getText(), jtxtApellido.getText(), jTable1);
+                profesores.actualizarLabelIdentificador(jtxtIdentificador);
+                jtxtCedula.setText("");
+                jtxtNombre.setText("");
+                jtxtApellido.setText("");
+                pnlCrearProfesor.setEnabled(true);
+            } else {
+                return;
+            }
 
-    private void jbtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEliminarActionPerformed
+        } else {
+            System.out.println("Por favor, seleccione un profesor para editar.");
+        }
+
+
+    }//GEN-LAST:event_pnlEditarProfesorMouseClicked
+
+    private void pnlEliminarProfesorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlEliminarProfesorMouseClicked
         int filaSeleccionada = jTable1.getSelectedRow();
         if (filaSeleccionada != -1) {
             profesores.eliminarProfesor(jtxtIdentificador.getText(), jTable1);
@@ -206,67 +246,30 @@ public class Profesores extends javax.swing.JPanel {
             jtxtCedula.setText("");
             jtxtNombre.setText("");
             jtxtApellido.setText("");
-            jbtnCancelar.setEnabled(false);
-            jbtnCrear.setEnabled(true);
+            pnlCrearProfesor.setEnabled(true);
         } else {
             System.out.println("Por favor, seleccione un profesor para eliminar.");
         }
-    }//GEN-LAST:event_jbtnEliminarActionPerformed
-
-    private void jbtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEditarActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-        if (filaSeleccionada != -1) {
-            if (profesores.ComprobarCedula2(jtxtCedula.getText())) {
-                profesores.editarProfesor(jtxtIdentificador.getText(), jtxtCedula.getText(), jtxtNombre.getText(), jtxtApellido.getText(), jTable1);
-            profesores.actualizarLabelIdentificador(jtxtIdentificador);
-            jtxtCedula.setText("");
-            jtxtNombre.setText("");
-            jtxtApellido.setText("");
-            jbtnCancelar.setEnabled(false);
-            jbtnCrear.setEnabled(true);
-            }else{
-                return;
-            }
-            
-        } else {
-            System.out.println("Por favor, seleccione un profesor para editar.");
-        }
-
-    }//GEN-LAST:event_jbtnEditarActionPerformed
-
-    private void jbtnCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCrearMouseClicked
-
-    }//GEN-LAST:event_jbtnCrearMouseClicked
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-
-        mostrarDatosSeleccionados();
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
-        // TODO add your handling code here:
-        profesores.actualizarLabelIdentificador(jtxtIdentificador);
-        jtxtCedula.setText("");
-        jtxtNombre.setText("");
-        jtxtApellido.setText("");
-    }//GEN-LAST:event_jbtnCancelarActionPerformed
+    }//GEN-LAST:event_pnlEliminarProfesorMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JButton jbtnCancelar;
-    private javax.swing.JButton jbtnCrear;
-    private javax.swing.JButton jbtnEditar;
-    private javax.swing.JButton jbtnEliminar;
     private javax.swing.JTextField jtxtApellido;
     private javax.swing.JTextField jtxtCedula;
     private javax.swing.JTextField jtxtIdentificador;
     private javax.swing.JTextField jtxtNombre;
+    private Utils.PanelShadow pnlCrearProfesor;
+    private Utils.PanelShadow pnlEditarProfesor;
+    private Utils.PanelShadow pnlEliminarProfesor;
     // End of variables declaration//GEN-END:variables
 }
