@@ -5,6 +5,7 @@
 package Windows;
 
 import CodesBD.CrudReservas;
+import CodesBD.Reserva;
 import ComponentesPropios.TablaReservas;
 import Utils.Conex;
 import Validaciones.Validaciones;
@@ -14,6 +15,7 @@ import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -25,8 +27,10 @@ import javax.swing.table.DefaultTableModel;
  * @author User
  */
 public class Reservar extends javax.swing.JFrame {
+
     private boolean reservaGuardada;
     String Fecha;
+    private Reserva reserva;
 
     /**
      * Creates new form Reservar
@@ -41,7 +45,34 @@ public class Reservar extends javax.swing.JFrame {
                 confirmarCierre();
             }
         });
+        this.reserva = reserva;
+        
     }
+public void cargarDatosReserva(Reserva reserva) {
+    if (reserva != null) {
+        jtxtCedula.setText(reserva.getCedula());
+        jtxtNombre.setText(reserva.getNombreUsuario());
+        jtxtCorreo.setText(reserva.getCorreo());
+        jtxtDescripcion.setText(reserva.getObservacion());
+    } else {
+        JOptionPane.showMessageDialog(null, "Reserva no encontrada o datos nulos.");
+    }
+}
+
+
+//    public void cargarDatosDeReserva(String prestamoId) {
+//        Reserva reserva = CrudReservas.obtenerReservaPorId(prestamoId);
+//        if (reserva != null) {
+//            jtxtCedula.setText(reserva.getCedula());
+//            jtxtNombre.setText(reserva.getNombreUsuario());
+//            jtxtCorreo.setText(reserva.getCorreo());
+//            jtxtDescripcion.setText(reserva.getObservacion());
+//        } else {
+//            JOptionPane.showMessageDialog(null, "No se encontraron datos para la reserva.");
+//        }
+//    }
+
+
 
     public void setDatosReserva(String fecha, String bloque, String tipoEspacio, String numeroAula, String hora) {
         // Crear un arreglo para almacenar los datos de la reserva, incluida la hora
@@ -232,7 +263,31 @@ public class Reservar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarActionPerformed
-        // TODO add your handling code here:
+        if (reserva != null) {
+        // Validaciones básicas (ejemplo):
+        if (jtxtCedula.getText().isEmpty() || jtxtNombre.getText().isEmpty() || !jtxtCorreo.getText().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            JOptionPane.showMessageDialog(this, "Por favor, asegúrese de que todos los campos estén llenos y el correo sea válido.");
+            return; // Detiene la ejecución si hay un problema
+        }
+
+        // Preparar los datos para actualizar la reserva
+        String cedula = jtxtCedula.getText();
+        String nombre = jtxtNombre.getText();
+        String correo = jtxtCorreo.getText();
+        String descripcion = jtxtDescripcion.getText();
+        String idEspacio = reserva.getIdEspacio(); // Asegúrate de que reserva.getIdEspacio() obtiene correctamente el ID
+
+        // Intentar actualizar la reserva en la base de datos
+        boolean resultado = CrudReservas.actualizarReserva(idEspacio, cedula, nombre, correo, descripcion);
+        if (resultado) {
+            JOptionPane.showMessageDialog(this, "Reserva actualizada exitosamente!");
+            this.dispose(); // Cierra el formulario si la actualización fue exitosa
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar la reserva.");
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "No se ha cargado ninguna reserva para actualizar.");
+    }
     }//GEN-LAST:event_jbtnActualizarActionPerformed
 
     private void jtxtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtCedulaActionPerformed
@@ -349,7 +404,7 @@ public class Reservar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al guardar la reserva.");
         }
     }
-    
+
     public boolean reservaGuardadaExitosamente() {
         return this.reservaGuardada;
     }

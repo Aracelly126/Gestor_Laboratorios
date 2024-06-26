@@ -5,6 +5,9 @@
 package Windows;
 
 import Codes.bd_usuarios;
+import static Validaciones.Validaciones.validarCorreo;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
@@ -171,15 +174,6 @@ public class Usuarios extends javax.swing.JPanel {
 
     }//GEN-LAST:event_txtCorreoKeyTyped
 
-    private boolean validarCorreo(String correo) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pat = Pattern.compile(emailRegex);
-        if (correo == null) {
-            return false;
-        }
-        return pat.matcher(correo).matches();
-    }
-
     private void validarYRegistrarUsuario() {
         String correo = txtCorreo.getText();
         String clave = new String(pswClave.getPassword());
@@ -204,8 +198,11 @@ public class Usuarios extends javax.swing.JPanel {
             return;
         }
 
+        // Encriptar la clave usando SHA-256
+        String claveEncriptada = encriptarClave(clave);
+
         bd_usuarios dbUsuarios = new bd_usuarios();
-        boolean exito = dbUsuarios.crearUsuario(correo, clave);
+        boolean exito = dbUsuarios.crearUsuario(correo, claveEncriptada);
 
         if (exito) {
             JOptionPane.showMessageDialog(this, "Usuario creado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -214,9 +211,32 @@ public class Usuarios extends javax.swing.JPanel {
             pswVerificarClave.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "Error al crear el usuario", "Error", JOptionPane.ERROR_MESSAGE);
-            txtCorreo.setText(" ");
-            pswClave.setText(" ");
-            pswVerificarClave.setText(" ");
+            txtCorreo.setText("");
+            pswClave.setText("");
+            pswVerificarClave.setText("");
+        }
+    }
+
+// Método para encriptar la clave usando SHA-256
+    private String encriptarClave(String clave) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(clave.getBytes());
+
+            // Convertir el hash a representación hexadecimal
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
