@@ -44,7 +44,6 @@ public class Espacios extends javax.swing.JPanel {
             String bloque = (String) jTable1.getValueAt(filaSeleccionada, 2);
             espacioID = cb.obtenerIdEspacio(nombre, bloque);
             pnlCrearEspacio.setEnabled(false);
-            pnlCancelar.setEnabled(true);
             jcbxTipo.setSelectedItem(tipo);
             jtxtNombre.setText(nombre);
             jcbxBloque.setSelectedItem(bloque);
